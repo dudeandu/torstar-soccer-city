@@ -1,0 +1,664 @@
+<!-- Migrated World Cup project content. Edit source content in this body.html for the Blox app. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+        :root {
+            --bg: #000000;
+            --accent: #0077BB;
+            --site-bg: #f8f8f8;
+            --body-text: #333333;
+            --nav-bg: rgba(10, 10, 10, 0.95);
+        }
+
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+
+        /* --- 1. HERO GRID --- */
+        .grid-container { display: grid; width: 100vw; height: 100vh; gap: 1px; background: #111; grid-auto-flow: dense; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(7, 1fr); }
+        .headline-center { display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--bg); z-index: 10; text-align: center; border: 1px solid #1a1a1a; padding: 20px; grid-column: 3 / 7; grid-row: 3 / 5; }
+        .headline-center h1 { font-size: clamp(1.5rem, 5vw, 4rem); margin: 0; font-weight: 900; text-transform: uppercase; line-height: 1; letter-spacing: -1px; }
+        .tagline { color: var(--accent); font-size: 0.8rem; font-weight: bold; letter-spacing: 5px; margin-bottom: 12px; text-transform: uppercase; }
+        .ambassador-slot { position: relative; background: #000; overflow: hidden; }
+        .ambassador-slot.placeholder { background: #2b2b2b; }
+        .ambassador-slot.placeholder::before { content: ""; position: absolute; inset: 1px; background: linear-gradient(135deg, #333, #1e1e1e); }
+        .ambassador-slot img, .ambassador-slot video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.6); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ambassador-slot:hover img, .ambassador-slot:hover video { filter: grayscale(0%) brightness(1); transform: scale(1.1); }
+        .info-tab { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 80%); transform: translateY(100%); transition: transform 0.3s ease-out; pointer-events: none; }
+        .ambassador-slot:hover .info-tab { transform: translateY(0); }
+        .info-tab .name { font-weight: 800; font-size: 0.6rem; text-transform: uppercase; color: #fff; }
+        .info-tab .team { font-size: 0.5rem; color: #fff; font-weight: bold; text-transform: uppercase; }
+
+        @media (max-width: 499px) {
+            .grid-container { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(13, 1fr); }
+            .headline-center { grid-column: 1 / -1; grid-row: 7; border-left: none; border-right: none; padding: 10px; }
+            .headline-center h1 { font-size: 2.5rem; }
+            .tagline { font-size: 0.6rem; letter-spacing: 3px; margin-bottom: 5px; }
+            .headline-center p { display: none; }
+        }
+
+        /* --- 2. INTRO TEXT --- */
+        .intro-section { background-color: var(--site-bg); padding: 100px 24px; display: flex; justify-content: center; }
+        .intro-container { max-width: 750px; text-align: left; }
+        .intro-container p { color: var(--body-text); font-family: "STIX Two Text", serif; font-size: 21px; font-weight: 500; line-height: 29.4px; margin-bottom: 21px; -moz-osx-font-smoothing: grayscale; }
+        .intro-container strong { color: var(--accent); font-weight: 700; }
+
+        /* --- 3. DARK FLAG NAV (TABLE ROWS) --- */
+        .nav-wrapper { background-color: #000; color: #fff; padding: 80px 20px 120px 20px; position: relative; z-index: 20; }
+        .nav-title { text-align: center; margin-bottom: 50px; }
+        .nav-title h2 { font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-size: 2rem; margin: 0; color: #fff; }
+        
+        .nav-groups-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1300px; margin: 0 auto; }
+        .nav-group-card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 20px; transition: transform 0.3s ease; }
+        .nav-group-card:hover { border-color: #444; }
+        
+        .nav-group-card h3 { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; color: var(--accent); margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        
+        .group-table { display: flex; flex-direction: column; gap: 5px; }
+        .flag-item { background: transparent; border: none; padding: 8px 10px; display: flex; flex-direction: row; align-items: center; text-decoration: none; transition: background 0.3s ease; opacity: 0.9; cursor: pointer; border-radius: 4px; }
+        .flag-item:hover { opacity: 1; background: #1a1a1a; }
+        .flag-icon { width: 32px; height: auto; margin-bottom: 0; margin-right: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .flag-name { font-size: 11px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- 4. GROUP CONTAINERS (FULL WIDTH) --- */
+        .group-container { background: #fff; color: var(--body-text); scroll-margin-top: 60px; }
+        
+        .group-hero { position: relative; width: 100vw; height: 100vh; background: #000; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .group-hero img, .group-hero video { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; pointer-events: none; }
+        .group-hero-placeholder { position: absolute; inset: 0; background: #3a3a3a; }
+        .group-hero-overlay { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 5px solid #fff; padding: 20px 50px; max-width: min(1100px, calc(100vw - 40px)); box-sizing: border-box; }
+        .group-hero h2 { font-size: clamp(4rem, 10vw, 10rem); font-weight: 900; text-transform: uppercase; letter-spacing: -2px; margin: 0; line-height: 1; }
+        .group-country-list { font-size: 0.7rem; opacity: 0.65; margin-top: 15px; font-weight: 700; text-transform: uppercase; line-height: 1.5; }
+
+        .group-teams-wrapper { width: 100%; display: flex; flex-direction: column; }
+
+        .team-block { 
+            width: 100%; 
+            display: flex; flex-direction: column; align-items: center; 
+            padding: 100px 20px; 
+            box-sizing: border-box;
+            scroll-margin-top: 60px; 
+        }
+        .team-block + .team-block { border-top: 1px solid rgba(0,0,0,0.14); }
+
+        .country-header { margin-bottom: 20px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; width: 100%; max-width: 750px; }
+        .big-flag { width: 80px; height: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 0; margin-right: 25px; }
+        .country-name { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; margin: 0; line-height: 0.9; color: #111; letter-spacing: -2px; text-align: left; }
+        
+        .editorial-text { width: 100%; max-width: 750px; text-align: left; position: relative; }
+        .editorial-text::after { content: ""; display: table; clear: both; }
+
+        .editorial-text p { font-family: "STIX Two Text", serif; font-size: 19px; line-height: 1.7; margin-top: 0; margin-bottom: 25px; color: #444; }
+        
+        .editorial-text strong { color: #111; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; display: block; margin-top: 30px; margin-bottom: 5px; }
+        
+        /* Main Image (Broke out to 900px wide) */
+        .editorial-image { width: 100%; max-width: 900px; height: auto; max-height: 500px; object-fit: cover; margin: 20px 0 10px 0; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .editorial-image-placeholder { width: 100%; max-width: 900px; height: clamp(260px, 45vw, 500px); margin: 20px 0 10px 0; border-radius: 4px; background: #d8d8d8; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
+        .caption { font-size: 0.75rem; color: #888; font-family: 'Inter', sans-serif; display: block; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
+
+        figure.secondary-figure { margin: 20px 0; padding: 0; }
+        figure.secondary-figure img.editorial-image-secondary { width: 100%; height: auto; max-height: 400px; object-fit: cover; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        figure.secondary-figure .editorial-image-placeholder { height: 260px; margin: 0 0 10px 0; }
+        figure.secondary-figure .caption { margin-bottom: 0; max-width: 100%; }
+        figure.inline-break-figure { margin: 35px 0; padding: 0; clear: both; }
+        figure.inline-break-figure img { width: 100%; height: auto; max-height: 430px; object-fit: cover; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        figure.inline-break-figure .caption { margin-bottom: 0; max-width: 100%; }
+
+        .burger-icon { display: none; }
+
+        @media (min-width: 901px) {
+            figure.secondary-figure.float-right { float: right; width: 45%; margin: 10px 0 20px 30px; }
+            figure.secondary-figure.float-left { float: left; width: 45%; margin: 10px 30px 20px 0; }
+        }
+
+        @media (max-width: 900px) {
+            .country-name { font-size: 2.2rem; letter-spacing: -1px; }
+            .big-flag { width: 50px; margin-right: 15px; }
+            .team-block { padding: 60px 20px; }
+            
+            .sticky-nav { padding: 15px 20px; justify-content: flex-end; }
+            
+            /* Mobile Burger adjustments */
+            .sticky-select-wrapper { width: 44px; height: 44px; border: none; background: transparent; padding: 0; }
+            .sticky-select-wrapper::after { display: none; }
+            .burger-icon { 
+                display: flex; align-items: center; justify-content: center; 
+                width: 100%; height: 100%; 
+                background-color: var(--accent); /* Solid colored background */
+                border-radius: 50%; /* Circular button */
+                color: white; 
+                pointer-events: none; 
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Soft shadow */
+            }
+            select#countrySelect { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; padding: 0; margin: 0; min-width: auto; z-index: 2; }
+        }
+
+        @media (max-width: 425px) {
+            .group-hero-overlay { padding: 15px 20px; border-width: 3px; }
+            .group-hero h2 { font-size: clamp(2.5rem, 12vw, 3.5rem); }
+            .group-country-list { font-size: 0.62rem; margin-top: 10px; }
+        }
+
+        /* --- UTILITIES --- */
+        .sticky-nav { 
+            position: fixed; top: 0; left: 0; width: 100%; 
+            background: transparent; padding: 15px 30px; 
+            display: flex; justify-content: flex-end; align-items: center; 
+            z-index: 1000; transform: translateY(-100%); transition: transform 0.4s ease; 
+            box-sizing: border-box; pointer-events: none; 
+        }
+        .sticky-nav.visible { transform: translateY(0); }
+        .sticky-title { display: none !important; }
+        
+        select#countrySelect { 
+            appearance: none; -webkit-appearance: none; 
+            background-color: var(--accent); /* Solid blue background */
+            color: #fff; 
+            border: none; /* Removed border */
+            padding: 10px 45px 10px 20px; 
+            border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; 
+            text-transform: uppercase; cursor: pointer; outline: none; min-width: 180px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Drop shadow for visibility */
+        }
+        .sticky-select-wrapper { position: relative; pointer-events: auto; }
+        .sticky-select-wrapper::after { 
+            content: ''; position: absolute; right: 18px; top: 50%; 
+            transform: translateY(-60%) rotate(45deg); width: 6px; height: 6px; 
+            border-right: 2px solid #fff; /* White chevron to contrast with accent background */
+            border-bottom: 2px solid #fff; 
+            pointer-events: none; 
+        }
+        select#countrySelect optgroup { background: #000; color: var(--accent); font-style: normal; font-weight: 900;}
+        select#countrySelect option { background: #111; color: white; }
+        
+        .back-to-top { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.4); z-index: 900; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto; opacity: 0; }
+        .back-to-top.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+    </style>
+<nav class="sticky-nav" id="stickyNav">
+        <div class="sticky-title">SOCCER CITY</div>
+        <div class="sticky-select-wrapper">
+            <div class="burger-icon"><svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div>
+            <select id="countrySelect">
+                <option value="" selected disabled>JUMP TO...</option>
+            </select>
+        </div>
+    </nav>
+
+    <main class="grid-container" id="ambassadorGrid">
+        <div class="headline-center">
+            <span class="tagline">The Official List</span>
+            <h1>SOCCER CITY</h1>
+            <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 15px;">48 COUNTRIES • 16 CITIES • 1 TROPHY</p>
+        </div>
+    </main>
+
+    <section class="intro-section">
+        <div class="intro-container">
+            <p>Welcome to a landmark exploration of the world, right here in the 6ix. As the 2026 World Cup approaches, Toronto transforms into more than just a host city—it becomes a living, breathing map of the forty-eight nations competing for glory.</p>
+            <p>In every corner of this city, from the bustling markets of <strong>Kensington</strong> to the refined patios of <strong>Yorkville</strong>, the voices and sounds of 48 nations are waiting to be heard.</p>
+            <p>Our mission is to show you that you don’t need a boarding pass to experience the magic of the tournament. Whether it’s finding the specific pub where the <strong>Netherlands</strong> faithful turn the street into a sea of orange, or discovering the hidden basement in <strong>Little Italy</strong>, this project identifies the cultural anchors of the tournament.</p>
+            <p>Toronto’s diversity is its greatest competitive advantage. With over 50% of our residents born outside of Canada, the "World in a City" isn't just a marketing slogan—it is our reality.</p>
+            <p>This digital experience allows you to immerse yourself in the sounds and textures of the competing 48. By following our curated hubs, you can feel the rhythmic pulse of <strong>Ghanaian</strong> drumming in the west end, or taste the sharp, traditional espresso of an <strong>Italian</strong> cafe.</p>
+            <p>As you watch the big cup unfold, let this be your compass. Welcome to the ultimate multicultural fusion; welcome to the World Cup, <strong>Toronto style</strong>.</p>
+        </div>
+    </section>
+
+    <div class="nav-wrapper" id="flagSection">
+        <div class="nav-title">
+            <h2>Where do you want to go?</h2>
+        </div>
+        <div class="nav-groups-container" id="flagGroupsContainer"></div>
+    </div>
+
+    <div id="contentSections"></div>
+
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Back to Top</button>
+
+    <script>
+        // EXPLICIT HARDCODED TOURNAMENT GROUPS A-L
+        const tournamentGroups = {
+            "A": ["Mexico", "South Africa", "South Korea", "Czech Republic"],
+            "B": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
+            "C": ["Brazil", "Morocco", "Haiti", "Scotland"],
+            "D": ["United States", "Paraguay", "Australia", "Turkey"],
+            "E": ["Germany", "Curaçao", "Ivory Coast", "Ecuador"],
+            "F": ["Netherlands", "Japan", "Sweden", "Tunisia"],
+            "G": ["Belgium", "Egypt", "Iran", "New Zealand"],
+            "H": ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+            "I": ["France", "Senegal", "Iraq", "Norway"],
+            "J": ["Argentina", "Algeria", "Austria", "Jordan"],
+            "K": ["Portugal", "DR Congo", "Uzbekistan", "Colombia"],
+            "L": ["England", "Croatia", "Ghana", "Panama"]
+        };
+
+        const countryCodes = {
+            "Algeria": "dz", "Argentina": "ar", "Australia": "au", "Austria": "at",
+            "Belgium": "be", "Bosnia and Herzegovina": "ba", "Brazil": "br", "Canada": "ca",
+            "Cape Verde": "cv", "Colombia": "co", "Croatia": "hr", "Curaçao": "cw",
+            "Czech Republic": "cz", "DR Congo": "cd", "Ecuador": "ec", "Egypt": "eg",
+            "England": "gb-eng", "France": "fr", "Germany": "de", "Ghana": "gh",
+            "Haiti": "ht", "Iran": "ir", "Iraq": "iq", "Ivory Coast": "ci",
+            "Japan": "jp", "Jordan": "jo", "Mexico": "mx", "Morocco": "ma",
+            "Netherlands": "nl", "New Zealand": "nz", "Norway": "no", "Panama": "pa",
+            "Paraguay": "py", "Portugal": "pt", "Qatar": "qa", "Saudi Arabia": "sa",
+            "Scotland": "gb-sct", "Senegal": "sn", "South Africa": "za", "South Korea": "kr",
+            "Spain": "es", "Sweden": "se", "Switzerland": "ch", "Tunisia": "tn",
+            "Turkey": "tr", "United States": "us", "Uruguay": "uy", "Uzbekistan": "uz"
+        };
+
+        // Dominant flag colors at 10% opacity (rgba)
+        const teamColors = {
+            "Algeria": "rgba(0, 98, 51, 0.15)", "Argentina": "rgba(67, 161, 213, 0.15)", "Australia": "rgba(0, 0, 139, 0.15)", "Austria": "rgba(237, 41, 57, 0.15)",
+            "Belgium": "rgba(218, 41, 28, 0.15)", "Bosnia and Herzegovina": "rgba(0, 35, 149, 0.15)", "Brazil": "rgba(0, 155, 58, 0.15)", "Canada": "rgba(255, 0, 0, 0.15)",
+            "Cape Verde": "rgba(0, 56, 147, 0.15)", "Colombia": "rgba(252, 209, 22, 0.15)", "Croatia": "rgba(255, 0, 0, 0.15)", "Curaçao": "rgba(0, 43, 127, 0.15)",
+            "Czech Republic": "rgba(215, 20, 26, 0.15)", "DR Congo": "rgba(0, 127, 255, 0.15)", "Ecuador": "rgba(255, 209, 0, 0.15)", "Egypt": "rgba(206, 17, 38, 0.15)",
+            "England": "rgba(206, 17, 38, 0.15)", "France": "rgba(0, 35, 149, 0.15)", "Germany": "rgba(255, 206, 0, 0.15)", "Ghana": "rgba(0, 107, 63, 0.15)",
+            "Haiti": "rgba(0, 32, 159, 0.15)", "Iran": "rgba(35, 159, 64, 0.15)", "Iraq": "rgba(255, 0, 0, 0.15)", "Ivory Coast": "rgba(255, 130, 0, 0.15)",
+            "Japan": "rgba(188, 0, 45, 0.15)", "Jordan": "rgba(206, 17, 38, 0.15)", "Mexico": "rgba(0, 104, 71, 0.15)", "Morocco": "rgba(193, 39, 45, 0.15)",
+            "Netherlands": "rgba(255, 79, 0, 0.15)", "New Zealand": "rgba(0, 36, 125, 0.15)", "Norway": "rgba(186, 12, 47, 0.15)", "Panama": "rgba(200, 16, 46, 0.15)",
+            "Paraguay": "rgba(213, 43, 30, 0.15)", "Portugal": "rgba(218, 41, 28, 0.15)", "Qatar": "rgba(138, 21, 56, 0.15)", "Saudi Arabia": "rgba(0, 108, 53, 0.15)",
+            "Scotland": "rgba(0, 94, 184, 0.15)", "Senegal": "rgba(0, 133, 63, 0.15)", "South Africa": "rgba(0, 119, 73, 0.15)", "South Korea": "rgba(198, 12, 48, 0.15)",
+            "Spain": "rgba(170, 21, 27, 0.15)", "Sweden": "rgba(0, 75, 135, 0.15)", "Switzerland": "rgba(255, 0, 0, 0.15)", "Tunisia": "rgba(231, 0, 19, 0.15)",
+            "Turkey": "rgba(227, 10, 23, 0.15)", "United States": "rgba(10, 49, 97, 0.15)", "Uruguay": "rgba(0, 56, 168, 0.15)", "Uzbekistan": "rgba(0, 153, 181, 0.15)"
+        };
+
+        const gifLinks = [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGdseHRlcjh2ZGk0YTAzYzU3Y2E2Z2ppZnhpcHEwcnJ1aXI5NHJwbiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/fMA8MB8QU5IV4Jswy5/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NmQ4bzh1OG85NHJsYTdobHBiNGFsemdneWs1Z3U1Mm1vajF6aG9hYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1prYDcLwc8V8wkVXoh/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3N2kxMGRpenhkMXpsc3lzMGh3MXRyZDNrMnF1NWkwMXJ6aDdla2pmZSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3ohhwAYmb0ealcLqqA/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTlqdnU0ZDVqbnl5NDQ1bnh1azl5ejRpMTY5YmJnaTRrdDFycWFocCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/T9fHnACJJq8Ba/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTlqdnU0ZDVqbnl5NDQ1bnh1azl5ejRpMTY5YmJnaTRrdDFycWFocCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/688vSOS4YBCeTKPt5G/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bjA2YWVuczN1MXVkeHgycjNnYTBxbjlhbGEzNnk3NHhoMzl5cnI1ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/QWw7fHhPhv7LbhQvRn/giphy.gif",
+            "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHh4bnkyYW1neWNmOW9vb3E4bnpldnk2ZDV6MTh1NTZvd3ltc21heiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fGIqxhO3poEQJUzOxr/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ajhtczNqcXRuMXlleXRqaHRiMGE4MXVoZG8zd3V6bWtjYW80azgwbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7buhZWklrXfZqRby/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzZkOW95bWtyanR6MzNlc3pxajRpZmlpejh1Nzdldm5id2pvejhmbCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/SxcZaYHOOlzAm4jtv1/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MjV4OXc1bmd6eXB4eTJjZ283ZGQzdmdic2g0ZXdkNmszY3NwaG41dSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UGxfEt5POsukg/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Y3lxZnVycHBsaWN1NHQ5emN2c253dXE4MjNxMDJxZnhhb3Y5MWpmYyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Cl6SngEqkHo9bNxl1u/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Y3lxZnVycHBsaWN1NHQ5emN2c253dXE4MjNxMDJxZnhhb3Y5MWpmYyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5uSMdHmtKATedAqohw/giphy.gif"
+        ];
+
+        const imageManifest = {
+            "Australia": [
+                "LM_042326_australia1.JPG", "LM_042326_australia2.JPG", "LM_042326_australia3.JPG",
+                "LM_042326_australia4.JPG", "LM_042326_australia5.JPG", "LM_042326_australia6.JPG",
+                "LM_042326_australia7.JPG", "LM_042326_australia8.JPG", "LM_042326_australia9.JPG",
+                "LM_042326_australia10.JPG"
+            ],
+            "Cape-Verde": [
+                "LM_042126_soccer1.JPG", "LM_042126_soccer2.JPG", "LM_042126_soccer3.JPG",
+                "LM_042126_soccer4.JPG", "LM_042126_soccer5.JPG", "LM_042126_soccer6.JPG",
+                "LM_042126_soccer7.JPG", "LM_042126_soccer8.JPG", "LM_042126_soccer9.JPG",
+                "LM_042126_soccer10.JPG", "LM_042126_soccer11.JPG"
+            ],
+            "Colombia": [
+                "NL_Colombia fan Camila Gonzalez_0001.JPG", "NL_Colombia fan Camila Gonzalez_0002.JPG",
+                "NL_Colombia fan Camila Gonzalez_0003.JPG", "NL_Colombia fan Camila Gonzalez_0004.JPG",
+                "NL_Colombia fan Camila Gonzalez_0005.JPG", "NL_Colombia fan Camila Gonzalez_0006.JPG",
+                "NL_Colombia fan Camila Gonzalez_0007.JPG", "NL_Colombia fan Camila Gonzalez_0008.JPG",
+                "NL_Colombia fan Camila Gonzalez_0009.JPG", "NL_Colombia fan Camila Gonzalez_0010.JPG",
+                "NL_Colombia fan Camila Gonzalez_0011.JPG", "NL_Colombia fan Camila Gonzalez_0012.JPG",
+                "NL_Colombia fan Camila Gonzalez_0013.JPG", "NL_Colombia fan Camila Gonzalez_0014.JPG",
+                "NL_Colombia fan Camila Gonzalez_0015.JPG", "NL_Colombia fan Camila Gonzalez_0016.JPG"
+            ],
+            "Croatia": [
+                "rpj_FIFA_fans_Croatia_001.JPG", "rpj_FIFA_fans_Croatia_002.JPG", "rpj_FIFA_fans_Croatia_003.JPG"
+            ],
+            "Ecuador": [
+                "AM_Ecuador fans_101.JPG", "AM_Ecuador fans_102.JPG", "AM_Ecuador fans_103.JPG",
+                "AM_Ecuador fans_104.JPG", "AM_Ecuador fans_106.JPG", "AM_Ecuador fans_107.JPG",
+                "AM_Ecuador fans_110.JPG", "AM_Ecuador fans_111.JPG", "AM_Ecuador fans_112.JPG",
+                "AM_Ecuador fans_113.JPG"
+            ],
+            "Egypt": [
+                "LM_042826_EgyptFan1.JPG", "LM_042826_EgyptFan2.JPG", "LM_042826_EgyptFan3.JPG",
+                "LM_042826_EgyptFan4.JPG", "LM_042826_EgyptFan5.JPG", "LM_042826_EgyptFan6.JPG",
+                "LM_042826_EgyptFan7.JPG", "LM_042826_EgyptFan8.JPG", "LM_042826_EgyptFan9.JPG",
+                "LM_042826_EgyptFan10.JPG", "LM_042826_EgyptFan11.JPG", "LM_042826_EgyptFan12.JPG"
+            ],
+            "New-Zealand": [
+                "rpj_Hemmingways_01.JPG", "rpj_Hemmingways_02.JPG", "rpj_Hemmingways_03.JPG"
+            ]
+        };
+
+        const dataAliases = {
+            "Czech Republic": "Czechia",
+            "Curaçao": "Cura�ao"
+        };
+
+        function getProjectAssetBase() {
+            const rawPath = String(typeof compImgPath !== "undefined" ? compImgPath : "").replace(/\/$/, "");
+            if (!rawPath) return "./images";
+            if (rawPath === "images" || rawPath === "./images" || rawPath.endsWith("/images")) return rawPath;
+            return `${rawPath}/images`;
+        }
+
+        const projectAssetBase = getProjectAssetBase();
+
+        function resolveAssetPath(path) {
+            const value = String(path || "");
+            if (!value) return "";
+            if (/^(https?:)?\/\//.test(value) || value.startsWith("data:")) return value;
+
+            const cleaned = value.replace(/^\.\//, "");
+            if (cleaned.startsWith("images/")) {
+                return `${projectAssetBase}/${cleaned.slice("images/".length)}`;
+            }
+
+            return value;
+        }
+
+        function parseTSV(tsvText) {
+            const rows = [];
+            let row = [];
+            let value = "";
+            let inQuotes = false;
+
+            for (let i = 0; i < tsvText.length; i++) {
+                const char = tsvText[i];
+                const nextChar = tsvText[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        value += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === '\t' && !inQuotes) {
+                    row.push(value.trim());
+                    value = "";
+                } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                    if (char === '\r' && nextChar === '\n') i++;
+                    row.push(value.trim());
+                    if (row.some(cell => cell !== "")) rows.push(row);
+                    row = [];
+                    value = "";
+                } else {
+                    value += char;
+                }
+            }
+
+            if (value || row.length) {
+                row.push(value.trim());
+                if (row.some(cell => cell !== "")) rows.push(row);
+            }
+
+            const headers = rows.shift().map(h => h.trim());
+            return rows.map(values => {
+                const rowObj = {};
+                headers.forEach((header, index) => {
+                    rowObj[header] = values[index] ? values[index].trim() : "";
+                });
+                return rowObj;
+            });
+        }
+
+        function escapeHTML(value) {
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function renderParagraphs(value, breakOptions = {}) {
+            const paragraphs = String(value || "")
+                .replace(/\r\n/g, "\n")
+                .replace(/\r/g, "\n")
+                .split(/\n\s*\n/)
+                .map(paragraph => paragraph.trim().replace(/\s*\n\s*/g, " "))
+                .filter(Boolean);
+
+            const threshold = breakOptions.threshold || 7;
+            const breakAfter = Math.min(breakOptions.after || 4, Math.max(paragraphs.length - 1, 1));
+            const shouldAddBreak = breakOptions.image && paragraphs.length >= threshold;
+
+            return paragraphs
+                .map((paragraph, index) => {
+                    let html = `<p>${escapeHTML(paragraph)}</p>`;
+                    if (shouldAddBreak && index + 1 === breakAfter) {
+                        html += renderStoryBreak(breakOptions);
+                    }
+                    return html;
+                })
+                .join("");
+        }
+
+        function renderSection(label, value, breakOptions = {}) {
+            const content = renderParagraphs(value, breakOptions);
+            if (!content) return "";
+            return `<strong>${escapeHTML(label)}</strong>${content}`;
+        }
+
+        function renderStoryBreak({ image, imageAlt = "Match day in Toronto", caption = "A pause in the story before the next wave of match-day memories." } = {}) {
+            return `
+                <figure class="inline-break-figure">
+                    <img src="${escapeHTML(resolveAssetPath(image))}" alt="${escapeHTML(imageAlt)}" loading="lazy">
+                    <figcaption class="caption">${escapeHTML(caption)}</figcaption>
+                </figure>
+            `;
+        }
+
+        function renderEditorialMedia(imagePath, altText, className) {
+            if (!imagePath) {
+                return `<div class="editorial-image-placeholder" aria-label="${escapeHTML(altText)}"></div>`;
+            }
+
+            return `<img class="${className}" src="${escapeHTML(resolveAssetPath(imagePath))}" alt="${escapeHTML(altText)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'editorial-image-placeholder' }))">`;
+        }
+
+        function renderGridMedia(teamObj, teamName, folderName, teamIndex) {
+            const videoPath = teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean);
+            if (videoPath) {
+                return `<video src="${escapeHTML(resolveAssetPath(videoPath))}" autoplay loop muted playsinline></video>`;
+            }
+
+            const fallbackImages = getTeamImages(teamObj, folderName, teamIndex);
+            const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages[0];
+            if (imagePath) {
+                return `<img src="${escapeHTML(resolveAssetPath(imagePath))}" alt="${escapeHTML(teamName)} fan media" loading="lazy">`;
+            }
+
+            return "";
+        }
+
+        function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif) {
+            const videoPath = teamsInGroup
+                .map(teamName => findTeamData(teamData, teamName))
+                .map(teamObj => teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean))
+                .find(Boolean);
+
+            if (videoPath) {
+                return `<video src="${escapeHTML(resolveAssetPath(videoPath))}" autoplay loop muted playsinline></video>`;
+            }
+
+            return `<img src="${escapeHTML(fallbackGif)}" alt="Group ${escapeHTML(groupLetter)}" loading="lazy">`;
+        }
+
+        function findTeamData(teamData, teamName) {
+            const dataTeamName = dataAliases[teamName] || teamName;
+            return teamData.find(row => row.team === dataTeamName) || {};
+        }
+
+        function getTeamImages(teamObj, folderName, teamIndex) {
+            const tsvImages = (teamObj.images || "")
+                .split("|")
+                .map(imagePath => imagePath.trim())
+                .filter(Boolean);
+
+            if (tsvImages.length || teamObj.image1) {
+                const imageSet = [...new Set([teamObj.image1, teamObj.image2, ...tsvImages].filter(Boolean))];
+                return imageSet.length > 1 ? imageSet : [imageSet[0], imageSet[0]];
+            }
+
+            const fileNames = imageManifest[folderName] || [];
+            if (fileNames.length === 0) {
+                return [];
+            }
+
+            const firstIndex = teamIndex % fileNames.length;
+            const secondIndex = fileNames.length > 1 ? (teamIndex + 3) % fileNames.length : firstIndex;
+            const thirdIndex = fileNames.length > 2 ? (teamIndex + 6) % fileNames.length : secondIndex;
+            return [...new Set([
+                `./images/${folderName}/${fileNames[firstIndex]}`,
+                `./images/${folderName}/${fileNames[secondIndex]}`,
+                `./images/${folderName}/${fileNames[thirdIndex]}`
+            ])];
+        }
+
+        async function buildPage() {
+            try {
+                const response = await fetch(resolveAssetPath('./images/data/data.tsv'));
+                const tsvData = await response.text();
+                const teamData = parseTSV(tsvData);
+                
+                const grid = document.getElementById('ambassadorGrid');
+                const flagGroupsContainer = document.getElementById('flagGroupsContainer');
+                const contentSections = document.getElementById('contentSections');
+                const selectMenu = document.getElementById('countrySelect');
+
+                let allTeamsFlattened = [];
+                Object.values(tournamentGroups).forEach(group => allTeamsFlattened.push(...group));
+                
+                allTeamsFlattened.forEach((teamName, index) => {
+                    const teamObj = findTeamData(teamData, teamName);
+                    const folderName = teamObj.folderName || teamName.replace(/\s+/g, '');
+                    const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index);
+                    const slot = document.createElement('div');
+                    slot.className = mediaHtml ? 'ambassador-slot' : 'ambassador-slot placeholder';
+                    slot.innerHTML = `${mediaHtml}<div class="info-tab"><div class="team">${teamName}</div></div>`;
+                    grid.appendChild(slot);
+                });
+
+                let globalGifIndex = 0;
+
+                Object.keys(tournamentGroups).sort().forEach((groupLetter) => {
+                    const teamsInGroup = tournamentGroups[groupLetter];
+                    
+                    const navGroupBlock = document.createElement('div');
+                    navGroupBlock.className = 'nav-group-card';
+                    navGroupBlock.innerHTML = `<h3>Group ${groupLetter}</h3>`;
+                    
+                    const flagGrid = document.createElement('div');
+                    flagGrid.className = 'group-table';
+                    
+                    const optGroup = document.createElement('optgroup');
+                    optGroup.label = `Group ${groupLetter}`;
+                    
+                    const groupContainer = document.createElement('div');
+                    groupContainer.className = 'group-container';
+                    groupContainer.id = `group-${groupLetter}`;
+                    
+                    const groupHeroGif = gifLinks[globalGifIndex % gifLinks.length];
+                    globalGifIndex++;
+                    const groupHeroMedia = getGroupHeroMedia(teamsInGroup, teamData, groupLetter, groupHeroGif);
+
+                    let htmlContent = `
+                        <div class="group-hero">
+                            ${groupHeroMedia}
+                            <div class="group-hero-overlay">
+                                <h2>Group ${groupLetter}</h2>
+                                <div class="group-country-list">${teamsInGroup.map(teamName => escapeHTML(teamName)).join(" • ")}</div>
+                            </div>
+                        </div>
+                        <div class="group-teams-wrapper">
+                    `;
+
+                    teamsInGroup.forEach((teamName, teamIndex) => {
+                        const cleanTeamName = teamName.replace(/\[.*?\]/, '').trim();
+                        const teamObj = findTeamData(teamData, cleanTeamName);
+                        const folderName = teamObj.folderName || cleanTeamName.replace(/\s+/g, '');
+                        const code = countryCodes[cleanTeamName] || "un";
+                        const anchorId = `section-${cleanTeamName.toLowerCase().replace(/\s+/g, '-')}`;
+                        
+                        const teamBgColor = teamColors[cleanTeamName] || "rgba(240, 240, 240, 0.5)"; 
+
+                        const teamImages = getTeamImages(teamObj, folderName, teamIndex);
+                        const [img1Path, img2Path] = teamImages;
+                        const inlineBreakImage = teamImages[2] || "";
+                        const theFan = renderSection("The Fan", teamObj.theFan);
+                        const theCountry = renderSection("Cheering for", teamObj.theCountry);
+                        const whyCheer = renderSection("Why they cheer", teamObj.whyCheer, {
+                            image: inlineBreakImage,
+                            imageAlt: `${cleanTeamName} fans in Toronto`,
+                            caption: `${cleanTeamName} fans bring the story back to Toronto's match-day streets.`,
+                            threshold: 7,
+                            after: 4
+                        });
+                        const howToCheer = renderSection("How to cheer", teamObj.howToCheer);
+                        const wheretoGather = renderSection("Where to gather", teamObj.wheretoGather);
+                        const mainImageHtml = renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "editorial-image");
+                        const secondaryImageHtml = renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "editorial-image-secondary");
+
+                        const flagItem = document.createElement('a');
+                        flagItem.className = 'flag-item';
+                        flagItem.href = `#${anchorId}`;
+                        flagItem.innerHTML = `<img class="flag-icon" src="https://flagcdn.com/w80/${code}.png" alt="${cleanTeamName}"><span class="flag-name">${cleanTeamName}</span>`;
+                        flagGrid.appendChild(flagItem);
+
+                        const option = document.createElement('option');
+                        option.value = anchorId;
+                        option.innerText = cleanTeamName;
+                        optGroup.appendChild(option);
+
+                        const floatClass = teamIndex % 2 === 0 ? 'float-right' : 'float-left';
+
+                        htmlContent += `
+                            <div class="team-block" id="${anchorId}" style="background-color: ${teamBgColor};">
+                                <div class="country-header">
+                                    <img class="big-flag" src="https://flagcdn.com/w160/${code}.png" alt="${cleanTeamName}">
+                                    <h2 class="country-name">${cleanTeamName}</h2>
+                                </div>
+
+                                ${mainImageHtml}
+                                <span class="caption">Figure 1: Local celebrations in Toronto.</span>
+
+                                <div class="editorial-text">
+                                    ${theFan}
+                                    ${theCountry}
+                                    ${whyCheer}
+
+                                    <figure class="secondary-figure ${floatClass}">
+                                        ${secondaryImageHtml}
+                                        <figcaption class="caption">Figure 2: Match day atmosphere in Toronto.</figcaption>
+                                    </figure>
+                                    
+                                    ${howToCheer}
+                                    ${wheretoGather}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    htmlContent += `</div>`; 
+                    groupContainer.innerHTML = htmlContent;
+                    contentSections.appendChild(groupContainer);
+                    navGroupBlock.appendChild(flagGrid);
+                    flagGroupsContainer.appendChild(navGroupBlock);
+                    selectMenu.appendChild(optGroup);
+                });
+
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        buildPage();
+
+        const stickyNav = document.getElementById('stickyNav');
+        const backToTopBtn = document.getElementById('backToTop');
+        const flagSection = document.getElementById('flagSection');
+
+        window.addEventListener('scroll', () => {
+            if (!flagSection) return;
+            const rect = flagSection.getBoundingClientRect();
+            if (rect.bottom < 0) { stickyNav.classList.add('visible'); backToTopBtn.classList.add('visible'); } 
+            else { stickyNav.classList.remove('visible'); backToTopBtn.classList.remove('visible'); }
+        });
+
+        document.getElementById('countrySelect').addEventListener('change', function() {
+            if (this.value) {
+                const target = document.getElementById(this.value);
+                if (target) { window.scrollTo({top: target.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth'}); this.value = ""; }
+            }
+        });
+    </script>
