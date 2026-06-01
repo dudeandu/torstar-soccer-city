@@ -19,7 +19,7 @@
         .ambassador-slot { position: relative; background: #000; overflow: hidden; }
         .ambassador-slot.placeholder { background: #2b2b2b; }
         .ambassador-slot.placeholder::before { content: ""; position: absolute; inset: 1px; background: linear-gradient(135deg, #333, #1e1e1e); }
-        .ambassador-slot img, .ambassador-slot video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.6); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ambassador-slot img, .ambassador-slot video { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .ambassador-slot:hover img, .ambassador-slot:hover video { filter: grayscale(0%) brightness(1); transform: scale(1.1); }
         .info-tab { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 80%); transform: translateY(100%); transition: transform 0.3s ease-out; pointer-events: none; }
         .ambassador-slot:hover .info-tab { transform: translateY(0); }
@@ -90,16 +90,18 @@
         .editorial-text strong { color: #111; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; display: block; margin-top: 30px; margin-bottom: 5px; }
         
         /* Main Image (Broke out to 900px wide) */
-        .editorial-image { width: 100%; max-width: 900px; height: auto; max-height: 500px; object-fit: cover; margin: 20px 0 10px 0; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .editorial-image { width: 100%; max-width: 900px; height: auto; object-fit: contain; margin: 20px 0 10px 0; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: #d8d8d8; }
         .editorial-image-placeholder { width: 100%; max-width: 900px; height: clamp(260px, 45vw, 500px); margin: 20px 0 10px 0; border-radius: 4px; background: #d8d8d8; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
-        .caption { font-size: 0.75rem; color: #888; font-family: 'Inter', sans-serif; display: block; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
+        .caption { display: none; font-size: 0.75rem; color: #888; font-family: 'Inter', sans-serif; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
 
         figure.secondary-figure { margin: 20px 0; padding: 0; }
-        figure.secondary-figure img.editorial-image-secondary { width: 100%; height: auto; max-height: 400px; object-fit: cover; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        figure.secondary-figure.full-width { clear: both; width: min(900px, calc(100vw - 40px)); max-width: none; margin: 40px 0 40px 50%; transform: translateX(-50%); }
+        figure.secondary-figure img.editorial-image-secondary { width: 100%; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
+        figure.secondary-figure.full-width img.editorial-image-secondary { display: block; width: auto; max-width: 100%; max-height: min(760px, 82vh); object-fit: contain; margin-left: auto; margin-right: auto; }
         figure.secondary-figure .editorial-image-placeholder { height: 260px; margin: 0 0 10px 0; }
         figure.secondary-figure .caption { margin-bottom: 0; max-width: 100%; }
         figure.inline-break-figure { margin: 35px 0; padding: 0; clear: both; }
-        figure.inline-break-figure img { width: 100%; height: auto; max-height: 430px; object-fit: cover; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        figure.inline-break-figure img { width: 100%; height: clamp(240px, 40vw, 430px); object-fit: cover; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
         figure.inline-break-figure .caption { margin-bottom: 0; max-width: 100%; }
 
         .burger-icon { display: none; }
@@ -116,19 +118,9 @@
             
             .sticky-nav { padding: 15px 20px; justify-content: flex-end; }
             
-            /* Mobile Burger adjustments */
-            .sticky-select-wrapper { width: 44px; height: 44px; border: none; background: transparent; padding: 0; }
-            .sticky-select-wrapper::after { display: none; }
-            .burger-icon { 
-                display: flex; align-items: center; justify-content: center; 
-                width: 100%; height: 100%; 
-                background-color: var(--accent); /* Solid colored background */
-                border-radius: 50%; /* Circular button */
-                color: white; 
-                pointer-events: none; 
-                box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Soft shadow */
-            }
-            select#countrySelect { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; padding: 0; margin: 0; min-width: auto; z-index: 2; }
+            .sticky-select-wrapper { width: auto; height: auto; border: none; background: transparent; padding: 0; }
+            .burger-icon { display: none; }
+            select#countrySelect { position: static; opacity: 1; width: auto; min-width: 128px; padding: 10px 36px 10px 16px; margin: 0; font-size: 0.72rem; }
         }
 
         @media (max-width: 425px) {
@@ -177,7 +169,7 @@
         <div class="sticky-select-wrapper">
             <div class="burger-icon"><svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div>
             <select id="countrySelect">
-                <option value="" selected disabled>JUMP TO...</option>
+                <option id="countrySelectPlaceholder" value="" selected disabled>JUMP TO A COUNTRY</option>
             </select>
         </div>
     </nav>
@@ -210,7 +202,7 @@
 
     <div id="contentSections"></div>
 
-    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Back to Top</button>
+    <button class="back-to-top" id="backToTop" onclick="document.getElementById('flagSection')?.scrollIntoView({behavior: 'smooth'})">↑ Back to Top</button>
 
     <script>
         // EXPLICIT HARDCODED TOURNAMENT GROUPS A-L
@@ -438,12 +430,16 @@
             `;
         }
 
-        function renderEditorialMedia(imagePath, altText, className) {
+        function dimensionAttrs(width, height) {
+            return width && height ? ` width="${escapeHTML(width)}" height="${escapeHTML(height)}"` : "";
+        }
+
+        function renderEditorialMedia(imagePath, altText, className, dimensions = {}) {
             if (!imagePath) {
                 return `<div class="editorial-image-placeholder" aria-label="${escapeHTML(altText)}"></div>`;
             }
 
-            return `<img class="${className}" src="${escapeHTML(resolveAssetPath(imagePath))}" alt="${escapeHTML(altText)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'editorial-image-placeholder' }))">`;
+            return `<img class="${className}" src="${escapeHTML(resolveAssetPath(imagePath))}" alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'editorial-image-placeholder' }))">`;
         }
 
         function renderGridMedia(teamObj, teamName, folderName, teamIndex) {
@@ -480,6 +476,14 @@
         }
 
         function getTeamImages(teamObj, folderName, teamIndex) {
+            if (!teamObj.image1 && teamObj.image2) {
+                const supportingImages = (teamObj.images || "")
+                    .split("|")
+                    .map(imagePath => imagePath.trim())
+                    .filter(imagePath => imagePath && imagePath !== teamObj.image2);
+                return ["", teamObj.image2, ...supportingImages];
+            }
+
             const tsvImages = (teamObj.images || "")
                 .split("|")
                 .map(imagePath => imagePath.trim())
@@ -487,7 +491,7 @@
 
             if (tsvImages.length || teamObj.image1) {
                 const imageSet = [...new Set([teamObj.image1, teamObj.image2, ...tsvImages].filter(Boolean))];
-                return imageSet.length > 1 ? imageSet : [imageSet[0], imageSet[0]];
+                return imageSet;
             }
 
             const fileNames = imageManifest[folderName] || [];
@@ -580,14 +584,26 @@
                         const whyCheer = renderSection("Why they cheer", teamObj.whyCheer, {
                             image: inlineBreakImage,
                             imageAlt: `${cleanTeamName} fans in Toronto`,
-                            caption: `${cleanTeamName} fans bring the story back to Toronto's match-day streets.`,
+                            caption: "",
                             threshold: 7,
                             after: 4
                         });
                         const howToCheer = renderSection("How to cheer", teamObj.howToCheer);
                         const wheretoGather = renderSection("Where to gather", teamObj.wheretoGather);
-                        const mainImageHtml = renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "editorial-image");
-                        const secondaryImageHtml = renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "editorial-image-secondary");
+                        const image1Dimensions = { width: teamObj.image1Width, height: teamObj.image1Height };
+                        const image2Dimensions = { width: teamObj.image2Width, height: teamObj.image2Height };
+                        const mainImageHtml = img1Path ? `
+                                ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "editorial-image", image1Dimensions)}
+                                <span class="caption"></span>
+                        ` : "";
+                        const secondaryFigureClass = img1Path ? (teamIndex % 2 === 0 ? 'float-right' : 'float-left') : 'full-width';
+                        const secondaryCaption = "";
+                        const secondaryFigureHtml = img2Path ? `
+                                    <figure class="secondary-figure ${secondaryFigureClass}">
+                                        ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "editorial-image-secondary", image2Dimensions)}
+                                        <figcaption class="caption">${secondaryCaption}</figcaption>
+                                    </figure>
+                        ` : "";
 
                         const flagItem = document.createElement('a');
                         flagItem.className = 'flag-item';
@@ -600,8 +616,6 @@
                         option.innerText = cleanTeamName;
                         optGroup.appendChild(option);
 
-                        const floatClass = teamIndex % 2 === 0 ? 'float-right' : 'float-left';
-
                         htmlContent += `
                             <div class="team-block" id="${anchorId}" style="background-color: ${teamBgColor};">
                                 <div class="country-header">
@@ -610,17 +624,12 @@
                                 </div>
 
                                 ${mainImageHtml}
-                                <span class="caption">Figure 1: Local celebrations in Toronto.</span>
 
                                 <div class="editorial-text">
                                     ${theFan}
                                     ${theCountry}
                                     ${whyCheer}
-
-                                    <figure class="secondary-figure ${floatClass}">
-                                        ${secondaryImageHtml}
-                                        <figcaption class="caption">Figure 2: Match day atmosphere in Toronto.</figcaption>
-                                    </figure>
+                                    ${secondaryFigureHtml}
                                     
                                     ${howToCheer}
                                     ${wheretoGather}
@@ -647,6 +656,16 @@
         const stickyNav = document.getElementById('stickyNav');
         const backToTopBtn = document.getElementById('backToTop');
         const flagSection = document.getElementById('flagSection');
+        const countrySelect = document.getElementById('countrySelect');
+        const countrySelectPlaceholder = document.getElementById('countrySelectPlaceholder');
+
+        function updateCountrySelectLabel() {
+            if (!countrySelectPlaceholder) return;
+            countrySelectPlaceholder.textContent = window.matchMedia('(max-width: 900px)').matches ? 'JUMP TO...' : 'JUMP TO A COUNTRY';
+        }
+
+        updateCountrySelectLabel();
+        window.addEventListener('resize', updateCountrySelectLabel);
 
         window.addEventListener('scroll', () => {
             if (!flagSection) return;
@@ -655,10 +674,10 @@
             else { stickyNav.classList.remove('visible'); backToTopBtn.classList.remove('visible'); }
         });
 
-        document.getElementById('countrySelect').addEventListener('change', function() {
+        countrySelect.addEventListener('change', function() {
             if (this.value) {
                 const target = document.getElementById(this.value);
-                if (target) { window.scrollTo({top: target.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth'}); this.value = ""; }
+                if (target) { target.scrollIntoView({behavior: 'smooth', block: 'start'}); this.value = ""; }
             }
         });
     </script>

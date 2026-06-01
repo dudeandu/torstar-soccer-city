@@ -29,6 +29,10 @@ const columns = [
   "videos",
   "image1",
   "image2",
+  "image1Width",
+  "image1Height",
+  "image2Width",
+  "image2Height",
   "images",
   "text",
 ];
@@ -39,6 +43,12 @@ const fileNameAliases = {
   "Curaao": "Curaçao",
   "Czech-Republic": "Czechia",
 };
+
+const forceSecondaryImageTeams = new Set([
+  "dr-congo",
+  "ghana",
+  "uzbekistan",
+]);
 
 function normalizeKey(value) {
   return String(value)
@@ -211,6 +221,118 @@ function isVideoFile(fileName) {
   return /\.(mov|mp4|m4v|webm)$/i.test(fileName);
 }
 
+function getImageDimensions(filePath) {
+  const buffer = fs.readFileSync(filePath);
+
+  if (buffer.length >= 24 && buffer.toString("ascii", 1, 4) === "PNG") {
+    return {
+      width: buffer.readUInt32BE(16),
+      height: buffer.readUInt32BE(20),
+    };
+  }
+
+  if (buffer.length >= 10 && buffer.toString("ascii", 0, 3) === "GIF") {
+    return {
+      width: buffer.readUInt16LE(6),
+      height: buffer.readUInt16LE(8),
+    };
+  }
+
+  if (buffer.length >= 12 && buffer.toString("ascii", 0, 4) === "RIFF" && buffer.toString("ascii", 8, 12) === "WEBP") {
+    const type = buffer.toString("ascii", 12, 16);
+    if (type === "VP8X" && buffer.length >= 30) {
+      return {
+        width: 1 + buffer.readUIntLE(24, 3),
+        height: 1 + buffer.readUIntLE(27, 3),
+      };
+    }
+    if (type === "VP8 " && buffer.length >= 30) {
+      return {
+        width: buffer.readUInt16LE(26) & 0x3fff,
+        height: buffer.readUInt16LE(28) & 0x3fff,
+      };
+    }
+    if (type === "VP8L" && buffer.length >= 25) {
+      const bits = buffer.readUInt32LE(21);
+      return {
+        width: 1 + (bits & 0x3fff),
+        height: 1 + ((bits >> 14) & 0x3fff),
+      };
+    }
+  }
+
+  if (buffer.length >= 4 && buffer[0] === 0xff && buffer[1] === 0xd8) {
+    let offset = 2;
+    while (offset < buffer.length) {
+      if (buffer[offset] !== 0xff) {
+        offset++;
+        continue;
+      }
+
+      const marker = buffer[offset + 1];
+      const length = buffer.readUInt16BE(offset + 2);
+      const isSofMarker = marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker);
+
+      if (isSofMarker) {
+        return {
+          width: buffer.readUInt16BE(offset + 7),
+          height: buffer.readUInt16BE(offset + 5),
+        };
+      }
+
+      offset += 2 + length;
+    }
+  }
+
+  return null;
+}
+
+function isHorizontalImage(browserPath) {
+  try {
+    const dimensions = getBrowserImageDimensions(browserPath);
+    if (!dimensions) return true;
+    return dimensions.width > dimensions.height;
+  } catch (error) {
+    console.warn(`Could not read image dimensions for ${browserPath}: ${error.message}`);
+    return true;
+  }
+}
+
+function getBrowserImageDimensions(browserPath) {
+  if (!browserPath) return null;
+  const filePath = path.join(root, browserPath.replace(/^\.\//, ""));
+  return getImageDimensions(filePath);
+}
+
+function getImageSlots(row, images) {
+  const forceSecondary = forceSecondaryImageTeams.has(normalizeKey(row.team)) || forceSecondaryImageTeams.has(normalizeKey(row.folderName));
+
+  if (images.length && (forceSecondary || (images.length === 1 && !isHorizontalImage(images[0])))) {
+    const image2Dimensions = getBrowserImageDimensions(images[0]) || {};
+    return {
+      image1: "",
+      image2: images[0],
+      image1Width: "",
+      image1Height: "",
+      image2Width: image2Dimensions.width || "",
+      image2Height: image2Dimensions.height || "",
+      images: images.join("|"),
+    };
+  }
+
+  const image1Dimensions = getBrowserImageDimensions(images[0]) || {};
+  const image2Dimensions = getBrowserImageDimensions(images[1]) || {};
+  return {
+    image1: images[0] || "",
+    image2: images[1] || "",
+    image1Width: image1Dimensions.width || "",
+    image1Height: image1Dimensions.height || "",
+    image2Width: image2Dimensions.width || "",
+    image2Height: image2Dimensions.height || "",
+    images: images.join("|"),
+  };
+}
+
 function naturalSort(a, b) {
   return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
 }
@@ -296,15 +418,14 @@ const updatedRows = rows.map(row => {
   const textFile = findTextFile(row, textFilesByKey);
   const images = getCountryImages(row, imageFoldersByKey);
   const videos = getCountryVideos(row, imageFoldersByKey);
+  const imageSlots = getImageSlots(row, images);
   if (!textFile) {
     missing.push(row.team);
     return {
       ...row,
       video1: videos[0] || "",
       videos: videos.join("|"),
-      image1: images[0] || "",
-      image2: images[1] || "",
-      images: images.join("|"),
+      ...imageSlots,
     };
   }
 
@@ -318,9 +439,7 @@ const updatedRows = rows.map(row => {
     wheretoGather: parsed.wheretoGather,
     video1: videos[0] || "",
     videos: videos.join("|"),
-    image1: images[0] || "",
-    image2: images[1] || "",
-    images: images.join("|"),
+    ...imageSlots,
     text: parsed.text,
   };
 });
