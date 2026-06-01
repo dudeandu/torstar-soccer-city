@@ -61,6 +61,7 @@ const urlPrefixer = require('gulp-url-prefixer');
 const htmlmin = require('gulp-htmlmin');
 const replace = require('gulp-replace');
 const mergeStream = require('merge-stream');
+const prerenderLivePage = require('./app/scripts/prerender-live-page');
 
 const responsiveWidths = [2480, 1920, 1280, 1024, 860, 540, 320];
 
@@ -450,6 +451,11 @@ function prefixJSLive() {
         .pipe(gulp.dest('dist/js/'))
 }
 
+function prerenderLive(done) {
+    prerenderLivePage();
+    done();
+}
+
 //Add url prefix for dev
 function prefixHTMLDev() {
     return gulp.src('dist/index.html')
@@ -558,6 +564,7 @@ function setLive(done) {
 const js = gulp.series(scripts, copyModulesScripts, addSrcset);
 const jsLive = gulp.series(scriptsLive, copyModulesScripts, addSrcset);
 const images = gulp.parallel(moveImages, resizeImages, moveVideos, moveData);
+const imagesLive = gulp.parallel(moveImages, moveVideos, moveData);
 const rebuild = gulp.series(fullClean, gulp.parallel(css, images, js), localURI);
 const build = gulp.series(clean, gulp.parallel(css, images, js), localURI);
 const quick = gulp.series(clean, gulp.parallel(css, js), localURI);
@@ -565,12 +572,12 @@ const buildDirect = gulp.series(clean, html, gulp.parallel(css, images, copyScri
 const watch = gulp.series(quick, gulp.parallel(watchFiles, browserSync));
 // const buildLive = gulp.series(clean, gulp.parallel(css, images, js), gulp.series(prefixHTMLLive,prefixCSSLive,prefixJSLive));
 const compile = gulp.parallel(css, images, js);
-const compileLive = gulp.parallel(css, images, jsLive);
+const compileLive = gulp.parallel(css, imagesLive, jsLive);
 
 
 // https://stackoverflow.com/questions/70869994/using-gulp-series-to-run-two-tasks-sequentially-isnt-working-as-expected
 const addLivePrefix = gulp.series(prefixCSSLive, prefixJSLive, prefixHTMLLive);
-const buildLive = gulp.series(setLive, clean, compileLive, addLivePrefix, minifyHTML);
+const buildLive = gulp.series(setLive, clean, compileLive, prerenderLive, addLivePrefix, minifyHTML);
 
 const addDevPrefix = gulp.series(prefixCSSDev, prefixJSDev, prefixHTMLDev);
 const buildDev = gulp.series(clean, compile, addDevPrefix, minifyHTML);
