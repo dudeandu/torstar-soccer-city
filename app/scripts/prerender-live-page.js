@@ -142,6 +142,15 @@ function getTeamImages(teamObj, imageManifest, folderName, teamIndex) {
   ])];
 }
 
+function getGridThumbnailPath(imagePath) {
+  if (!imagePath) return "";
+
+  return imagePath.replace(/\.(jpe?g|png)$/i, (_match, extension) => {
+    const outputExtension = /^png$/i.test(extension) ? "png" : "jpg";
+    return `-320w.${outputExtension}`;
+  });
+}
+
 function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageManifest) {
   const videoPath = teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean);
   if (videoPath) {
@@ -151,7 +160,7 @@ function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageManifest
   const fallbackImages = getTeamImages(teamObj, imageManifest, folderName, teamIndex);
   const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages[0];
   if (imagePath) {
-    return `<img src="${escapeHTML(imagePath)}" alt="${escapeHTML(teamName)} fan media" loading="lazy">`;
+    return `<img src="${escapeHTML(getGridThumbnailPath(imagePath))}" alt="${escapeHTML(teamName)} fan media" loading="lazy">`;
   }
 
   return "";
@@ -178,12 +187,13 @@ function buildRenderedSections(constants, teamData) {
     const folderName = teamObj.folderName || teamName.replace(/\s+/g, "");
     const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index, imageManifest);
     const className = mediaHtml ? "ambassador-slot" : "ambassador-slot placeholder";
-    return `<div class="${className}">${mediaHtml}<div class="info-tab"><div class="team">${escapeHTML(teamName)}</div></div></div>`;
+    const waveOrder = index % 8 + Math.floor(index / 8);
+    return `<div class="${className}" style="--slot-wave-order:${waveOrder}">${mediaHtml}<div class="info-tab"><div class="team">${escapeHTML(teamName)}</div></div></div>`;
   }).join("\n");
 
   let globalGifIndex = 0;
   let navGroups = "";
-  let selectOptions = "";
+  let dropdownGroups = "";
   let contentSections = "";
 
   Object.keys(tournamentGroups).sort().forEach(groupLetter => {
@@ -193,7 +203,7 @@ function buildRenderedSections(constants, teamData) {
     const groupHeroMedia = getGroupHeroMedia(teamsInGroup, teamData, groupLetter, groupHeroGif, dataAliases);
 
     let flagItems = "";
-    let optGroupOptions = "";
+    let dropdownItems = "";
     let teamBlocks = "";
 
     teamsInGroup.forEach((teamName, teamIndex) => {
@@ -220,9 +230,11 @@ function buildRenderedSections(constants, teamData) {
                                         <figcaption class="caption"></figcaption>
                                     </figure>
                         ` : "";
+      const secondaryAfterCountry = !img1Path ? secondaryFigureHtml : "";
+      const secondaryAfterWhy = img1Path ? secondaryFigureHtml : "";
 
       flagItems += `<a class="flag-item" href="#${anchorId}"><img class="flag-icon" src="https://flagcdn.com/w80/${code}.png" alt="${escapeHTML(cleanTeamName)}"><span class="flag-name">${escapeHTML(cleanTeamName)}</span></a>`;
-      optGroupOptions += `<option value="${anchorId}">${escapeHTML(cleanTeamName)}</option>`;
+      dropdownItems += `<button class="country-dropdown-item" type="button" data-target="${anchorId}" role="menuitem">${escapeHTML(cleanTeamName)}</button>`;
       teamBlocks += `
                             <div class="team-block" id="${anchorId}" style="background-color: ${teamBgColor};">
                                 <div class="country-header">
@@ -235,6 +247,7 @@ function buildRenderedSections(constants, teamData) {
                                 <div class="editorial-text">
                                     ${renderSection("The Fan", teamObj.theFan)}
                                     ${renderSection("Cheering for", teamObj.theCountry)}
+                                    ${secondaryAfterCountry}
                                     ${renderSection("Why they cheer", teamObj.whyCheer, {
                                       image: inlineBreakImage,
                                       imageAlt: `${cleanTeamName} fans in Toronto`,
@@ -242,7 +255,7 @@ function buildRenderedSections(constants, teamData) {
                                       threshold: 7,
                                       after: 4,
                                     })}
-                                    ${secondaryFigureHtml}
+                                    ${secondaryAfterWhy}
 
                                     ${renderSection("How to cheer", teamObj.howToCheer)}
                                     ${renderSection("Where to gather", teamObj.wheretoGather)}
@@ -252,7 +265,7 @@ function buildRenderedSections(constants, teamData) {
     });
 
     navGroups += `<div class="nav-group-card"><h3>Group ${groupLetter}</h3><div class="group-table">${flagItems}</div></div>`;
-    selectOptions += `<optgroup label="Group ${groupLetter}">${optGroupOptions}</optgroup>`;
+    dropdownGroups += `<div class="country-dropdown-group"><button class="country-dropdown-group-title" type="button" data-target="group-${groupLetter}" role="menuitem">Group ${groupLetter}</button>${dropdownItems}</div>`;
     contentSections += `
                     <div class="group-container" id="group-${groupLetter}">
                         <div class="group-hero">
@@ -268,7 +281,7 @@ function buildRenderedSections(constants, teamData) {
                     </div>`;
   });
 
-  return { gridSlots, navGroups, selectOptions, contentSections };
+  return { gridSlots, navGroups, dropdownGroups, contentSections };
 }
 
 function stickyScript() {
@@ -276,29 +289,76 @@ function stickyScript() {
         const stickyNav = document.getElementById('stickyNav');
         const backToTopBtn = document.getElementById('backToTop');
         const flagSection = document.getElementById('flagSection');
-        const countrySelect = document.getElementById('countrySelect');
-        const countrySelectPlaceholder = document.getElementById('countrySelectPlaceholder');
+        const footer = document.getElementById('SA_footer');
+        const countryDropdownToggle = document.getElementById('countryDropdownToggle');
+        const countryDropdownMenu = document.getElementById('countryDropdownMenu');
+
+        function updateHostNavbarOffset() {
+            document.documentElement.classList.toggle('has-site-navbar-container', Boolean(document.querySelector('#site-navbar-container')));
+        }
 
         function updateCountrySelectLabel() {
-            if (!countrySelectPlaceholder) return;
-            countrySelectPlaceholder.textContent = window.matchMedia('(max-width: 900px)').matches ? 'JUMP TO...' : 'JUMP TO A COUNTRY';
+            if (!countryDropdownToggle) return;
+            countryDropdownToggle.textContent = window.matchMedia('(max-width: 900px)').matches ? 'JUMP TO...' : 'JUMP TO A COUNTRY';
+        }
+
+        updateHostNavbarOffset();
+        if (document.body) {
+            new MutationObserver(updateHostNavbarOffset).observe(document.body, { childList: true, subtree: true });
         }
 
         updateCountrySelectLabel();
         window.addEventListener('resize', updateCountrySelectLabel);
 
-        window.addEventListener('scroll', () => {
+        function hideStickyControls() {
+            stickyNav.classList.remove('visible');
+            backToTopBtn.classList.remove('visible');
+            countryDropdownMenu.classList.remove('open');
+            countryDropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        function updateStickyControls() {
             if (!flagSection) return;
-            const rect = flagSection.getBoundingClientRect();
-            if (rect.bottom < 0) { stickyNav.classList.add('visible'); backToTopBtn.classList.add('visible'); }
-            else { stickyNav.classList.remove('visible'); backToTopBtn.classList.remove('visible'); }
+            const flagRect = flagSection.getBoundingClientRect();
+            const footerRect = footer ? footer.getBoundingClientRect() : null;
+            const footerInView = footerRect ? footerRect.top <= window.innerHeight : false;
+
+            if (flagRect.bottom < 0 && !footerInView) {
+                stickyNav.classList.add('visible');
+                backToTopBtn.classList.add('visible');
+            } else {
+                hideStickyControls();
+            }
+        }
+
+        window.addEventListener('scroll', updateStickyControls);
+        window.addEventListener('resize', updateStickyControls);
+        updateStickyControls();
+
+        function closeCountryDropdown() {
+            countryDropdownMenu.classList.remove('open');
+            countryDropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        countryDropdownToggle.addEventListener('click', function() {
+            const isOpen = countryDropdownMenu.classList.toggle('open');
+            countryDropdownToggle.setAttribute('aria-expanded', String(isOpen));
         });
 
-        countrySelect.addEventListener('change', function() {
-            if (this.value) {
-                const target = document.getElementById(this.value);
-                if (target) { target.scrollIntoView({behavior: 'smooth', block: 'start'}); this.value = ""; }
+        countryDropdownMenu.addEventListener('click', function(event) {
+            const item = event.target.closest('[data-target]');
+            if (item) {
+                location.hash = item.dataset.target;
+                closeCountryDropdown();
             }
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!countryDropdownMenu.contains(event.target) && !countryDropdownToggle.contains(event.target)) closeCountryDropdown();
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') closeCountryDropdown();
         });
     </script>`;
 }
@@ -336,8 +396,8 @@ function prerenderLivePage({
     `$1\n${rendered.gridSlots}$2</main>`
   );
   html = html.replace(
-    /<select id="countrySelect">[\s\S]*?<\/select>/,
-    `<select id="countrySelect">\n                <option id="countrySelectPlaceholder" value="" selected disabled>JUMP TO A COUNTRY</option>\n                ${rendered.selectOptions}\n            </select>`
+    /<div class="country-dropdown-menu" id="countryDropdownMenu" role="menu"><\/div>/,
+    `<div class="country-dropdown-menu" id="countryDropdownMenu" role="menu">${rendered.dropdownGroups}</div>`
   );
   html = html.replace(
     /<div class="nav-groups-container" id="flagGroupsContainer"><\/div>/,

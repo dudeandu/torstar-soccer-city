@@ -41,6 +41,7 @@ const browsersync = require("browser-sync").create();
 const cssnano = require("cssnano");
 const del = require("del");
 const gulp = require("gulp");
+const fs = require("fs");
 const {
     transform
 } = require('gulp-html-transform');
@@ -241,6 +242,158 @@ function moveData() {
         .pipe(gulp.dest("dist/images/data"));
 }
 
+function parseTSVText(tsvText) {
+    const rows = [];
+    let row = [];
+    let value = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < tsvText.length; i++) {
+        const char = tsvText[i];
+        const nextChar = tsvText[i + 1];
+
+        if (char === '"') {
+            if (inQuotes && nextChar === '"') {
+                value += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === "\t" && !inQuotes) {
+            row.push(value);
+            value = "";
+        } else if ((char === "\n" || char === "\r") && !inQuotes) {
+            if (char === "\r" && nextChar === "\n") i++;
+            row.push(value);
+            if (row.some((cell) => cell.trim() !== "")) rows.push(row);
+            row = [];
+            value = "";
+        } else {
+            value += char;
+        }
+    }
+
+    if (value || row.length) {
+        row.push(value);
+        if (row.some((cell) => cell.trim() !== "")) rows.push(row);
+    }
+
+    const headers = rows.shift().map((header) => header.trim());
+    return rows.map((values) => {
+        const rowObj = {};
+        headers.forEach((header, index) => {
+            rowObj[header] = values[index] ? values[index].trim() : "";
+        });
+        return rowObj;
+    });
+}
+
+function toProjectAssetUrl(assetPath) {
+    const value = String(assetPath || "").trim();
+    if (!value) return "";
+    if (/^https?:\/\//i.test(value)) return value;
+
+    const relativePath = value
+        .replace(/^\.?\//, "")
+        .replace(/^images\//, "");
+
+    return `https://projects-images.thestar.com/${projectPath}/images/${relativePath}`;
+}
+
+function uniqueList(values) {
+    return [...new Set(values.map((value) => String(value || "").trim()).filter(Boolean))];
+}
+
+function normalizeTeamKey(value) {
+    return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9]+/gi, "-")
+        .replace(/^-|-$/g, "")
+        .toLowerCase();
+}
+
+function extractBodyConst(source, name) {
+    const match = source.match(new RegExp(`const ${name} = ([\\s\\S]*?);\\n\\s*(?:const|function|async|\\/\\/)`));
+    if (!match) throw new Error(`Could not find const ${name}`);
+    return Function(`return (${match[1]});`)();
+}
+
+function renderAllTeamsEntry(row, groupLetter) {
+    const images = uniqueList([
+        row.image1,
+        row.image2,
+        ...String(row.images || "").split("|"),
+    ]).map(toProjectAssetUrl);
+    const videos = uniqueList([
+        row.video1,
+        ...String(row.videos || "").split("|"),
+    ]).map(toProjectAssetUrl);
+    const mediaSections = [];
+
+    if (images.length) {
+        mediaSections.push(`Images:\n${images.map((url) => `- ${url}`).join("\n")}`);
+    }
+
+    if (videos.length) {
+        mediaSections.push(`Videos:\n${videos.map((url) => `- ${url}`).join("\n")}`);
+    }
+
+    return [
+        row.team || "Untitled team",
+        groupLetter ? `Group: ${groupLetter}` : row.group ? `Group: ${row.group}` : "",
+        ...mediaSections,
+        "Text:",
+        row.text || "",
+    ].filter(Boolean).join("\n\n");
+}
+
+function buildAllTeamsText(done) {
+    const dataPath = path.join(__dirname, "app", "data", "data.tsv");
+    const bodyPath = path.join(__dirname, "app", "body.html");
+    const allTeamsTextPath = path.join(__dirname, "app", "data", "countryText", "All teams.txt");
+    const distRootAllTeamsTextPath = path.join(__dirname, "dist", "All teams.txt");
+    const distAllTeamsTextPath = path.join(__dirname, "dist", "images", "data", "All teams.txt");
+
+    if (!fs.existsSync(dataPath)) {
+        done(new Error(`Missing data file: ${dataPath}`));
+        return;
+    }
+
+    const rows = parseTSVText(fs.readFileSync(dataPath, "utf8"));
+    const bodySource = fs.readFileSync(bodyPath, "utf8");
+    const tournamentGroups = extractBodyConst(bodySource, "tournamentGroups");
+    const rowsByTeam = new Map(rows.map((row) => [normalizeTeamKey(row.team), row]));
+    const usedKeys = new Set();
+    const groupSections = Object.keys(tournamentGroups).sort().map((groupLetter) => {
+        const entries = tournamentGroups[groupLetter].map((teamName) => {
+            const key = normalizeTeamKey(teamName);
+            const row = rowsByTeam.get(key);
+            if (!row) return `${teamName}\n\nGroup: ${groupLetter}\n\nText:\n`;
+            usedKeys.add(key);
+            return renderAllTeamsEntry(row, groupLetter);
+        });
+
+        return [`Group ${groupLetter}`, ...entries].join("\n\n========================================\n\n");
+    });
+    const ungroupedEntries = rows
+        .filter((row) => !usedKeys.has(normalizeTeamKey(row.team)))
+        .map((row) => renderAllTeamsEntry(row, row.group));
+    const output = [
+        ...groupSections,
+        ungroupedEntries.length ? ["Ungrouped", ...ungroupedEntries].join("\n\n========================================\n\n") : "",
+    ].filter(Boolean).join("\n\n----------------------------------------\n\n");
+
+    fs.mkdirSync(path.dirname(allTeamsTextPath), { recursive: true });
+    fs.mkdirSync(path.dirname(distRootAllTeamsTextPath), { recursive: true });
+    fs.mkdirSync(path.dirname(distAllTeamsTextPath), { recursive: true });
+    fs.writeFileSync(allTeamsTextPath, `${output}\n`);
+    fs.writeFileSync(distRootAllTeamsTextPath, `${output}\n`);
+    fs.writeFileSync(distAllTeamsTextPath, `${output}\n`);
+    done();
+}
+
 // Resizes and optimizes jpg and png images
 function resizeImages() {
     //npmjs.com/package/gulp-srcset/v/1.0.1?activeTab=readme
@@ -295,6 +448,50 @@ function resizeImages() {
         .pipe(gulp.dest("dist/images"));
 
     return mergeStream(jpgWebp, pngWebp);
+}
+
+// Creates just the tiny images used by the opening grid in the live build.
+function resizeGridImages() {
+    const jpgThumbs = gulp.src("app/images/**/*.{jpg,JPG,jpeg,JPEG}")
+        .pipe(srcset([{
+            width: [320],
+            format: ['jpg']
+        }], {
+            skipOptimization: true,
+            postfix: function postfix(width) {
+                return `-${width}w`;
+            },
+            processing: {
+                jpg: {
+                    quality: 60
+                }
+            }
+        }))
+        .pipe(gulp.dest("dist/images"));
+
+    const pngThumbs = gulp.src("app/images/**/*.{png,PNG}")
+        .pipe(srcset([{
+            width: [320],
+            format: ['png']
+        }], {
+            skipOptimization: true,
+            postfix: function postfix(width) {
+                return `-${width}w`;
+            },
+            processing: {
+                png: {
+                    quality: 20
+                }
+            },
+            optimization: {
+                png: imageminPngquant({
+                    quality: [0.45, 0.65]
+                })
+            }
+        }))
+        .pipe(gulp.dest("dist/images"));
+
+    return mergeStream(jpgThumbs, pngThumbs);
 }
 
 
@@ -564,7 +761,8 @@ function setLive(done) {
 const js = gulp.series(scripts, copyModulesScripts, addSrcset);
 const jsLive = gulp.series(scriptsLive, copyModulesScripts, addSrcset);
 const images = gulp.parallel(moveImages, resizeImages, moveVideos, moveData);
-const imagesLive = gulp.parallel(moveImages, moveVideos, moveData);
+const dataLive = gulp.parallel(moveData, buildAllTeamsText);
+const imagesLive = gulp.parallel(moveImages, resizeGridImages, moveVideos, dataLive);
 const rebuild = gulp.series(fullClean, gulp.parallel(css, images, js), localURI);
 const build = gulp.series(clean, gulp.parallel(css, images, js), localURI);
 const quick = gulp.series(clean, gulp.parallel(css, js), localURI);
@@ -615,3 +813,4 @@ exports.buildLive = buildLive;
 exports.default = build;
 
 exports.prefixLive = prefixLive;
+exports.buildAllTeamsText = buildAllTeamsText;

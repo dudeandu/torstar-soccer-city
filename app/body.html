@@ -9,14 +9,15 @@
             --nav-bg: rgba(10, 10, 10, 0.95);
         }
 
-        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
         /* --- 1. HERO GRID --- */
         .grid-container { display: grid; width: 100vw; height: 100vh; gap: 1px; background: #111; grid-auto-flow: dense; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(7, 1fr); }
+        html.has-site-navbar-container .grid-container { margin-top: 56px; height: calc(100vh - 56px); }
         .headline-center { display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--bg); z-index: 10; text-align: center; border: 1px solid #1a1a1a; padding: 20px; grid-column: 3 / 7; grid-row: 3 / 5; }
         .headline-center h1 { font-size: clamp(1.5rem, 5vw, 4rem); margin: 0; font-weight: 900; text-transform: uppercase; line-height: 1; letter-spacing: -1px; }
         .tagline { color: var(--accent); font-size: 0.8rem; font-weight: bold; letter-spacing: 5px; margin-bottom: 12px; text-transform: uppercase; }
-        .ambassador-slot { position: relative; background: #000; overflow: hidden; }
+        .ambassador-slot { position: relative; background: #000; overflow: hidden; opacity: 0; transform: scale(0.78); transform-origin: center; animation: gridSlotWaveIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards; animation-delay: calc(var(--slot-wave-order, 0) * 80ms); }
         .ambassador-slot.placeholder { background: #2b2b2b; }
         .ambassador-slot.placeholder::before { content: ""; position: absolute; inset: 1px; background: linear-gradient(135deg, #333, #1e1e1e); }
         .ambassador-slot img, .ambassador-slot video { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -25,6 +26,16 @@
         .ambassador-slot:hover .info-tab { transform: translateY(0); }
         .info-tab .name { font-weight: 800; font-size: 0.6rem; text-transform: uppercase; color: #fff; }
         .info-tab .team { font-size: 0.5rem; color: #fff; font-weight: bold; text-transform: uppercase; }
+
+        @keyframes gridSlotWaveIn {
+            0% { opacity: 0; transform: scale(0.78); }
+            65% { opacity: 1; transform: scale(1.04); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ambassador-slot { opacity: 1; transform: none; animation: none; }
+        }
 
         @media (max-width: 499px) {
             .grid-container { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(13, 1fr); }
@@ -37,6 +48,9 @@
         /* --- 2. INTRO TEXT --- */
         .intro-section { background-color: var(--site-bg); padding: 100px 24px; display: flex; justify-content: center; }
         .intro-container { max-width: 750px; text-align: left; }
+        .intro-date, .intro-byline { color: #666; font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; }
+        .intro-date { margin: 0 0 28px; }
+        .intro-byline { margin: 34px 0 0; }
         .intro-container p { color: var(--body-text); font-family: "STIX Two Text", serif; font-size: 21px; font-weight: 500; line-height: 29.4px; margin-bottom: 21px; -moz-osx-font-smoothing: grayscale; }
         .intro-container strong { color: var(--accent); font-weight: 700; }
 
@@ -120,7 +134,8 @@
             
             .sticky-select-wrapper { width: auto; height: auto; border: none; background: transparent; padding: 0; }
             .burger-icon { display: none; }
-            select#countrySelect { position: static; opacity: 1; width: auto; min-width: 128px; padding: 10px 36px 10px 16px; margin: 0; font-size: 0.72rem; }
+            .country-dropdown-toggle { min-width: 128px; padding: 10px 36px 10px 16px; font-size: 0.72rem; }
+            .country-dropdown-menu { width: 100%; }
         }
 
         @media (max-width: 425px) {
@@ -137,29 +152,36 @@
             z-index: 1000; transform: translateY(-100%); transition: transform 0.4s ease; 
             box-sizing: border-box; pointer-events: none; 
         }
+        html.has-site-navbar-container .sticky-nav { top: -56px; }
         .sticky-nav.visible { transform: translateY(0); }
+        html.has-site-navbar-container .sticky-nav.visible { top: 56px; transform: translateY(0); }
         .sticky-title { display: none !important; }
         
-        select#countrySelect { 
-            appearance: none; -webkit-appearance: none; 
-            background-color: var(--accent); /* Solid blue background */
-            color: #fff; 
-            border: none; /* Removed border */
-            padding: 10px 45px 10px 20px; 
-            border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; 
-            text-transform: uppercase; cursor: pointer; outline: none; min-width: 180px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Drop shadow for visibility */
-        }
         .sticky-select-wrapper { position: relative; pointer-events: auto; }
-        .sticky-select-wrapper::after { 
-            content: ''; position: absolute; right: 18px; top: 50%; 
-            transform: translateY(-60%) rotate(45deg); width: 6px; height: 6px; 
-            border-right: 2px solid #fff; /* White chevron to contrast with accent background */
-            border-bottom: 2px solid #fff; 
-            pointer-events: none; 
+        .country-dropdown-toggle { background-color: var(--accent); color: #fff; border: none; padding: 10px 45px 10px 20px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; cursor: pointer; outline: none; min-width: 180px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; text-align: left; }
+        .country-dropdown-toggle::after { content: ''; position: absolute; right: 18px; top: 50%; transform: translateY(-60%) rotate(45deg); width: 6px; height: 6px; border-right: 2px solid #fff; border-bottom: 2px solid #fff; pointer-events: none; }
+        .country-dropdown-toggle[aria-expanded="true"]::after { transform: translateY(-25%) rotate(225deg); }
+        .country-dropdown-menu { position: absolute; top: calc(100% + 10px); right: 0; width: 100%; max-height: min(70vh, 540px); overflow-y: auto; background: #2b9bdd; border: 1px solid rgba(255,255,255,0.35); border-radius: 8px; box-shadow: 0 18px 45px rgba(0,0,0,0.35); padding: 10px; display: none; box-sizing: border-box; }
+        .country-dropdown-menu.open { display: block; }
+        .country-dropdown-group + .country-dropdown-group { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.28); }
+        .country-dropdown-group-title { width: 100%; border: none; background: rgba(255,255,255,0.18); color: #fff; padding: 8px 10px; border-radius: 4px; text-align: left; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin: 0 0 4px; }
+        .country-dropdown-item { width: 100%; border: none; background: transparent; color: #fff; padding: 7px 10px; border-radius: 4px; text-align: left; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; }
+        .country-dropdown-group-title:hover, .country-dropdown-group-title:focus, .country-dropdown-item:hover, .country-dropdown-item:focus { background: rgba(255,255,255,0.26); outline: none; }
+
+        #SA_footer { background: #ededed; position: relative; text-align: center; font-size: 0.75rem; line-height: 0.75rem; margin-top: 0; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; align-items: center; }
+        #SA_footer p { font-family: Helvetica Neue, Helvetica, Arial, sans-serif !important; }
+        #SA_footer a { text-decoration: none; color: #333; }
+        .SA_credit-container { box-sizing: border-box; padding: 2rem 1rem; width: 100%; max-width: 1200px; margin: 0 auto; }
+        .SA_credit-container__inner-wrapper { margin: 0 auto; }
+        .SA_credit-container__inner-wrapper__individual { margin: 0 1rem 1rem 0; white-space: nowrap; display: inline; }
+        .SA_credit-container__inner-wrapper__individual__title { font-size: 0.8125rem !important; line-height: 1em !important; padding-right: 0.125rem; color: rgba(0, 0, 0, 0.76); display: inline; margin: 0; }
+        .SA_credit-container__inner-wrapper__individual__name { font-size: 0.8125rem !important; line-height: 1.25rem !important; color: #000; font-weight: bold !important; letter-spacing: 0.025rem; display: inline; margin: 0; }
+        .SA_credit-container__inner-wrapper__individual__name span { white-space: nowrap; display: inline-block; }
+
+        @media (min-width: 701px) {
+            .SA_credit-container__inner-wrapper__individual__title,
+            .SA_credit-container__inner-wrapper__individual__name { font-size: 0.875rem !important; }
         }
-        select#countrySelect optgroup { background: #000; color: var(--accent); font-style: normal; font-weight: 900;}
-        select#countrySelect option { background: #111; color: white; }
         
         .back-to-top { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.4); z-index: 900; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto; opacity: 0; }
         .back-to-top.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -168,28 +190,29 @@
         <div class="sticky-title">SOCCER CITY</div>
         <div class="sticky-select-wrapper">
             <div class="burger-icon"><svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div>
-            <select id="countrySelect">
-                <option id="countrySelectPlaceholder" value="" selected disabled>JUMP TO A COUNTRY</option>
-            </select>
+            <button class="country-dropdown-toggle" id="countryDropdownToggle" type="button" aria-expanded="false" aria-controls="countryDropdownMenu">JUMP TO A COUNTRY</button>
+            <div class="country-dropdown-menu" id="countryDropdownMenu" role="menu"></div>
         </div>
     </nav>
 
     <main class="grid-container" id="ambassadorGrid">
         <div class="headline-center">
-            <span class="tagline">The Official List</span>
+            <span class="tagline">Your guide to GTA fans</span>
             <h1>SOCCER CITY</h1>
-            <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 15px;">48 COUNTRIES • 16 CITIES • 1 TROPHY</p>
+            <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 15px;">48 COUNTRIES. 1 DREAM.</p>
         </div>
     </main>
 
     <section class="intro-section">
         <div class="intro-container">
+            <div class="intro-date">Monday, June 8, 2026</div>
             <p>Welcome to a landmark exploration of the world, right here in the 6ix. As the 2026 World Cup approaches, Toronto transforms into more than just a host city—it becomes a living, breathing map of the forty-eight nations competing for glory.</p>
             <p>In every corner of this city, from the bustling markets of <strong>Kensington</strong> to the refined patios of <strong>Yorkville</strong>, the voices and sounds of 48 nations are waiting to be heard.</p>
             <p>Our mission is to show you that you don’t need a boarding pass to experience the magic of the tournament. Whether it’s finding the specific pub where the <strong>Netherlands</strong> faithful turn the street into a sea of orange, or discovering the hidden basement in <strong>Little Italy</strong>, this project identifies the cultural anchors of the tournament.</p>
             <p>Toronto’s diversity is its greatest competitive advantage. With over 50% of our residents born outside of Canada, the "World in a City" isn't just a marketing slogan—it is our reality.</p>
             <p>This digital experience allows you to immerse yourself in the sounds and textures of the competing 48. By following our curated hubs, you can feel the rhythmic pulse of <strong>Ghanaian</strong> drumming in the west end, or taste the sharp, traditional espresso of an <strong>Italian</strong> cafe.</p>
             <p>As you watch the big cup unfold, let this be your compass. Welcome to the ultimate multicultural fusion; welcome to the World Cup, <strong>Toronto style</strong>.</p>
+            <div class="intro-byline">Name Here, Position</div>
         </div>
     </section>
 
@@ -202,7 +225,38 @@
 
     <div id="contentSections"></div>
 
-    <button class="back-to-top" id="backToTop" onclick="document.getElementById('flagSection')?.scrollIntoView({behavior: 'smooth'})">↑ Back to Top</button>
+    <footer id="SA_footer">
+        <div>
+            <div class="SA_credit-container">
+                <div class="SA_credit-container__inner-wrapper">
+                    <div class="SA_credit-container__inner-wrapper__individual">
+                        <p class="SA_credit-container__inner-wrapper__individual__title">Reporters</p>
+                        <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names">
+                            <span>Libaan Osman,</span>
+                            <span>James Bullanoff,</span>
+                            <span>Sadeen Moshen,</span>
+                            <span>Kevin McGran,</span>
+                            <span>Mike Wilner</span>
+                        </p>
+                    </div>
+                    <div class="SA_credit-container__inner-wrapper__individual">
+                        <p class="SA_credit-container__inner-wrapper__individual__title">Design and Web Development</p>
+                        <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names"><span>Andres Plana</span></p>
+                    </div>
+                    <div class="SA_credit-container__inner-wrapper__individual">
+                        <p class="SA_credit-container__inner-wrapper__individual__title">Video </p>
+                        <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names"><span>NAME HERE</span></p>
+                    </div>
+                    <div class="SA_credit-container__inner-wrapper__individual">
+                        <p class="SA_credit-container__inner-wrapper__individual__title">Digital Producer</p>
+                        <p class="SA_credit-container__inner-wrapper__individual__name">Tania Pereira</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" onclick="location.hash = 'flagSection'">↑ Back to Top</button>
 
     <script>
         // EXPLICIT HARDCODED TOURNAMENT GROUPS A-L
@@ -442,6 +496,15 @@
             return `<img class="${className}" src="${escapeHTML(resolveAssetPath(imagePath))}" alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'editorial-image-placeholder' }))">`;
         }
 
+        function getGridThumbnailPath(imagePath) {
+            if (!imagePath) return "";
+
+            return imagePath.replace(/\.(jpe?g|png)$/i, (_match, extension) => {
+                const outputExtension = /^png$/i.test(extension) ? "png" : "jpg";
+                return `-320w.${outputExtension}`;
+            });
+        }
+
         function renderGridMedia(teamObj, teamName, folderName, teamIndex) {
             const videoPath = teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean);
             if (videoPath) {
@@ -451,7 +514,7 @@
             const fallbackImages = getTeamImages(teamObj, folderName, teamIndex);
             const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages[0];
             if (imagePath) {
-                return `<img src="${escapeHTML(resolveAssetPath(imagePath))}" alt="${escapeHTML(teamName)} fan media" loading="lazy">`;
+                return `<img src="${escapeHTML(resolveAssetPath(getGridThumbnailPath(imagePath)))}" alt="${escapeHTML(teamName)} fan media" loading="lazy">`;
             }
 
             return "";
@@ -518,7 +581,7 @@
                 const grid = document.getElementById('ambassadorGrid');
                 const flagGroupsContainer = document.getElementById('flagGroupsContainer');
                 const contentSections = document.getElementById('contentSections');
-                const selectMenu = document.getElementById('countrySelect');
+                const dropdownMenu = document.getElementById('countryDropdownMenu');
 
                 let allTeamsFlattened = [];
                 Object.values(tournamentGroups).forEach(group => allTeamsFlattened.push(...group));
@@ -529,6 +592,7 @@
                     const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index);
                     const slot = document.createElement('div');
                     slot.className = mediaHtml ? 'ambassador-slot' : 'ambassador-slot placeholder';
+                    slot.style.setProperty('--slot-wave-order', String(index % 8 + Math.floor(index / 8)));
                     slot.innerHTML = `${mediaHtml}<div class="info-tab"><div class="team">${teamName}</div></div>`;
                     grid.appendChild(slot);
                 });
@@ -545,8 +609,9 @@
                     const flagGrid = document.createElement('div');
                     flagGrid.className = 'group-table';
                     
-                    const optGroup = document.createElement('optgroup');
-                    optGroup.label = `Group ${groupLetter}`;
+                    const dropdownGroup = document.createElement('div');
+                    dropdownGroup.className = 'country-dropdown-group';
+                    dropdownGroup.innerHTML = `<button class="country-dropdown-group-title" type="button" data-target="group-${groupLetter}" role="menuitem">Group ${groupLetter}</button>`;
                     
                     const groupContainer = document.createElement('div');
                     groupContainer.className = 'group-container';
@@ -604,6 +669,8 @@
                                         <figcaption class="caption">${secondaryCaption}</figcaption>
                                     </figure>
                         ` : "";
+                        const secondaryAfterCountry = !img1Path ? secondaryFigureHtml : "";
+                        const secondaryAfterWhy = img1Path ? secondaryFigureHtml : "";
 
                         const flagItem = document.createElement('a');
                         flagItem.className = 'flag-item';
@@ -611,10 +678,13 @@
                         flagItem.innerHTML = `<img class="flag-icon" src="https://flagcdn.com/w80/${code}.png" alt="${cleanTeamName}"><span class="flag-name">${cleanTeamName}</span>`;
                         flagGrid.appendChild(flagItem);
 
-                        const option = document.createElement('option');
-                        option.value = anchorId;
-                        option.innerText = cleanTeamName;
-                        optGroup.appendChild(option);
+                        const dropdownItem = document.createElement('button');
+                        dropdownItem.className = 'country-dropdown-item';
+                        dropdownItem.type = 'button';
+                        dropdownItem.dataset.target = anchorId;
+                        dropdownItem.setAttribute('role', 'menuitem');
+                        dropdownItem.innerText = cleanTeamName;
+                        dropdownGroup.appendChild(dropdownItem);
 
                         htmlContent += `
                             <div class="team-block" id="${anchorId}" style="background-color: ${teamBgColor};">
@@ -628,8 +698,9 @@
                                 <div class="editorial-text">
                                     ${theFan}
                                     ${theCountry}
+                                    ${secondaryAfterCountry}
                                     ${whyCheer}
-                                    ${secondaryFigureHtml}
+                                    ${secondaryAfterWhy}
                                     
                                     ${howToCheer}
                                     ${wheretoGather}
@@ -643,7 +714,7 @@
                     contentSections.appendChild(groupContainer);
                     navGroupBlock.appendChild(flagGrid);
                     flagGroupsContainer.appendChild(navGroupBlock);
-                    selectMenu.appendChild(optGroup);
+                    dropdownMenu.appendChild(dropdownGroup);
                 });
 
             } catch (error) {
@@ -656,28 +727,75 @@
         const stickyNav = document.getElementById('stickyNav');
         const backToTopBtn = document.getElementById('backToTop');
         const flagSection = document.getElementById('flagSection');
-        const countrySelect = document.getElementById('countrySelect');
-        const countrySelectPlaceholder = document.getElementById('countrySelectPlaceholder');
+        const footer = document.getElementById('SA_footer');
+        const countryDropdownToggle = document.getElementById('countryDropdownToggle');
+        const countryDropdownMenu = document.getElementById('countryDropdownMenu');
+
+        function updateHostNavbarOffset() {
+            document.documentElement.classList.toggle('has-site-navbar-container', Boolean(document.querySelector('#site-navbar-container')));
+        }
 
         function updateCountrySelectLabel() {
-            if (!countrySelectPlaceholder) return;
-            countrySelectPlaceholder.textContent = window.matchMedia('(max-width: 900px)').matches ? 'JUMP TO...' : 'JUMP TO A COUNTRY';
+            if (!countryDropdownToggle) return;
+            countryDropdownToggle.textContent = window.matchMedia('(max-width: 900px)').matches ? 'JUMP TO...' : 'JUMP TO A COUNTRY';
+        }
+
+        updateHostNavbarOffset();
+        if (document.body) {
+            new MutationObserver(updateHostNavbarOffset).observe(document.body, { childList: true, subtree: true });
         }
 
         updateCountrySelectLabel();
         window.addEventListener('resize', updateCountrySelectLabel);
 
-        window.addEventListener('scroll', () => {
+        function hideStickyControls() {
+            stickyNav.classList.remove('visible');
+            backToTopBtn.classList.remove('visible');
+            countryDropdownMenu.classList.remove('open');
+            countryDropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        function updateStickyControls() {
             if (!flagSection) return;
-            const rect = flagSection.getBoundingClientRect();
-            if (rect.bottom < 0) { stickyNav.classList.add('visible'); backToTopBtn.classList.add('visible'); } 
-            else { stickyNav.classList.remove('visible'); backToTopBtn.classList.remove('visible'); }
+            const flagRect = flagSection.getBoundingClientRect();
+            const footerRect = footer ? footer.getBoundingClientRect() : null;
+            const footerInView = footerRect ? footerRect.top <= window.innerHeight : false;
+
+            if (flagRect.bottom < 0 && !footerInView) {
+                stickyNav.classList.add('visible');
+                backToTopBtn.classList.add('visible');
+            } else {
+                hideStickyControls();
+            }
+        }
+
+        window.addEventListener('scroll', updateStickyControls);
+        window.addEventListener('resize', updateStickyControls);
+        updateStickyControls();
+
+        function closeCountryDropdown() {
+            countryDropdownMenu.classList.remove('open');
+            countryDropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        countryDropdownToggle.addEventListener('click', function() {
+            const isOpen = countryDropdownMenu.classList.toggle('open');
+            countryDropdownToggle.setAttribute('aria-expanded', String(isOpen));
         });
 
-        countrySelect.addEventListener('change', function() {
-            if (this.value) {
-                const target = document.getElementById(this.value);
-                if (target) { target.scrollIntoView({behavior: 'smooth', block: 'start'}); this.value = ""; }
+        countryDropdownMenu.addEventListener('click', function(event) {
+            const item = event.target.closest('[data-target]');
+            if (item) {
+                location.hash = item.dataset.target;
+                closeCountryDropdown();
             }
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!countryDropdownMenu.contains(event.target) && !countryDropdownToggle.contains(event.target)) closeCountryDropdown();
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') closeCountryDropdown();
         });
     </script>
