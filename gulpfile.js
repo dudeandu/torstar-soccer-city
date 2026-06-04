@@ -648,9 +648,16 @@ function prefixJSLive() {
         .pipe(gulp.dest('dist/js/'))
 }
 
-function prerenderLive(done) {
-    prerenderLivePage();
-    done();
+function prerenderLive() {
+    return prerenderLivePage();
+}
+
+function copyCaptionForm() {
+    return gulp.src('app/caption-form.html')
+        .pipe(plumber({
+            errorHandler: handleError('copyCaptionForm')
+        }))
+        .pipe(gulp.dest('dist/'));
 }
 
 //Add url prefix for dev
@@ -775,7 +782,7 @@ const compileLive = gulp.parallel(css, imagesLive, jsLive);
 
 // https://stackoverflow.com/questions/70869994/using-gulp-series-to-run-two-tasks-sequentially-isnt-working-as-expected
 const addLivePrefix = gulp.series(prefixCSSLive, prefixJSLive, prefixHTMLLive);
-const buildLive = gulp.series(setLive, clean, compileLive, prerenderLive, addLivePrefix, minifyHTML);
+const buildLive = gulp.series(setLive, clean, compileLive, prerenderLive, addLivePrefix, minifyHTML, copyCaptionForm);
 
 const addDevPrefix = gulp.series(prefixCSSDev, prefixJSDev, prefixHTMLDev);
 const buildDev = gulp.series(clean, compile, addDevPrefix, minifyHTML);

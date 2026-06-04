@@ -106,7 +106,10 @@
         /* Main Image (Broke out to 900px wide) */
         .editorial-image { width: 100%; max-width: 900px; height: auto; object-fit: contain; margin: 20px 0 10px 0; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: #d8d8d8; }
         .editorial-image-placeholder { width: 100%; max-width: 900px; height: clamp(260px, 45vw, 500px); margin: 20px 0 10px 0; border-radius: 4px; background: #d8d8d8; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
-        .caption { display: none; font-size: 0.75rem; color: #888; font-family: 'Inter', sans-serif; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
+        .caption { display: block; font-size: 0.75rem; color: #888; font-family: 'Inter', sans-serif; line-height: 1.35; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
+        .caption:empty { display: none; }
+        .caption-text { display: block; }
+        .caption-credit { display: block; margin-top: 3px; color: #666; font-weight: 700; }
 
         figure.secondary-figure { margin: 20px 0; padding: 0; }
         figure.secondary-figure.full-width { clear: both; width: min(900px, calc(100vw - 40px)); max-width: none; margin: 40px 0 40px 50%; transform: translateX(-50%); }
@@ -230,22 +233,28 @@
             <div class="SA_credit-container">
                 <div class="SA_credit-container__inner-wrapper">
                     <div class="SA_credit-container__inner-wrapper__individual">
+                        <p class="SA_credit-container__inner-wrapper__individual__title">Video</p>
+                        <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names">
+                            <span>Sophie Bouquillon, </span>
+                            <span>Nicholas Lachance, </span>
+                            <span>Richard Lautens, </span>
+                            <span>Steve Russell, </span>
+                            <span>Rene Johnston</span>
+                        </p>
+                    </div>
+                    <div class="SA_credit-container__inner-wrapper__individual">
                         <p class="SA_credit-container__inner-wrapper__individual__title">Reporters</p>
                         <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names">
-                            <span>Libaan Osman,</span>
-                            <span>James Bullanoff,</span>
-                            <span>Sadeen Moshen,</span>
-                            <span>Kevin McGran,</span>
+                            <span>Libaan Osman, </span>
+                            <span>James Bullanoff, </span>
+                            <span>Sadeen Moshen, </span>
+                            <span>Kevin McGran, </span>
                             <span>Mike Wilner</span>
                         </p>
                     </div>
                     <div class="SA_credit-container__inner-wrapper__individual">
                         <p class="SA_credit-container__inner-wrapper__individual__title">Design and Web Development</p>
                         <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names"><span>Andres Plana</span></p>
-                    </div>
-                    <div class="SA_credit-container__inner-wrapper__individual">
-                        <p class="SA_credit-container__inner-wrapper__individual__title">Video </p>
-                        <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names"><span>NAME HERE</span></p>
                     </div>
                     <div class="SA_credit-container__inner-wrapper__individual">
                         <p class="SA_credit-container__inner-wrapper__individual__title">Digital Producer</p>
@@ -367,6 +376,12 @@
         const dataAliases = {
             "Czech Republic": "Czechia",
             "Curaçao": "Cura�ao"
+        };
+
+        const groupHeroVideoOverrides = {
+            B: "./images/Switzerland/video/slomo.mp4",
+            D: "./images/Turkey/video/slomo.mp4",
+            E: "./images/Germany/video/slomo.mp4"
         };
 
         function getProjectAssetBase() {
@@ -521,7 +536,7 @@
         }
 
         function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif) {
-            const videoPath = teamsInGroup
+            const videoPath = groupHeroVideoOverrides[groupLetter] || teamsInGroup
                 .map(teamName => findTeamData(teamData, teamName))
                 .map(teamObj => teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean))
                 .find(Boolean);

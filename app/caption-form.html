@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Caption Form</title>
+    <style>
+        :root {
+            --bg: #f5f5f2;
+            --panel: #ffffff;
+            --text: #1e1e1e;
+            --muted: #666666;
+            --line: #d8d8d2;
+            --accent: #0077bb;
+            --saved: #0a7d45;
+            --error: #b3261e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Inter, Arial, Helvetica, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: center;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--line);
+            background: rgba(245, 245, 242, 0.96);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.35rem;
+            line-height: 1.1;
+            letter-spacing: 0;
+        }
+
+        .status {
+            color: var(--muted);
+            font-size: 0.86rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        main {
+            width: min(1280px, calc(100% - 32px));
+            margin: 28px auto 60px;
+        }
+
+        .country-section {
+            margin: 0 0 36px;
+        }
+
+        .country-heading {
+            margin: 0 0 12px;
+            padding: 0 0 10px;
+            border-bottom: 2px solid var(--text);
+            font-size: 1rem;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .country-summary {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .country-count {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .expand-button {
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            background: var(--panel);
+            color: var(--accent);
+            cursor: pointer;
+            font: 800 0.78rem/1 Inter, Arial, Helvetica, sans-serif;
+            padding: 9px 12px;
+            text-transform: uppercase;
+        }
+
+        .expand-button:hover,
+        .expand-button:focus {
+            background: rgba(0, 119, 187, 0.1);
+            outline: none;
+        }
+
+        .image-list {
+            margin: 0;
+            padding-left: 28px;
+        }
+
+        .image-item {
+            margin: 0 0 14px;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+        }
+
+        .image-item.is-hidden {
+            display: none;
+        }
+
+        .image-row {
+            display: grid;
+            grid-template-columns: minmax(220px, 360px) minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .preview {
+            margin: 0;
+        }
+
+        .preview img {
+            display: block;
+            width: 100%;
+            max-height: 260px;
+            object-fit: contain;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #eeeeea;
+        }
+
+        .image-path {
+            display: block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+        }
+
+        .fields {
+            display: grid;
+            gap: 12px;
+        }
+
+        label {
+            display: grid;
+            gap: 6px;
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 86px;
+            resize: vertical;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 10px 12px;
+            color: var(--text);
+            font: 1rem/1.45 Georgia, "Times New Roman", serif;
+        }
+
+        textarea[data-field="credit"] {
+            min-height: 48px;
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            font-size: 0.92rem;
+        }
+
+        textarea:focus {
+            border-color: var(--accent);
+            outline: 2px solid rgba(0, 119, 187, 0.18);
+        }
+
+        .item-status {
+            min-height: 18px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .item-status.saved { color: var(--saved); }
+        .item-status.error { color: var(--error); }
+
+        .empty,
+        .error-message {
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+            color: var(--muted);
+        }
+
+        @media (max-width: 760px) {
+            header {
+                position: static;
+                display: block;
+            }
+
+            .status {
+                margin-top: 8px;
+                text-align: left;
+            }
+
+            .image-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Caption Form for Soccer City build</h1>
+        <div class="status" id="pageStatus">Loading images...</div>
+    </header>
+
+    <main id="captionApp">
+        <div class="empty">Loading image list...</div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDtHGXqDzYg6O_nE64h0Kj4PqNLu8hCrjQ",
+            authDomain: "wc-canada-vibe-check.firebaseapp.com",
+            databaseURL: "https://wc-canada-vibe-check-default-rtdb.firebaseio.com",
+            projectId: "wc-canada-vibe-check",
+            storageBucket: "wc-canada-vibe-check.firebasestorage.app",
+            messagingSenderId: "175593859820",
+            appId: "1:175593859820:web:461350975de917349c53c9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const captionsRoot = "captionForm/images";
+        const appRoot = document.getElementById("captionApp");
+        const pageStatus = document.getElementById("pageStatus");
+        const saveTimers = new Map();
+
+        function escapeHTML(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function parseTSV(tsvText) {
+            const rows = [];
+            let row = [];
+            let value = "";
+            let inQuotes = false;
+
+            for (let i = 0; i < tsvText.length; i++) {
+                const char = tsvText[i];
+                const nextChar = tsvText[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        value += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === "\t" && !inQuotes) {
+                    row.push(value.trim());
+                    value = "";
+                } else if ((char === "\n" || char === "\r") && !inQuotes) {
+                    if (char === "\r" && nextChar === "\n") i++;
+                    row.push(value.trim());
+                    if (row.some(cell => cell !== "")) rows.push(row);
+                    row = [];
+                    value = "";
+                } else {
+                    value += char;
+                }
+            }
+
+            if (value || row.length) {
+                row.push(value.trim());
+                if (row.some(cell => cell !== "")) rows.push(row);
+            }
+
+            const headers = rows.shift().map(header => header.trim());
+            return rows
+                .filter(values => values[0] && values[0] !== "team")
+                .map(values => Object.fromEntries(headers.map((header, index) => [header, values[index] || ""])));
+        }
+
+        function normalizeImagePath(path) {
+            return String(path || "")
+                .trim()
+                .replace(/^\.\//, "")
+                .replace(/^\/+/, "");
+        }
+
+        function imageKey(path) {
+            return encodeURIComponent(path).replace(/\./g, "%2E");
+        }
+
+        function getImageRecords(rows) {
+            return rows.map(row => {
+                const seen = new Set();
+                const paths = [
+                    row.image1,
+                    row.image2,
+                    ...(row.images || "").split("|")
+                ]
+                    .map(normalizeImagePath)
+                    .filter(path => path && !/\.(mp4|mov|m4v|webm|mp3)$/i.test(path))
+                    .filter(path => {
+                        if (seen.has(path)) return false;
+                        seen.add(path);
+                        return true;
+                    });
+
+                return {
+                    country: row.team || row.folderName || "Unknown",
+                    images: paths.map(path => ({
+                        path,
+                        key: imageKey(path),
+                        url: path
+                    }))
+                };
+            }).filter(group => group.images.length);
+        }
+
+        async function loadExistingCaptions() {
+            const snapshot = await get(ref(database, captionsRoot));
+            return snapshot.exists() ? snapshot.val() : {};
+        }
+
+        function render(groups, existingCaptions) {
+            if (!groups.length) {
+                appRoot.innerHTML = '<div class="empty">No images found in the project TSV.</div>';
+                return;
+            }
+
+            appRoot.innerHTML = groups.map(group => `
+                <section class="country-section">
+                    <h2 class="country-heading">${escapeHTML(group.country)}</h2>
+                    <div class="country-summary">
+                        <div class="country-count">${group.images.length} image${group.images.length === 1 ? "" : "s"}</div>
+                        ${group.images.length > 3 ? `<button class="expand-button" type="button" aria-expanded="false" data-expand-label="Show all ${group.images.length}">Show all ${group.images.length}</button>` : ""}
+                    </div>
+                    <ol class="image-list">
+                        ${group.images.map((image, index) => {
+                            const saved = existingCaptions[image.key] || {};
+                            return `
+                                <li class="image-item ${index >= 3 ? "is-hidden" : ""}" data-key="${escapeHTML(image.key)}" data-path="${escapeHTML(image.path)}" data-extra="${index >= 3 ? "true" : "false"}">
+                                    <div class="image-row">
+                                        <figure class="preview">
+                                            <img src="${escapeHTML(image.url)}" alt="${escapeHTML(group.country)} image" loading="lazy">
+                                            <figcaption class="image-path">${escapeHTML(image.path)}</figcaption>
+                                        </figure>
+                                        <div class="fields">
+                                            <label>
+                                                Caption
+                                                <textarea data-field="caption">${escapeHTML(saved.caption || "")}</textarea>
+                                            </label>
+                                            <label>
+                                                Credit
+                                                <textarea data-field="credit">${escapeHTML(saved.credit || "")}</textarea>
+                                            </label>
+                                            <div class="item-status" aria-live="polite"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            `;
+                        }).join("")}
+                    </ol>
+                </section>
+            `).join("");
+        }
+
+        function setItemStatus(item, message, className) {
+            const status = item.querySelector(".item-status");
+            status.textContent = message;
+            status.className = `item-status ${className || ""}`.trim();
+        }
+
+        function scheduleSave(item) {
+            const key = item.dataset.key;
+            const path = item.dataset.path;
+            const caption = item.querySelector('[data-field="caption"]').value;
+            const credit = item.querySelector('[data-field="credit"]').value;
+
+            setItemStatus(item, "Saving...", "");
+            clearTimeout(saveTimers.get(key));
+
+            saveTimers.set(key, setTimeout(async () => {
+                try {
+                    await update(ref(database, `${captionsRoot}/${key}`), {
+                        path,
+                        caption,
+                        credit,
+                        updatedAt: new Date().toISOString()
+                    });
+                    setItemStatus(item, "Saved", "saved");
+                } catch (error) {
+                    setItemStatus(item, `Save failed: ${error.message}`, "error");
+                }
+            }, 450));
+        }
+
+        appRoot.addEventListener("input", event => {
+            const field = event.target.closest("textarea[data-field]");
+            if (!field) return;
+            const item = field.closest(".image-item");
+            if (item) scheduleSave(item);
+        });
+
+        appRoot.addEventListener("click", event => {
+            const button = event.target.closest(".expand-button");
+            if (!button) return;
+
+            const section = button.closest(".country-section");
+            const isExpanded = button.getAttribute("aria-expanded") === "true";
+            section.querySelectorAll(".image-item[data-extra='true']").forEach(item => {
+                item.classList.toggle("is-hidden", isExpanded);
+            });
+            button.setAttribute("aria-expanded", String(!isExpanded));
+            button.textContent = isExpanded ? button.dataset.expandLabel : "Show fewer";
+        });
+
+        async function init() {
+            try {
+                const [tsvResponse, existingCaptions] = await Promise.all([
+                    fetch("images/data/data.tsv"),
+                    loadExistingCaptions()
+                ]);
+
+                if (!tsvResponse.ok) throw new Error(`Could not load TSV (${tsvResponse.status})`);
+
+                const rows = parseTSV(await tsvResponse.text());
+                const groups = getImageRecords(rows);
+                render(groups, existingCaptions);
+                const count = groups.reduce((total, group) => total + group.images.length, 0);
+                pageStatus.textContent = `${count} images loaded`;
+            } catch (error) {
+                pageStatus.textContent = "Could not load form";
+                appRoot.innerHTML = `<div class="error-message">${escapeHTML(error.message)}</div>`;
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -60,6 +60,56 @@ function dimensionAttrs(width, height) {
   return width && height ? ` width="${escapeHTML(width)}" height="${escapeHTML(height)}"` : "";
 }
 
+function normalizeImagePath(imagePath) {
+  return String(imagePath || "")
+    .trim()
+    .replace(/^\.\//, "")
+    .replace(/^\/+/, "");
+}
+
+function buildCaptionsByPath(captionEntries = {}) {
+  const captionsByPath = new Map();
+
+  Object.values(captionEntries || {}).forEach(entry => {
+    const normalizedPath = normalizeImagePath(entry && entry.path);
+    if (!normalizedPath) return;
+    captionsByPath.set(normalizedPath, {
+      caption: String(entry.caption || "").trim(),
+      credit: String(entry.credit || "").trim(),
+    });
+  });
+
+  return captionsByPath;
+}
+
+async function loadFirebaseCaptions() {
+  const url = "https://wc-canada-vibe-check-default-rtdb.firebaseio.com/captionForm/images.json";
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Firebase returned ${response.status}`);
+    }
+
+    return buildCaptionsByPath(await response.json());
+  } catch (error) {
+    console.warn(`[caption-form] Could not load Firebase captions: ${error.message}`);
+    return new Map();
+  }
+}
+
+function renderCaption(imagePath, captionsByPath, tagName = "figcaption", fallbackCaption = "") {
+  const saved = captionsByPath.get(normalizeImagePath(imagePath)) || {};
+  const caption = saved.caption || String(fallbackCaption || "").trim();
+  const credit = saved.credit || "";
+
+  if (!caption && !credit) {
+    return `<${tagName} class="caption"></${tagName}>`;
+  }
+
+  return `<${tagName} class="caption">${caption ? `<span class="caption-text">${escapeHTML(caption)}</span>` : ""}${credit ? `<span class="caption-credit">${escapeHTML(credit)}</span>` : ""}</${tagName}>`;
+}
+
 function renderParagraphs(value, breakOptions = {}) {
   const paragraphs = String(value || "")
     .replace(/\r\n/g, "\n")
@@ -89,11 +139,11 @@ function renderSection(label, value, breakOptions = {}) {
   return `<strong>${escapeHTML(label)}</strong>${content}`;
 }
 
-function renderStoryBreak({ image, imageAlt = "Match day in Toronto", caption = "" } = {}) {
+function renderStoryBreak({ image, imageAlt = "Match day in Toronto", caption = "", captionsByPath = new Map() } = {}) {
   return `
                 <figure class="inline-break-figure">
                     <img src="${escapeHTML(image)}" alt="${escapeHTML(imageAlt)}" loading="lazy">
-                    <figcaption class="caption">${escapeHTML(caption)}</figcaption>
+                    ${renderCaption(image, captionsByPath, "figcaption", caption)}
                 </figure>
             `;
 }
@@ -166,8 +216,8 @@ function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageManifest
   return "";
 }
 
-function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif, dataAliases) {
-  const videoPath = teamsInGroup
+function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif, dataAliases, groupHeroVideoOverrides) {
+  const videoPath = groupHeroVideoOverrides[groupLetter] || teamsInGroup
     .map(teamName => findTeamData(teamData, teamName, dataAliases))
     .map(teamObj => teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean))
     .find(Boolean);
@@ -179,8 +229,8 @@ function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif, dat
   return `<img src="${escapeHTML(fallbackGif)}" alt="Group ${escapeHTML(groupLetter)}" loading="lazy">`;
 }
 
-function buildRenderedSections(constants, teamData) {
-  const { tournamentGroups, countryCodes, teamColors, gifLinks, imageManifest, dataAliases } = constants;
+function buildRenderedSections(constants, teamData, captionsByPath = new Map()) {
+  const { tournamentGroups, countryCodes, teamColors, gifLinks, imageManifest, dataAliases, groupHeroVideoOverrides } = constants;
   const allTeamsFlattened = Object.values(tournamentGroups).flat();
   const gridSlots = allTeamsFlattened.map((teamName, index) => {
     const teamObj = findTeamData(teamData, teamName, dataAliases);
@@ -200,7 +250,7 @@ function buildRenderedSections(constants, teamData) {
     const teamsInGroup = tournamentGroups[groupLetter];
     const groupHeroGif = gifLinks[globalGifIndex % gifLinks.length];
     globalGifIndex++;
-    const groupHeroMedia = getGroupHeroMedia(teamsInGroup, teamData, groupLetter, groupHeroGif, dataAliases);
+    const groupHeroMedia = getGroupHeroMedia(teamsInGroup, teamData, groupLetter, groupHeroGif, dataAliases, groupHeroVideoOverrides);
 
     let flagItems = "";
     let dropdownItems = "";
@@ -221,13 +271,13 @@ function buildRenderedSections(constants, teamData) {
       const image2Dimensions = { width: teamObj.image2Width, height: teamObj.image2Height };
       const mainImageHtml = img1Path ? `
                                 ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "editorial-image", image1Dimensions)}
-                                <span class="caption"></span>
+                                ${renderCaption(img1Path, captionsByPath, "span")}
                         ` : "";
       const secondaryFigureClass = img1Path ? (teamIndex % 2 === 0 ? "float-right" : "float-left") : "full-width";
       const secondaryFigureHtml = img2Path ? `
                                     <figure class="secondary-figure ${secondaryFigureClass}">
                                         ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "editorial-image-secondary", image2Dimensions)}
-                                        <figcaption class="caption"></figcaption>
+                                        ${renderCaption(img2Path, captionsByPath)}
                                     </figure>
                         ` : "";
       const secondaryAfterCountry = !img1Path ? secondaryFigureHtml : "";
@@ -252,6 +302,7 @@ function buildRenderedSections(constants, teamData) {
                                       image: inlineBreakImage,
                                       imageAlt: `${cleanTeamName} fans in Toronto`,
                                       caption: "",
+                                      captionsByPath,
                                       threshold: 7,
                                       after: 4,
                                     })}
@@ -372,7 +423,7 @@ function replaceBetween(html, startPattern, endPattern, replacement) {
   return `${html.slice(0, start)}${replacement}${html.slice(end)}`;
 }
 
-function prerenderLivePage({
+async function prerenderLivePage({
   bodyPath = path.join(__dirname, "..", "body.html"),
   htmlPath = path.join(__dirname, "..", "..", "dist", "index.html"),
   dataPath = path.join(__dirname, "..", "data", "data.tsv"),
@@ -387,8 +438,10 @@ function prerenderLivePage({
     gifLinks: extractConst(bodySource, "gifLinks"),
     imageManifest: extractConst(bodySource, "imageManifest"),
     dataAliases: extractConst(bodySource, "dataAliases"),
+    groupHeroVideoOverrides: extractConst(bodySource, "groupHeroVideoOverrides"),
   };
-  const rendered = buildRenderedSections(constants, teamData);
+  const captionsByPath = await loadFirebaseCaptions();
+  const rendered = buildRenderedSections(constants, teamData, captionsByPath);
 
   let html = htmlSource;
   html = html.replace(
@@ -415,5 +468,8 @@ function prerenderLivePage({
 module.exports = prerenderLivePage;
 
 if (require.main === module) {
-  prerenderLivePage();
+  prerenderLivePage().catch(error => {
+    console.error(error);
+    process.exitCode = 1;
+  });
 }
