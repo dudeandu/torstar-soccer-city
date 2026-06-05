@@ -60,6 +60,14 @@ function dimensionAttrs(width, height) {
   return width && height ? ` width="${escapeHTML(width)}" height="${escapeHTML(height)}"` : "";
 }
 
+function getMediaOrientationClass(dimensions = {}) {
+  const width = Number(dimensions.width);
+  const height = Number(dimensions.height);
+
+  if (!width || !height) return "";
+  return height > width * 1.15 ? "portrait-media" : "landscape-media";
+}
+
 const responsiveImageWidths = [1920, 1280, 1024, 860, 540, 320];
 
 function responsiveImagePath(imagePath, width) {
@@ -225,13 +233,8 @@ function getGridThumbnailPath(imagePath) {
 }
 
 function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageManifest) {
-  const videoPath = teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean);
-  if (videoPath) {
-    return `<video src="${escapeHTML(videoPath)}" autoplay loop muted playsinline preload="auto"></video>`;
-  }
-
   const fallbackImages = getTeamImages(teamObj, imageManifest, folderName, teamIndex);
-  const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages[0];
+  const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages.find(Boolean);
   if (imagePath) {
     return `<img src="${escapeHTML(getGridThumbnailPath(imagePath))}" alt="${escapeHTML(teamName)} fan media" loading="eager" fetchpriority="high" decoding="async">`;
   }
@@ -296,7 +299,10 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
                                 ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "editorial-image", image1Dimensions)}
                                 ${renderCaption(img1Path, captionsByPath, "span")}
                         ` : "";
-      const secondaryFigureClass = img1Path ? (teamIndex % 2 === 0 ? "float-right" : "float-left") : "full-width";
+      const secondaryFigureClass = [
+        img1Path ? (teamIndex % 2 === 0 ? "float-right" : "float-left") : "full-width",
+        getMediaOrientationClass(image2Dimensions),
+      ].filter(Boolean).join(" ");
       const secondaryFigureHtml = img2Path ? `
                                     <figure class="secondary-figure ${secondaryFigureClass}">
                                         ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "editorial-image-secondary", image2Dimensions)}

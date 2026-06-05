@@ -1081,9 +1081,6 @@ Group: G
 
 Images:
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Iran/01_IMG_2392.jpg
-- https://projects-images.thestar.com/wc2026SoccerCity/images/Iran/54d39346-0c40-4954-b711-1a93f7ac0cf0.jpg
-- https://projects-images.thestar.com/wc2026SoccerCity/images/Iran/IMG_0132.jpg
-- https://projects-images.thestar.com/wc2026SoccerCity/images/Iran/IMG_2134.jpg
 
 Text:
 
@@ -1884,6 +1881,9 @@ Images:
 - https://projects-images.thestar.com/wc2026SoccerCity/images/England/NL_WC fan England_0002.JPG
 - https://projects-images.thestar.com/wc2026SoccerCity/images/England/NL_WC fan England_0003.JPG
 
+Videos:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/England/video/slomo.mp4
+
 Text:
 
 The fan: Semi-retired Stewart Tyler, 63
@@ -1974,8 +1974,8 @@ Ghana
 Group: L
 
 Images:
-- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/Gio Marfo_2.jpg
-- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/IMG_1023.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/02_IMG_1023.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/03_Gio Marfo_2.jpg
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/IMG_1024.jpg
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/IMG_1026.jpg
 

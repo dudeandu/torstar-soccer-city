@@ -106,17 +106,20 @@
         /* Main Image (Broke out to 900px wide) */
         .editorial-image { width: 100%; max-width: 900px; height: auto; object-fit: contain; margin: 20px 0 10px 0; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: #d8d8d8; }
         .editorial-image-placeholder { width: 100%; max-width: 900px; height: clamp(260px, 45vw, 500px); margin: 20px 0 10px 0; border-radius: 4px; background: #d8d8d8; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
-        .caption { display: block; font-size: 0.95rem; color: #232323; font-family: 'Inter', sans-serif; line-height: 1.35; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
+        .caption { display: block; box-sizing: border-box; font-size: 0.95rem; color: #232323; font-family: 'Inter', sans-serif; line-height: 1.35; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
         .caption:empty { display: none; }
         .caption-text { display: block; }
         .caption-credit { display: block; margin-top: 3px; color: #666;}
 
         figure.secondary-figure { margin: 20px 0; padding: 0; }
-        figure.secondary-figure.full-width { clear: both; width: min(900px, calc(100vw - 40px)); max-width: none; margin: 40px 0 40px 50%; transform: translateX(-50%); }
+        figure.secondary-figure.full-width { clear: both; display: grid; justify-items: center; width: min(900px, calc(100vw - 40px)); max-width: none; margin: 40px 0 40px 50%; transform: translateX(-50%); }
         figure.secondary-figure img.editorial-image-secondary { width: 100%; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
         figure.secondary-figure.full-width img.editorial-image-secondary { display: block; width: auto; max-width: 100%; max-height: min(760px, 82vh); object-fit: contain; margin-left: auto; margin-right: auto; }
         figure.secondary-figure .editorial-image-placeholder { height: 260px; margin: 0 0 10px 0; }
         figure.secondary-figure .caption { margin-bottom: 0; max-width: 100%; }
+        figure.secondary-figure.full-width.portrait-media { grid-template-columns: minmax(260px, auto) minmax(220px, 320px); column-gap: 18px; align-items: end; justify-content: center; }
+        figure.secondary-figure.full-width.portrait-media img.editorial-image-secondary { max-width: min(52vw, 520px); margin: 0; }
+        figure.secondary-figure.full-width.portrait-media .caption { align-self: end; width: 100%; max-width: 320px; }
         figure.inline-break-figure { margin: 35px 0; padding: 0; clear: both; }
         figure.inline-break-figure img { width: 100%; height: clamp(240px, 40vw, 430px); object-fit: cover; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
         figure.inline-break-figure .caption { margin-bottom: 0; max-width: 100%; }
@@ -132,6 +135,9 @@
             .country-name { font-size: 2.2rem; letter-spacing: -1px; }
             .big-flag { width: 50px; margin-right: 15px; }
             .team-block { padding: 60px 20px; }
+            figure.secondary-figure.full-width.portrait-media { grid-template-columns: 1fr; justify-items: center; }
+            figure.secondary-figure.full-width.portrait-media img.editorial-image-secondary { max-width: 100%; margin-bottom: 10px; }
+            figure.secondary-figure.full-width.portrait-media .caption { max-width: 100%; }
             
             .sticky-nav { padding: 15px 20px; justify-content: flex-end; }
             
@@ -400,7 +406,8 @@
         const groupHeroVideoOverrides = {
             B: "./images/Switzerland/video/slomo.mp4",
             D: "./images/Turkey/video/slomo.mp4",
-            E: "./images/Germany/video/slomo.mp4"
+            E: "./images/Germany/video/slomo.mp4",
+            L: "./images/England/video/slomo.mp4"
         };
 
         function getProjectAssetBase() {
@@ -522,6 +529,14 @@
             return width && height ? ` width="${escapeHTML(width)}" height="${escapeHTML(height)}"` : "";
         }
 
+        function getMediaOrientationClass(dimensions = {}) {
+            const width = Number(dimensions.width);
+            const height = Number(dimensions.height);
+
+            if (!width || !height) return "";
+            return height > width * 1.15 ? "portrait-media" : "landscape-media";
+        }
+
         function renderEditorialMedia(imagePath, altText, className, dimensions = {}) {
             if (!imagePath) {
                 return `<div class="editorial-image-placeholder" aria-label="${escapeHTML(altText)}"></div>`;
@@ -540,13 +555,8 @@
         }
 
         function renderGridMedia(teamObj, teamName, folderName, teamIndex) {
-            const videoPath = teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean);
-            if (videoPath) {
-                return `<video src="${escapeHTML(resolveAssetPath(videoPath))}" autoplay loop muted playsinline preload="auto"></video>`;
-            }
-
             const fallbackImages = getTeamImages(teamObj, folderName, teamIndex);
-            const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages[0];
+            const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages.find(Boolean);
             if (imagePath) {
                 return `<img src="${escapeHTML(resolveAssetPath(getGridThumbnailPath(imagePath)))}" alt="${escapeHTML(teamName)} fan media" loading="eager" fetchpriority="high" decoding="async">`;
             }
@@ -695,7 +705,10 @@
                                 ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "editorial-image", image1Dimensions)}
                                 <span class="caption"></span>
                         ` : "";
-                        const secondaryFigureClass = img1Path ? (teamIndex % 2 === 0 ? 'float-right' : 'float-left') : 'full-width';
+                        const secondaryFigureClass = [
+                            img1Path ? (teamIndex % 2 === 0 ? 'float-right' : 'float-left') : 'full-width',
+                            getMediaOrientationClass(image2Dimensions)
+                        ].filter(Boolean).join(' ');
                         const secondaryCaption = "";
                         const secondaryFigureHtml = img2Path ? `
                                     <figure class="secondary-figure ${secondaryFigureClass}">
