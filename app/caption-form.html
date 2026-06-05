@@ -29,8 +29,8 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: minmax(220px, 1fr) auto;
             gap: 24px;
             align-items: center;
             padding: 18px 24px;
@@ -50,6 +50,32 @@
             font-size: 0.86rem;
             font-weight: 700;
             text-align: right;
+        }
+
+        .header-tools {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .country-jump {
+            min-width: 220px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--panel);
+            color: var(--text);
+            font: 700 0.86rem/1 Inter, Arial, Helvetica, sans-serif;
+            padding: 9px 12px;
+        }
+
+        .note {
+            grid-column: 1 / -1;
+            margin: -8px 0 0;
+            color: var(--muted);
+            font-size: 0.86rem;
+            line-height: 1.35;
         }
 
         main {
@@ -192,6 +218,30 @@
             font-weight: 700;
         }
 
+        .field-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .save-button {
+            border: none;
+            border-radius: 6px;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            font: 900 0.8rem/1 Inter, Arial, Helvetica, sans-serif;
+            letter-spacing: 0.04em;
+            padding: 10px 14px;
+            text-transform: uppercase;
+        }
+
+        .save-button:disabled {
+            background: #aeb9bf;
+            cursor: default;
+        }
+
         .item-status.saved { color: var(--saved); }
         .item-status.error { color: var(--error); }
 
@@ -215,6 +265,19 @@
                 text-align: left;
             }
 
+            .header-tools {
+                justify-content: flex-start;
+                margin-top: 12px;
+            }
+
+            .country-jump {
+                width: 100%;
+            }
+
+            .note {
+                margin-top: 12px;
+            }
+
             .image-row {
                 grid-template-columns: 1fr;
             }
@@ -224,7 +287,13 @@
 <body>
     <header>
         <h1>Caption Form for Soccer City build</h1>
-        <div class="status" id="pageStatus">Loading images...</div>
+        <div class="header-tools">
+            <select class="country-jump" id="countryJump" aria-label="Jump to country">
+                <option value="">Jump to country...</option>
+            </select>
+            <div class="status" id="pageStatus">Loading images...</div>
+        </div>
+        <p class="note">Changes made by the last person will be the ones used.</p>
     </header>
 
     <main id="captionApp">
@@ -233,7 +302,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+        import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDtHGXqDzYg6O_nE64h0Kj4PqNLu8hCrjQ",
@@ -250,7 +319,8 @@
         const captionsRoot = "captionForm/images";
         const appRoot = document.getElementById("captionApp");
         const pageStatus = document.getElementById("pageStatus");
-        const saveTimers = new Map();
+        const countryJump = document.getElementById("countryJump");
+        let realtimeLoaded = false;
 
         function escapeHTML(value) {
             return String(value || "")
@@ -314,6 +384,10 @@
             return encodeURIComponent(path).replace(/\./g, "%2E");
         }
 
+        function countryId(country) {
+            return `country-${String(country || "unknown").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+        }
+
         function getImageRecords(rows) {
             return rows.map(row => {
                 const seen = new Set();
@@ -353,7 +427,7 @@
             }
 
             appRoot.innerHTML = groups.map(group => `
-                <section class="country-section">
+                <section class="country-section" id="${escapeHTML(countryId(group.country))}">
                     <h2 class="country-heading">${escapeHTML(group.country)}</h2>
                     <div class="country-summary">
                         <div class="country-count">${group.images.length} image${group.images.length === 1 ? "" : "s"}</div>
@@ -378,7 +452,10 @@
                                                 Credit
                                                 <textarea data-field="credit">${escapeHTML(saved.credit || "")}</textarea>
                                             </label>
-                                            <div class="item-status" aria-live="polite"></div>
+                                            <div class="field-actions">
+                                                <div class="item-status" aria-live="polite"></div>
+                                                <button class="save-button" type="button" disabled>Save</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -387,6 +464,11 @@
                     </ol>
                 </section>
             `).join("");
+
+            countryJump.innerHTML = `
+                <option value="">Jump to country...</option>
+                ${groups.map(group => `<option value="${escapeHTML(countryId(group.country))}">${escapeHTML(group.country)}</option>`).join("")}
+            `;
         }
 
         function setItemStatus(item, message, className) {
@@ -395,38 +477,68 @@
             status.className = `item-status ${className || ""}`.trim();
         }
 
-        function scheduleSave(item) {
+        function setItemDirty(item, isDirty) {
+            item.dataset.dirty = String(isDirty);
+            const button = item.querySelector(".save-button");
+            if (button) button.disabled = !isDirty;
+        }
+
+        function applyExistingCaptions(existingCaptions, announce = false) {
+            document.querySelectorAll(".image-item").forEach(item => {
+                const saved = existingCaptions[item.dataset.key] || {};
+                if (item.dataset.dirty === "true") {
+                    if (announce) setItemStatus(item, "New saved version available; save to overwrite", "");
+                    return;
+                }
+
+                item.querySelector('[data-field="caption"]').value = saved.caption || "";
+                item.querySelector('[data-field="credit"]').value = saved.credit || "";
+                setItemDirty(item, false);
+                if (announce) setItemStatus(item, "Updated live", "saved");
+            });
+        }
+
+        async function saveItem(item) {
             const key = item.dataset.key;
             const path = item.dataset.path;
             const caption = item.querySelector('[data-field="caption"]').value;
             const credit = item.querySelector('[data-field="credit"]').value;
 
             setItemStatus(item, "Saving...", "");
-            clearTimeout(saveTimers.get(key));
+            item.querySelector(".save-button").disabled = true;
 
-            saveTimers.set(key, setTimeout(async () => {
-                try {
-                    await update(ref(database, `${captionsRoot}/${key}`), {
-                        path,
-                        caption,
-                        credit,
-                        updatedAt: new Date().toISOString()
-                    });
-                    setItemStatus(item, "Saved", "saved");
-                } catch (error) {
-                    setItemStatus(item, `Save failed: ${error.message}`, "error");
-                }
-            }, 450));
+            try {
+                await update(ref(database, `${captionsRoot}/${key}`), {
+                    path,
+                    caption,
+                    credit,
+                    updatedAt: new Date().toISOString()
+                });
+                setItemDirty(item, false);
+                setItemStatus(item, "Saved", "saved");
+            } catch (error) {
+                setItemDirty(item, true);
+                setItemStatus(item, `Save failed: ${error.message}`, "error");
+            }
         }
 
         appRoot.addEventListener("input", event => {
             const field = event.target.closest("textarea[data-field]");
             if (!field) return;
             const item = field.closest(".image-item");
-            if (item) scheduleSave(item);
+            if (!item) return;
+            setItemDirty(item, true);
+            setItemStatus(item, "Unsaved changes", "");
         });
 
         appRoot.addEventListener("click", event => {
+            const saveButton = event.target.closest(".save-button");
+            if (saveButton) {
+                const item = saveButton.closest(".image-item");
+                if (item) saveItem(item);
+                return;
+            }
+
             const button = event.target.closest(".expand-button");
             if (!button) return;
 
@@ -437,6 +549,11 @@
             });
             button.setAttribute("aria-expanded", String(!isExpanded));
             button.textContent = isExpanded ? button.dataset.expandLabel : "Show fewer";
+        });
+
+        countryJump.addEventListener("change", event => {
+            const target = document.getElementById(event.target.value);
+            if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
         });
 
         async function init() {
@@ -453,6 +570,12 @@
                 render(groups, existingCaptions);
                 const count = groups.reduce((total, group) => total + group.images.length, 0);
                 pageStatus.textContent = `${count} images loaded`;
+
+                onValue(ref(database, captionsRoot), snapshot => {
+                    const latestCaptions = snapshot.exists() ? snapshot.val() : {};
+                    applyExistingCaptions(latestCaptions, realtimeLoaded);
+                    realtimeLoaded = true;
+                });
             } catch (error) {
                 pageStatus.textContent = "Could not load form";
                 appRoot.innerHTML = `<div class="error-message">${escapeHTML(error.message)}</div>`;

@@ -60,6 +60,25 @@ function dimensionAttrs(width, height) {
   return width && height ? ` width="${escapeHTML(width)}" height="${escapeHTML(height)}"` : "";
 }
 
+const responsiveImageWidths = [1920, 1280, 1024, 860, 540, 320];
+
+function responsiveImagePath(imagePath, width) {
+  return String(imagePath || "").replace(/\.(jpe?g|png)$/i, (_match, extension) => {
+    const outputExtension = /^png$/i.test(extension) ? "png" : "jpg";
+    return `-${width}w.${outputExtension}`;
+  });
+}
+
+function srcsetAttrs(imagePath, sizes) {
+  if (!/\.(jpe?g|png)$/i.test(String(imagePath || ""))) return "";
+
+  const srcset = responsiveImageWidths
+    .map(width => `${escapeHTML(responsiveImagePath(imagePath, width))} ${width}w`)
+    .join(", ");
+
+  return ` srcset="${srcset}" sizes="${escapeHTML(sizes)}"`;
+}
+
 function normalizeImagePath(imagePath) {
   return String(imagePath || "")
     .trim()
@@ -142,7 +161,7 @@ function renderSection(label, value, breakOptions = {}) {
 function renderStoryBreak({ image, imageAlt = "Match day in Toronto", caption = "", captionsByPath = new Map() } = {}) {
   return `
                 <figure class="inline-break-figure">
-                    <img src="${escapeHTML(image)}" alt="${escapeHTML(imageAlt)}" loading="lazy">
+                    <img src="${escapeHTML(image)}"${srcsetAttrs(image, "(max-width: 790px) calc(100vw - 40px), 750px")} alt="${escapeHTML(imageAlt)}" loading="lazy">
                     ${renderCaption(image, captionsByPath, "figcaption", caption)}
                 </figure>
             `;
@@ -153,7 +172,11 @@ function renderEditorialMedia(imagePath, altText, className, dimensions = {}) {
     return `<div class="editorial-image-placeholder" aria-label="${escapeHTML(altText)}"></div>`;
   }
 
-  return `<img class="${className}" src="${escapeHTML(imagePath)}" alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'editorial-image-placeholder' }))">`;
+  const sizes = className === "editorial-image-secondary" ?
+    "(min-width: 901px) 45vw, calc(100vw - 40px)" :
+    "(max-width: 940px) calc(100vw - 40px), 900px";
+
+  return `<img class="${className}" src="${escapeHTML(imagePath)}"${srcsetAttrs(imagePath, sizes)} alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'editorial-image-placeholder' }))">`;
 }
 
 function findTeamData(teamData, teamName, dataAliases) {
@@ -204,13 +227,13 @@ function getGridThumbnailPath(imagePath) {
 function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageManifest) {
   const videoPath = teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean);
   if (videoPath) {
-    return `<video src="${escapeHTML(videoPath)}" autoplay loop muted playsinline></video>`;
+    return `<video src="${escapeHTML(videoPath)}" autoplay loop muted playsinline preload="auto"></video>`;
   }
 
   const fallbackImages = getTeamImages(teamObj, imageManifest, folderName, teamIndex);
   const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages[0];
   if (imagePath) {
-    return `<img src="${escapeHTML(getGridThumbnailPath(imagePath))}" alt="${escapeHTML(teamName)} fan media" loading="lazy">`;
+    return `<img src="${escapeHTML(getGridThumbnailPath(imagePath))}" alt="${escapeHTML(teamName)} fan media" loading="eager" fetchpriority="high" decoding="async">`;
   }
 
   return "";
@@ -223,7 +246,7 @@ function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif, dat
     .find(Boolean);
 
   if (videoPath) {
-    return `<video src="${escapeHTML(videoPath)}" autoplay loop muted playsinline></video>`;
+    return `<video src="${escapeHTML(videoPath)}" autoplay loop muted playsinline preload="none"></video>`;
   }
 
   return `<img src="${escapeHTML(fallbackGif)}" alt="Group ${escapeHTML(groupLetter)}" loading="lazy">`;
@@ -362,10 +385,10 @@ function stickyScript() {
         window.addEventListener('resize', updateCountrySelectLabel);
 
         function hideStickyControls() {
-            stickyNav.classList.remove('visible');
-            backToTopBtn.classList.remove('visible');
-            countryDropdownMenu.classList.remove('open');
-            countryDropdownToggle.setAttribute('aria-expanded', 'false');
+            if (stickyNav) stickyNav.classList.remove('visible');
+            if (backToTopBtn) backToTopBtn.classList.remove('visible');
+            if (countryDropdownMenu) countryDropdownMenu.classList.remove('open');
+            if (countryDropdownToggle) countryDropdownToggle.setAttribute('aria-expanded', 'false');
         }
 
         function updateStickyControls() {
@@ -375,8 +398,8 @@ function stickyScript() {
             const footerInView = footerRect ? footerRect.top <= window.innerHeight : false;
 
             if (flagRect.bottom < 0 && !footerInView) {
-                stickyNav.classList.add('visible');
-                backToTopBtn.classList.add('visible');
+                if (stickyNav) stickyNav.classList.add('visible');
+                if (backToTopBtn) backToTopBtn.classList.add('visible');
             } else {
                 hideStickyControls();
             }
@@ -387,24 +410,28 @@ function stickyScript() {
         updateStickyControls();
 
         function closeCountryDropdown() {
+            if (!countryDropdownMenu || !countryDropdownToggle) return;
             countryDropdownMenu.classList.remove('open');
             countryDropdownToggle.setAttribute('aria-expanded', 'false');
         }
 
-        countryDropdownToggle.addEventListener('click', function() {
-            const isOpen = countryDropdownMenu.classList.toggle('open');
-            countryDropdownToggle.setAttribute('aria-expanded', String(isOpen));
-        });
+        if (countryDropdownToggle && countryDropdownMenu) {
+            countryDropdownToggle.addEventListener('click', function() {
+                const isOpen = countryDropdownMenu.classList.toggle('open');
+                countryDropdownToggle.setAttribute('aria-expanded', String(isOpen));
+            });
 
-        countryDropdownMenu.addEventListener('click', function(event) {
-            const item = event.target.closest('[data-target]');
-            if (item) {
-                location.hash = item.dataset.target;
-                closeCountryDropdown();
-            }
-        });
+            countryDropdownMenu.addEventListener('click', function(event) {
+                const item = event.target.closest('[data-target]');
+                if (item) {
+                    location.hash = item.dataset.target;
+                    closeCountryDropdown();
+                }
+            });
+        }
 
         document.addEventListener('click', function(event) {
+            if (!countryDropdownMenu || !countryDropdownToggle) return;
             if (!countryDropdownMenu.contains(event.target) && !countryDropdownToggle.contains(event.target)) closeCountryDropdown();
         });
 

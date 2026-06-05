@@ -88,7 +88,6 @@ Group: A
 
 Images:
 - https://projects-images.thestar.com/wc2026SoccerCity/images/South-Korea/sp-wcup-southkorea-two.jpg
-- https://projects-images.thestar.com/wc2026SoccerCity/images/South-Korea/sp-wcup-southkorea.jpg
 
 Text:
 
@@ -260,6 +259,9 @@ Group: B
 Images:
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Switzerland/NL_WC Fan Switzerland_0001.JPG
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Switzerland/NL_WC Fan Switzerland_0002.JPG
+
+Videos:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Switzerland/video/slomo.mp4
 
 Text:
 
@@ -484,17 +486,30 @@ United States
 
 Group: D
 
+Images:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/United-States/IMG-20120603-00003.jpg
+
 Text:
 
-The fan: Lorem ipsum dolor sit amet
+The fan: Sales executive Anthony Antonelli, 56.
 
-Cheering for: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
+The country: The United States makes its 12th World Cup appearance and is one of the three host nations. Our neighbour has a population of about 342 million; approximately 256,090 Americans live in Canada, with 48,265 calling Toronto home.
 
-Why they cheer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla.
+Why he cheers: Gearing up to watch his national team, Antonelli gets chills thinking about the possibility of them accomplishing the unbelievable and winning a World Cup on home soil.
 
-Curabitur blandit tempus porttitor. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.
+“Nothing's gonna change the political climate in these times, but I think it would definitely help unite Americans a bit more, kind of like the hockey and the Olympics did,” said Antonelli. “But for me personally, I just think I have so much pride. I'm such a big fan of the sport in general and seeing it grow within the United States that I think that the long-term implications of them winning or even getting to the final will, I think, shine a light on the sport.”
 
-How to cheer: Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+Antonelli grew up in New Jersey, just across the bridge from Philadelphia, moving to Canada for work in 2004. He has called our country home ever since, with three Canadian-American kids living in the city. But he considers himself a defender of American soccer, and his household often splits on which nation they support.
+
+He and his 12-year-old son Luke will head to Seattle to watch the United States play Australia this month, before he spends time in British Columbia up in the nosebleeds to watch Canada play Qatar on June 18.
+
+“I think he's super excited,” said Antonelli of his son. “He’s like telling all his friends … he was like beaming that he gets to go, but I actually don't think he really understands how many people worldwide, and obviously in Canada and the U.S., are going to be watching and participating in all the fan events. I don't think he quite understands what's about to hit all of us in a good way.”
+
+The 56 year old travelled to Brazil to watch the 2014 World Cup. Lionel Messi scored in the game he attended, but the coolest part for him was seeing how people from different countries hung out together and appreciated each other’s company.
+
+“Everyone's talking to each other, (asking), ‘Where are you from? Why are you here?’ and it just really, it sounds cheesy, but it really did feel like this global get-together,” said Antonelli.
+
+How to cheer: When he’s not watching the World Cup in-person, Antonelli will try and feel closer to home by keeping similar traditions that he does for the Super Bowl, having friends over and making hoagies and cheesesteaks, which are Philadelphia staples.
 
 ========================================
 
@@ -505,7 +520,6 @@ Group: D
 Images:
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Paraguay/01_rpj_ParaFIFAFan._002.JPG
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Paraguay/rpj_ParaFIFAFan._001.JPG
-- https://projects-images.thestar.com/wc2026SoccerCity/images/Paraguay/rpj_ParaFIFAFan._003.JPG
 
 Text:
 
@@ -601,6 +615,9 @@ Images:
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Turkey/sr_FIFAfanTURKEY_04.JPG
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Turkey/sr_FIFAfanTURKEY_05.JPG
 
+Videos:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Turkey/video/slomo.mp4
+
 Text:
 
 The fan: President of the Turkish Society of Canada, Murat Kinat Tibet, 59.
@@ -638,6 +655,9 @@ Group: E
 Images:
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Germany/rpj_GermanyFanWC_01.JPG
 - https://projects-images.thestar.com/wc2026SoccerCity/images/Germany/rpj_GermanyFanWC_02.JPG
+
+Videos:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Germany/video/slomo.mp4
 
 Text:
 
@@ -840,17 +860,40 @@ Japan
 
 Group: F
 
+Images:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Japan/sp-wcup-japan.jpg
+
 Text:
 
-The fan: Lorem ipsum dolor sit amet
+The fan: Firefighter Kazu Tokuyama, 49
 
-Cheering for: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
+Cheering for: Japan, which has made it to eight consecutive World Cups since its first in 1998, and has advanced four times to the round of 16. There are 28,660 people of Japanese origin living in the GTA, according to the 2021 Statistics Canada census, with 17,115 in Toronto.
 
-Why they cheer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla.
+Why he's cheering: Tokuyama remembers the first time Japan played in the World Cup.
 
-Curabitur blandit tempus porttitor. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.
+He had travelled to Japan in 1998 while the tournament was being held in France. Despite being winless in France, Tokuyama still enjoyed riding the team's momentum.
 
-How to cheer: Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+“Because I was in Japan I really got caught up in the fever of being in the World Cup, cheering on the Japanese national team, and then I went back in 2002 when they hosted,” said Tokuyama. “The atmosphere in Japan and the fervour of the fans was just amazing.”
+
+His fondest memory was watching Japan win its first World Cup game against Russia. He got to watch the game on the big screen in the Tokyo National Stadium.
+
+Now Tokuyama will get to experience the World Cup in Toronto.
+
+“It's a once-in-a-lifetime experience to have the World Cup in Toronto, and in Canada, and North America. I wish I could go watch,” said Tokuyama. “The only downside of it is just I'm very disappointed in the price point of the tickets.”
+
+While he might not see one of the matches in Toronto, Tokuyama will dig up one of his Japan jerseys to rock in the city. He's been collecting every one since 1998 and plans to get the white away jersey this year.
+
+One thing he’s looking forward to while cheering on Japan is to see how far Canada will go on the world stage as a host nation for the first time.
+
+“I'm excited to see Canada and to see how well they do and how the nation gets behind them and how far they can advance,” said Tokuyama.
+
+How to cheer:
+
+The Japanese Canadian Culture Centre, near Don Mills Road and Eglinton Avenue East in North York, is hosting public watch parties for three Japan games during the World Cup. The Japanese take on the Netherlands (June 14), Tunisia (June 21 midnight) and Sweden (June 25).
+
+The watch parties will feature activities including interactive games, raffle prizes, a beer garden, and food and marketplace vendors.
+
+Admission is free for all games but they strongly recommend you to RSVP to secure entry.
 
 ========================================
 
@@ -858,17 +901,28 @@ Sweden
 
 Group: F
 
+Images:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Sweden/sp-wcup-sweden.jpg
+
 Text:
 
-The fan: Lorem ipsum dolor sit amet
+The fan: Portfolio administrator Christian Rizopulos, 24.
 
-Cheering for: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
+Cheering for: Sweden, which has qualified for 13 World Cups and almost won it all against Brazil when they hosted in 1958. The Scandinavian nation has a population of 10.7 million people; there are 16,400 people of Swedish origin living in Toronto.
 
-Why they cheer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla.
+Why he's cheering: Rizopulos grew up in a soccer home, with both sides of his family cheering for different teams: his mother, Liliana, grew up in Colombia while his father George grew up in Sweden. But Rizopulos himself lived in Sweden until he was 17, and he knew where his allegiance was even after moving to Toronto.
 
-Curabitur blandit tempus porttitor. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.
+“I'm lucky because I am from a few different awesome cultures,” said Rizopulos. “I spent so much time in Sweden, I'm really excited about Sweden this World Cup.”
 
-How to cheer: Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+Sure, there is friendly competition cheering for the two nations at home with his family, but overall there's a deep love for the game. “It's a big mix here," he said, "and thankfully both Colombia and Sweden made the World Cup so I'll be able to support both.”
+
+Rizopulos played soccer throughout his time in Sweden, even joining the academy at Djurgardens IF Fotboll, a major soccer club in Stockholm. He recalls pitches everywhere in the city, and playing games with friends during lunch at school.
+
+“It's my favourite sport absolutely,” said Rizopulos.
+
+Now that the World Cup heading to Toronto, Rizopulos is ready to meet other fans heading to the city while rocking his Sweden jersey. “I'm going to try to interact as much as possible with all people from all the countries that are visiting,” said Rizopulos. “People from all around the world being proud of their nation. It just adds another positive layer to the atmosphere and to be at the actual stage where it happens.”
+
+How to cheer: The Swedish-Canadian Chamber of Commerce is hosting a daytime watch party for the Sweden vs. Netherlands World Cup match on June 20 at the Amsterdam Brewhouse on Queens Quay West.
 
 ========================================
 
@@ -1025,15 +1079,21 @@ Iran
 
 Group: G
 
+Images:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Iran/01_IMG_2392.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Iran/54d39346-0c40-4954-b711-1a93f7ac0cf0.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Iran/IMG_0132.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Iran/IMG_2134.jpg
+
 Text:
 
-The fan: Former Iran national team member Reza Abedian, 60
+The fan: Former Iran national team member Reza Abedian, 60.
 
-The country: Iran is set to make its fourth straight World Cup appearance, despite questions around if they'll plan in the global tournament with ongoing conflict with the U.S. and Israel. The Iranian community boasts a population of 87,105 in Toronto's metropolitan area.
+The country: Iran is set to make its fourth straight World Cup appearance despite questions surrounding its participation in the global tournament as it continues its ongoing conflict with the U.S. and Israel. The Iranian community boasts a population of 87,105 in Toronto's metropolitan area.
 
-Why he cheers: When Reza Abedian was a teenager, he rose up the ranks in the Iranian soccer world and became a player for Persepolis F.C., one of the most successful and popular soccer clubs in Iran and all of Asia.
+Why he cheers: When Abedian was a teenager he rose up the ranks in the Iranian soccer world and became a player for Persepolis F.C., one of the most successful and popular soccer clubs in Iran and all of Asia.
 
-It led to a 12-year career for the team and Abedian playing about 15 to 17 games for the Iranian national team. Now, the TK year-old, gives back his knowledge and expertise by running his own soccer academy right here in Toronto called Excel Pro Soccer Academy.
+It led to a 12-year career with the team and Abedian playing about 15 to 17 games for the Iranian national team. Now, the 60-year-old, gives back his knowledge and expertise by running his own soccer academy — Excel Pro Soccer Academy — in Toronto.
 
 “If I don’t have soccer, I’m done, I’d die,” joked Abedian.
 
@@ -1041,25 +1101,23 @@ His world revolved around soccer, so it made sense to continue being around his 
 
 Abedian’s academy is one of the largest Persian community soccer academies in the GTA, having been established in 2009. He coaches about 250 players, has five different teams in the Ontario Soccer League and has helped send a dozen players professionally overseas to countries such as Spain and Portugal.
 
-He was just shy of making Iran’s 1998 World Cup roster in the second appearance in the global tournament. He was one of the three final cuts, and it was one of the most heartbreaking moments he experienced. Sometimes he wishes he was born 20 years later, as soccer has now grown immensely in Iran, from a semi-professional environment to a nation that has now become a regular in the World Cup.
+He was just shy of making Iran’s 1998 World Cup roster in country's second appearance in the global tournament. He was one of the three final cuts and it was one of the most heartbreaking moments he experienced. Sometimes he wishes he was born 20 years later as soccer has now grown immensely in Iran, from a semi-professional environment to a nation that has now become a regular in the World Cup. 
 
-Despite never playing in the World Cup, he follows the team religiously, like many from his homeland, who often celebrate by storming the streets, honking cars, as soccer is the biggest sport in the country.
+“The national team is everything to me because with the national team we can show the Iranian culture, the Iranian attitude, everything to the world,” said Abedian, who attended the 2022 World Cup in Qatar.
 
-“The national team is everything to me because with the national team we can show the Iranian culture, the Iranian attitude, everything to the world,” said Abedian, who went to Qatar for the 2022 World Cup.
+It's the biggest sport in the country and those from his homeland often celebrate victories by storming the streets and honking cars.
 
-Iran is expected to play in Los Angeles and Seattle for three of their World Cup games in the United States despite the ongoing conflict that started with coordinated air strikes from the U.S. and Israel targeting Iran’s military leadership and nuclear program.
+Iran is expected to play three of their World Cup games in Los Angeles and Seattle despite the ongoing conflict that started with coordinated air strikes from the U.S. and Israel targeting Iran’s military leadership and nuclear program.
 
-The Iranian federation will provide him with tickets to attend this year’s tournament as they do for former players who have represented the country. It’s one of the coolest sporting atmospheres he’s been in.
+The Iranian federation will provide Abedian with tickets to attend this year’s tournament as they do for former players who have represented the country. It’s one of the coolest sporting atmospheres he’s been in.
 
-Iran was one of the first teams to qualify for the 2026 World Cup, as this will be their seventh total appearance and fourth consecutive. They’re ranked 21st in the world, as Abedian believes Iran has a chance to get out of the group stage for the first time.
+Iran, ranked 21st in the world, was one of the first teams to qualify for the 2026 World Cup, their seventh appearance and fourth consecutive. Abedian believes Iran has a chance to get out of the group stage for the first time.
 
-“Because of war, these days, it’s very difficult for the people of Iran and for the national team,” said Abedian, who wants to go watch the team play. “If the team comes to the U.S., we’ll join and come to the stadium. No problem, win or lose… it’s very good for the (Iranian) people to watch the game and enjoy the game.”
+“Because of war, these days, it’s very difficult for the people of Iran and for the national team,” said Abedian. “If the team comes to the U.S., we’ll join and come to the stadium. No problem, win or lose… it’s very good for the (Iranian) people to watch the game and enjoy the game.”
 
-How to cheer: Persian cuisine is a must for supporters while supporting, as Kotlet, a traditional pan-fried meat and potato patties are often on the table.
+How to cheer: Persian cuisine is a must for supporters with Kotlet, a traditional pan-fried meat and potato patty, are often on the table.
 
-Kebabs are also considered a cornerstone of Persian food, which includes lamb, beef or chicken grilled over charcoal, often served with rice. Salad Olivieh, also known as potato salad, is another staple for get-togethers, as well as nuts, for which Iran is a global leader in terms of production.
-
-Abedian says it’s frowned upon to watch national team games alone. The community in the city plans to watch games at TK.
+Kebabs are also considered a cornerstone of Persian food, which includes lamb, beef or chicken grilled over charcoal, often served with rice. Salad Olivieh, also known as potato salad, is another staple for get-togethers, as well as nuts, for which Iran is a global leader in terms of production. Abedian says it’s frowned upon to watch national team games alone.
 
 ========================================
 
@@ -1503,17 +1561,38 @@ Algeria
 
 Group: J
 
+Images:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Algeria/IMG_1444.jpg
+
 Text:
 
-The fan: Lorem ipsum dolor sit amet
+The fan: Sales associate Adel Zanoun, 28.
 
-Cheering for: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
+The country: Algeria returns to the World Cup after a 12-year hiatus. The North African nation is the tenth-largest country in the world by size. There's a large population from the country living in Canada, with approximately 79,660 people claiming Algerian origin here. Most of those — 72,835 — reside in Quebec.
 
-Why they cheer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla.
+Why he cheers: Adel Zanoun still has flashbacks to the 2014 World Cup in Brazil when his home country almost defeated Germany in the round of 16.
 
-Curabitur blandit tempus porttitor. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.
+That was the last time they made the tournament, losing 2-1 in extra time; the Germans went on to win their fourth World Cup.
 
-How to cheer: Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+“It was a crazy game,” said Zanoun, an avid soccer fan. “Actually, I think every football fan remembered this game … even with us losing, it's still like a good souvenir for every Algerian fan.”
+
+Soccer is Zanoun’s first and only real love and he tries to play at least once a week. His uncle, who lives in the United Kingdom, got him obsessed with the game at a young age as he learned about English soccer and became a lifelong Arsenal fan. His first souvenirs were anything that had to do with Arsenal, as he’s on a high right now after watching them secure the Premier League title.
+
+“The feeling was sick. I wanted to scream,” said Zanoun. "I still want to scream like all the time.”
+
+He hopes that exhilarating feeling continues into this World Cup as he prepares to watch Algeria return to the world stage. Seeing them miss the last two World Cups was disappointing for Zanoun. They failed to make it in 2022 after losing to Cameroon in the qualification process.
+
+He hates when people talk about who is more deserving, but he might make an exception there. “I don't want to talk about referees, but it was a bit weird also that day we missed so many chances, and we lost at the last minute of the game at home.”
+
+This year, a historic 10 African countries qualified for the FIFA World Cup due to the expanded 48-team tournament format. Algeria will open against the defending champions Argentina and superstar Lionel Messi, in a group that also includes Austria and Jordan.
+
+Results matter more than qualification to Zanoun, who doesn’t see why they can’t finish top two in their group.
+
+How to cheer: For Algerians, music and soccer go hand in hand when celebrating and watching the national team, as he expects new chants and traditions in their return back to the World Cup.
+
+“When we feel we need to express something, we do it in music, and that's our best way to do it,” said Zanoun.
+
+When it comes to food, pizza is popular for Zanoun and other Algerians when watching a game. Also popular is mahjouba, a crepe-styled flatbread that typically includes a mixture of onion, garlic, tomato, peppers and spices.
 
 ========================================
 
@@ -1599,17 +1678,40 @@ Portugal
 
 Group: K
 
+Images:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Portugal/9BA12733-A8B5-460E-9343-F6C832B9CEB8 (2).jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Portugal/IMG-20260603-WA0002.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Portugal/IMG-20260603-WA0003.jpg
+
 Text:
 
-The fan: Lorem ipsum dolor sit amet
+The fan: Daycare co-ordinator Kelly Neto, 32
 
-Cheering for: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
+The country: Portugal makes its ninth appearance in the World Cup with hopes of capturing its first trophy. The southwestern European nation has a large contingent in Canada with approximately 128,795 people; 85,165 people of Portuguese origin live in Toronto.
 
-Why they cheer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla.
+Why she cheers: Neto has vivid memories of her Portugal-themed birthday party that celebrated the national team making it all the way to the UEFA Euro 2004 final against Greece.
 
-Curabitur blandit tempus porttitor. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.
+Despite being the host nation, Portugal lost 1-0. “It wasn't a super happy time,” recalled Neto. “But going all the way to the finals, it was so emotional, seeing everyone so excited and so joined together for one nation.”
 
-How to cheer: Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+Since then, the 32-year-old — whose parents are both Portuguese — has been emotionally invested in the team and is hopeful this will be Portugal’s year as they gear up for the seventh straight World Cup appearance.
+
+Portugal is in a group with DR Congo, Uzbekistan and Colombia and they’re considered the favourites.
+
+During Portugal matches, it’ll be hard for Neto to stay still. She played soccer competitively for 12 years, all the way into university, and often uses her playing experience to read and predict plays.
+
+The first jersey she received was of that of Cristiano Ronaldo, which she still has today despite it being too small for her now. She has a drawer with a section dedicated to Portugal jerseys, a collection of about 15 in red, white and black.
+
+“People who just know me also gift me them, because they know I'm such a huge soccer fan,” said Neto.
+
+With Ronaldo approaching the last leg of his career, Neto says the only major achievement he doesn’t have is a World Cup title. Considered one of the greatest to play the game, Ronaldo is set to play in his sixth World Cup, and many like Neto believe it would be great to close his career by winning it all.
+
+Neto works at the First Portuguese Canadian Cultural Center of Toronto. It’s a non-profit organization that serves the community and provides Portuguese and ESL classes, as well as a mini daycare program, which Neto helps run. A love of her culture and of teaching got her invested in working with kids.
+
+“I love being Portuguese,” she said. “I feel like it really does connect me to the rest of the world. Learning Portuguese and speaking the language really does help open so many doors, and just representing it and showing that I am proud to be Portuguese is something that I really do try to do on a day-to-day basis.”
+
+How to cheer: During matches, traditional Portuguese snacks include Lupini beans, known as tremocos in Portugal. They’re often paired with beer or wine. Portuguese smoked sausage is a classic appetizer as well.
+
+Little Portugal comes alive every World Cup and this year should be no exception. For instance, fans can gather inside Bairrada Churrasqueira in Little Portugal to watch games, as the restaurant plans to host a few hundred fans during the World Cup.
 
 ========================================
 
@@ -1777,17 +1879,40 @@ England
 
 Group: L
 
+Images:
+- https://projects-images.thestar.com/wc2026SoccerCity/images/England/NL_WC fan England_0001.JPG
+- https://projects-images.thestar.com/wc2026SoccerCity/images/England/NL_WC fan England_0002.JPG
+- https://projects-images.thestar.com/wc2026SoccerCity/images/England/NL_WC fan England_0003.JPG
+
 Text:
 
-The fan: Lorem ipsum dolor sit amet
+The fan: Semi-retired Stewart Tyler, 63
 
-Cheering for: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
+The country: England, which has missed only one World Cup in the past 44 years, has talent and hopes to lift the trophy for the first time since 1966. There’s a lot of English in Toronto — 244,995 people here claim it as their ethnic or cultural origin.
 
-Why they cheer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus auctor fringilla.
+Why he cheers: Tyler still keeps his father's ticket stub from the 1966 World Cup, when England reigned supreme. He was just four years old at time, but cherishes the memorabilia as England continues to chase that glory a second time.
 
-Curabitur blandit tempus porttitor. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.
+“It's coming home!” became the rallying cry of English football fans, made famous by the 1996 song “Three Lions” that is sung to this day.
 
-How to cheer: Maecenas faucibus mollis interdum. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+But whether it's quarterfinal exits, group-stage eliminations, round of 16 appearances or heartbreaking finishes, England fans have dealt with a lot of pain since. Those who support the national team will tell you it’s not for the faint of heart.
+
+Despite that, England is a favourite to win the Cup this year. Tyler expects them to comfortably get out of a group that includes Croatia, Ghana and Panama, and to make a run for it all.
+
+“It would be absolutely fabulous, a dream come true, for England to finally do it in my lifetime and I actually remember it. Because I don't really remember” 1966, said Tyler, who moved to Canada in 1982.
+
+“You grew up in England and nobody says, 'Do you write with your left hand or your right hand?' it’s 'What foot you kick the ball with?',” said Tyler. “I was kicking a ball before I was writing," says the long-time West Ham United supporter, who is a part of official supporters club the Toronto Hammers.
+
+This will be the third World Cup where Tyler will be in the stands for alongside some West Ham supporters. He loves how the tournament brings people together.
+
+“It's truly a global game and you get to see the passion from other supporters and other people around the world when you go to games,” said Tyler, who has tickets for five games in Toronto and one in Vancouver. “I think I probably paid more for tickets in my own hometown than it cost me to go to Doha,” admitted Tyler, referring to the 2022 tournament in Qatar.
+
+Prior to 2022, Tyler was in France for the 1998 World Cup and watched England battle against Argentina in the round of 16, seeing one of the most infamous World Cup moments when David Beckham was sent out with a red card and England lost in penalties.
+
+How to cheer: England soccer fans are known to watch games at the pub and have a pie and pint with them. They’ll also be eating traditional food like fish and chips and steak and kidney pie.
+
+It’s been common for British fans to also have a dish of Indian curry alongside them while they watch World Cup matches. One fan visiting Brazil during the 2014 tournament reportedly paid more than $7,000 to have it flown in from England.
+
+A large group of England supporters will watch games at well-known soccer hubs like Elephant & Castle on King Street West, The Queen and Beaver on Elm Street and Scotland Yard on The Esplanade.
 
 ========================================
 
@@ -1849,7 +1974,10 @@ Ghana
 Group: L
 
 Images:
-- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/Gio Marfo.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/Gio Marfo_2.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/IMG_1023.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/IMG_1024.jpg
+- https://projects-images.thestar.com/wc2026SoccerCity/images/Ghana/IMG_1026.jpg
 
 Text:
 

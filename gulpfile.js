@@ -494,6 +494,52 @@ function resizeGridImages() {
     return mergeStream(jpgThumbs, pngThumbs);
 }
 
+// Creates responsive JPG/PNG story images for the live article without WebP variants.
+function resizeLiveStoryImages() {
+    const widths = [1920, 1280, 1024, 860, 540, 320];
+
+    const jpgs = gulp.src("app/images/**/*.{jpg,JPG,jpeg,JPEG}")
+        .pipe(srcset([{
+            width: widths,
+            format: ['jpg']
+        }], {
+            skipOptimization: true,
+            postfix: function postfix(width) {
+                return `-${width}w`;
+            },
+            processing: {
+                jpg: {
+                    quality: 70
+                }
+            }
+        }))
+        .pipe(gulp.dest("dist/images"));
+
+    const pngs = gulp.src("app/images/**/*.{png,PNG}")
+        .pipe(srcset([{
+            width: widths,
+            format: ['png']
+        }], {
+            skipOptimization: true,
+            postfix: function postfix(width) {
+                return `-${width}w`;
+            },
+            processing: {
+                png: {
+                    quality: 20
+                }
+            },
+            optimization: {
+                png: imageminPngquant({
+                    quality: [0.45, 0.65]
+                })
+            }
+        }))
+        .pipe(gulp.dest("dist/images"));
+
+    return mergeStream(jpgs, pngs);
+}
+
 
 
 // function images(cb) {
@@ -769,7 +815,7 @@ const js = gulp.series(scripts, copyModulesScripts, addSrcset);
 const jsLive = gulp.series(scriptsLive, copyModulesScripts, addSrcset);
 const images = gulp.parallel(moveImages, resizeImages, moveVideos, moveData);
 const dataLive = gulp.parallel(moveData, buildAllTeamsText);
-const imagesLive = gulp.parallel(moveImages, resizeGridImages, moveVideos, dataLive);
+const imagesLive = gulp.parallel(moveImages, resizeLiveStoryImages, resizeGridImages, moveVideos, dataLive);
 const rebuild = gulp.series(fullClean, gulp.parallel(css, images, js), localURI);
 const build = gulp.series(clean, gulp.parallel(css, images, js), localURI);
 const quick = gulp.series(clean, gulp.parallel(css, js), localURI);
