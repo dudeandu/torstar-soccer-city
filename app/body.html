@@ -17,7 +17,7 @@
         .headline-center { display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--bg); z-index: 10; text-align: center; border: 1px solid #1a1a1a; padding: 20px; grid-column: 3 / 7; grid-row: 3 / 5; }
         .headline-center h1 { font-size: clamp(1.5rem, 5vw, 4rem); margin: 0; font-weight: 900; text-transform: uppercase; line-height: 1; letter-spacing: -1px; }
         .tagline { color: var(--accent); font-size: 0.8rem; font-weight: bold; letter-spacing: 5px; margin-bottom: 12px; text-transform: uppercase; }
-        .ambassador-slot { position: relative; background: #000; overflow: hidden; opacity: 0; transform: scale(0.78); transform-origin: center; animation: gridSlotWaveIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards; animation-delay: calc(var(--slot-wave-order, 0) * 80ms); }
+        .ambassador-slot { position: relative; background: #000; overflow: hidden; opacity: 0; transform: scale(0.78); transform-origin: center; animation: gridSlotWaveIn 8s cubic-bezier(0.16, 1, 0.3, 1) infinite; animation-delay: calc(var(--slot-wave-order, 0) * 80ms); }
         .ambassador-slot.placeholder { background: #2b2b2b; }
         .ambassador-slot.placeholder::before { content: ""; position: absolute; inset: 1px; background: linear-gradient(135deg, #333, #1e1e1e); }
         .ambassador-slot img, .ambassador-slot video { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -29,7 +29,8 @@
 
         @keyframes gridSlotWaveIn {
             0% { opacity: 0; transform: scale(0.78); }
-            65% { opacity: 1; transform: scale(1.04); }
+            8.5% { opacity: 1; transform: scale(1.04); }
+            13.125% { opacity: 1; transform: scale(1); }
             100% { opacity: 1; transform: scale(1); }
         }
 
@@ -404,6 +405,7 @@
         };
 
         const groupHeroVideoOverrides = {
+            A: "./images/South-Africa/78066352-d450-475e-b99d-8577b306e003.jpg",
             B: "./images/Switzerland/video/slomo.mp4",
             D: "./images/Turkey/video/slomo.mp4",
             E: "./images/Germany/video/slomo.mp4",
@@ -564,15 +566,31 @@
             return "";
         }
 
+        function renderGroupHeroAsset(assetPath, groupLetter) {
+            if (/\.(mov|mp4|m4v|webm)$/i.test(String(assetPath || ""))) {
+                return `<video src="${escapeHTML(resolveAssetPath(assetPath))}" autoplay loop muted playsinline preload="none"></video>`;
+            }
+
+            if (/\.(gif|jpe?g|png|webp)$/i.test(String(assetPath || ""))) {
+                return `<img src="${escapeHTML(resolveAssetPath(assetPath))}" alt="Group ${escapeHTML(groupLetter)}" loading="lazy">`;
+            }
+
+            return "";
+        }
+
         function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif) {
-            const videoPath = groupHeroVideoOverrides[groupLetter] || teamsInGroup
+            const override = groupHeroVideoOverrides[groupLetter];
+            const overridePath = typeof override === "string" ? override : override && override.path;
+            const overrideMedia = renderGroupHeroAsset(overridePath, groupLetter);
+            if (overrideMedia) return overrideMedia;
+
+            const videoPath = teamsInGroup
                 .map(teamName => findTeamData(teamData, teamName))
                 .map(teamObj => teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean))
                 .find(Boolean);
 
-            if (videoPath) {
-                return `<video src="${escapeHTML(resolveAssetPath(videoPath))}" autoplay loop muted playsinline preload="none"></video>`;
-            }
+            const videoMedia = renderGroupHeroAsset(videoPath, groupLetter);
+            if (videoMedia) return videoMedia;
 
             return `<img src="${escapeHTML(fallbackGif)}" alt="Group ${escapeHTML(groupLetter)}" loading="lazy">`;
         }

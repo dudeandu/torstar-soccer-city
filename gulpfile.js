@@ -3,6 +3,7 @@
 // SET THESE VARIABLES
 
 const projectPath = "wc2026SoccerCity" //example: climatechange
+const hostedImageBase = "https://projects-images.thestar.com/" + projectPath + "/images/";
 const macroName = "seaWc2026SoccerCity()" // example: seaClimateChangeSvalbard()
 
 // END SET THESE VARIABLES
@@ -760,6 +761,7 @@ function localURI() {
 
     const html = gulp.src('dist/index.html')
         .pipe(replace("{projectPath}", projectPath))
+        .pipe(replace(/\.\/images\//g, hostedImageBase))
         .pipe(replace("[% paywallStart() %]", "<div id='blox-paywall'>"))
         .pipe(replace("[% subContentStart(); %]", "<div id='blox-subcontent'>"))
         .pipe(replace("[% subContentStop(); %]", "</div>"))

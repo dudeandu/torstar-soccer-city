@@ -242,15 +242,31 @@ function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageManifest
   return "";
 }
 
+function renderGroupHeroAsset(assetPath, groupLetter) {
+  if (/\.(mov|mp4|m4v|webm)$/i.test(String(assetPath || ""))) {
+    return `<video src="${escapeHTML(assetPath)}" autoplay loop muted playsinline preload="none"></video>`;
+  }
+
+  if (/\.(gif|jpe?g|png|webp)$/i.test(String(assetPath || ""))) {
+    return `<img src="${escapeHTML(assetPath)}" alt="Group ${escapeHTML(groupLetter)}" loading="lazy">`;
+  }
+
+  return "";
+}
+
 function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif, dataAliases, groupHeroVideoOverrides) {
-  const videoPath = groupHeroVideoOverrides[groupLetter] || teamsInGroup
+  const override = groupHeroVideoOverrides[groupLetter];
+  const overridePath = typeof override === "string" ? override : override && override.path;
+  const overrideMedia = renderGroupHeroAsset(overridePath, groupLetter);
+  if (overrideMedia) return overrideMedia;
+
+  const videoPath = teamsInGroup
     .map(teamName => findTeamData(teamData, teamName, dataAliases))
     .map(teamObj => teamObj.video1 || (teamObj.videos || "").split("|").find(Boolean))
     .find(Boolean);
 
-  if (videoPath) {
-    return `<video src="${escapeHTML(videoPath)}" autoplay loop muted playsinline preload="none"></video>`;
-  }
+  const videoMedia = renderGroupHeroAsset(videoPath, groupLetter);
+  if (videoMedia) return videoMedia;
 
   return `<img src="${escapeHTML(fallbackGif)}" alt="Group ${escapeHTML(groupLetter)}" loading="lazy">`;
 }
