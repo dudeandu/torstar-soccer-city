@@ -65,7 +65,7 @@ function getMediaOrientationClass(dimensions = {}) {
   const height = Number(dimensions.height);
 
   if (!width || !height) return "";
-  return height > width * 1.15 ? "portrait-media" : "landscape-media";
+  return height > width * 1.15 ? "SA_portrait-media" : "SA_landscape-media";
 }
 
 const responsiveImageWidths = [1920, 1280, 1024, 860, 540, 320];
@@ -131,10 +131,10 @@ function renderCaption(imagePath, captionsByPath, tagName = "figcaption", fallba
   const credit = saved.credit || "";
 
   if (!caption && !credit) {
-    return `<${tagName} class="caption"></${tagName}>`;
+    return `<${tagName} class="SA_caption"></${tagName}>`;
   }
 
-  return `<${tagName} class="caption">${caption ? `<span class="caption-text">${escapeHTML(caption)}</span>` : ""}${credit ? `<span class="caption-credit">${escapeHTML(credit)}</span>` : ""}</${tagName}>`;
+  return `<${tagName} class="SA_caption">${caption ? `<span class="SA_caption-text">${escapeHTML(caption)}</span>` : ""}${credit ? `<span class="SA_caption-credit">${escapeHTML(credit)}</span>` : ""}</${tagName}>`;
 }
 
 function renderParagraphs(value, breakOptions = {}) {
@@ -168,7 +168,7 @@ function renderSection(label, value, breakOptions = {}) {
 
 function renderStoryBreak({ image, imageAlt = "Match day in Toronto", caption = "", captionsByPath = new Map() } = {}) {
   return `
-                <figure class="inline-break-figure">
+                <figure class="SA_inline-break-figure">
                     <img src="${escapeHTML(image)}"${srcsetAttrs(image, "(max-width: 790px) calc(100vw - 40px), 750px")} alt="${escapeHTML(imageAlt)}" loading="lazy">
                     ${renderCaption(image, captionsByPath, "figcaption", caption)}
                 </figure>
@@ -177,14 +177,14 @@ function renderStoryBreak({ image, imageAlt = "Match day in Toronto", caption = 
 
 function renderEditorialMedia(imagePath, altText, className, dimensions = {}) {
   if (!imagePath) {
-    return `<div class="editorial-image-placeholder" aria-label="${escapeHTML(altText)}"></div>`;
+    return `<div class="SA_editorial-image-placeholder" aria-label="${escapeHTML(altText)}"></div>`;
   }
 
-  const sizes = className === "editorial-image-secondary" ?
+  const sizes = className === "SA_editorial-image-secondary" ?
     "(min-width: 901px) 45vw, calc(100vw - 40px)" :
     "(max-width: 940px) calc(100vw - 40px), 900px";
 
-  return `<img class="${className}" src="${escapeHTML(imagePath)}"${srcsetAttrs(imagePath, sizes)} alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'editorial-image-placeholder' }))">`;
+  return `<img class="${className}" src="${escapeHTML(imagePath)}"${srcsetAttrs(imagePath, sizes)} alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'SA_editorial-image-placeholder' }))">`;
 }
 
 function findTeamData(teamData, teamName, dataAliases) {
@@ -278,9 +278,9 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
     const teamObj = findTeamData(teamData, teamName, dataAliases);
     const folderName = teamObj.folderName || teamName.replace(/\s+/g, "");
     const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index, imageManifest);
-    const className = mediaHtml ? "ambassador-slot" : "ambassador-slot placeholder";
+    const className = mediaHtml ? "SA_ambassador-slot" : "SA_ambassador-slot SA_placeholder";
     const waveOrder = index % 8 + Math.floor(index / 8);
-    return `<div class="${className}" style="--slot-wave-order:${waveOrder}">${mediaHtml}<div class="info-tab"><div class="team">${escapeHTML(teamName)}</div></div></div>`;
+    return `<div class="${className}" style="--slot-wave-order:${waveOrder}">${mediaHtml}<div class="SA_info-tab"><div class="SA_team">${escapeHTML(teamName)}</div></div></div>`;
   }).join("\n");
 
   let globalGifIndex = 0;
@@ -303,7 +303,7 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
       const teamObj = findTeamData(teamData, cleanTeamName, dataAliases);
       const folderName = teamObj.folderName || cleanTeamName.replace(/\s+/g, "");
       const code = countryCodes[cleanTeamName] || "un";
-      const anchorId = `section-${cleanTeamName.toLowerCase().replace(/\s+/g, "-")}`;
+      const anchorId = `SA_section-${cleanTeamName.toLowerCase().replace(/\s+/g, "-")}`;
       const teamBgColor = teamColors[cleanTeamName] || "rgba(240, 240, 240, 0.5)";
 
       const teamImages = getTeamImages(teamObj, imageManifest, folderName, teamIndex);
@@ -312,34 +312,34 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
       const image1Dimensions = { width: teamObj.image1Width, height: teamObj.image1Height };
       const image2Dimensions = { width: teamObj.image2Width, height: teamObj.image2Height };
       const mainImageHtml = img1Path ? `
-                                ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "editorial-image", image1Dimensions)}
+                                ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "SA_editorial-image", image1Dimensions)}
                                 ${renderCaption(img1Path, captionsByPath, "span")}
                         ` : "";
       const secondaryFigureClass = [
-        img1Path ? (teamIndex % 2 === 0 ? "float-right" : "float-left") : "full-width",
+        img1Path ? (teamIndex % 2 === 0 ? "SA_float-right" : "SA_float-left") : "SA_full-width",
         getMediaOrientationClass(image2Dimensions),
       ].filter(Boolean).join(" ");
       const secondaryFigureHtml = img2Path ? `
-                                    <figure class="secondary-figure ${secondaryFigureClass}">
-                                        ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "editorial-image-secondary", image2Dimensions)}
+                                    <figure class="SA_secondary-figure ${secondaryFigureClass}">
+                                        ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "SA_editorial-image-secondary", image2Dimensions)}
                                         ${renderCaption(img2Path, captionsByPath)}
                                     </figure>
                         ` : "";
       const secondaryAfterCountry = !img1Path ? secondaryFigureHtml : "";
       const secondaryAfterWhy = img1Path ? secondaryFigureHtml : "";
 
-      flagItems += `<a class="flag-item" href="#${anchorId}"><img class="flag-icon" src="https://flagcdn.com/w80/${code}.png" alt="${escapeHTML(cleanTeamName)}"><span class="flag-name">${escapeHTML(cleanTeamName)}</span></a>`;
-      dropdownItems += `<button class="country-dropdown-item" type="button" data-target="${anchorId}" role="menuitem">${escapeHTML(cleanTeamName)}</button>`;
+      flagItems += `<a class="SA_flag-item" href="#${anchorId}"><img class="SA_flag-icon" src="https://flagcdn.com/w80/${code}.png" alt="${escapeHTML(cleanTeamName)}"><span class="SA_flag-name">${escapeHTML(cleanTeamName)}</span></a>`;
+      dropdownItems += `<button class="SA_country-dropdown-item" type="button" data-target="${anchorId}" role="menuitem">${escapeHTML(cleanTeamName)}</button>`;
       teamBlocks += `
-                            <div class="team-block" id="${anchorId}" style="background-color: ${teamBgColor};">
-                                <div class="country-header">
-                                    <img class="big-flag" src="https://flagcdn.com/w160/${code}.png" alt="${escapeHTML(cleanTeamName)}">
-                                    <h2 class="country-name">${escapeHTML(cleanTeamName)}</h2>
+                            <div class="SA_team-block" id="${anchorId}" style="background-color: ${teamBgColor};">
+                                <div class="SA_country-header">
+                                    <img class="SA_big-flag" src="https://flagcdn.com/w160/${code}.png" alt="${escapeHTML(cleanTeamName)}">
+                                    <h2 class="SA_country-name">${escapeHTML(cleanTeamName)}</h2>
                                 </div>
 
                                 ${mainImageHtml}
 
-                                <div class="editorial-text">
+                                <div class="SA_editorial-text">
                                     ${renderSection("The Fan", teamObj.theFan)}
                                     ${renderSection("Cheering for", teamObj.theCountry)}
                                     ${secondaryAfterCountry}
@@ -360,18 +360,18 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
                         `;
     });
 
-    navGroups += `<div class="nav-group-card"><h3>Group ${groupLetter}</h3><div class="group-table">${flagItems}</div></div>`;
-    dropdownGroups += `<div class="country-dropdown-group"><button class="country-dropdown-group-title" type="button" data-target="group-${groupLetter}" role="menuitem">Group ${groupLetter}</button>${dropdownItems}</div>`;
+    navGroups += `<div class="SA_nav-group-card"><h3>Group ${groupLetter}</h3><div class="SA_group-table">${flagItems}</div></div>`;
+    dropdownGroups += `<div class="SA_country-dropdown-group"><button class="SA_country-dropdown-group-title" type="button" data-target="SA_group-${groupLetter}" role="menuitem">Group ${groupLetter}</button>${dropdownItems}</div>`;
     contentSections += `
-                    <div class="group-container" id="group-${groupLetter}">
-                        <div class="group-hero">
+                    <div class="SA_group-container" id="SA_group-${groupLetter}">
+                        <div class="SA_group-hero">
                             ${groupHeroMedia}
-                            <div class="group-hero-overlay">
+                            <div class="SA_group-hero-overlay">
                                 <h2>Group ${groupLetter}</h2>
-                                <div class="group-country-list">${teamsInGroup.map(teamName => escapeHTML(teamName)).join(" • ")}</div>
+                                <div class="SA_group-country-list">${teamsInGroup.map(teamName => escapeHTML(teamName)).join(" • ")}</div>
                             </div>
                         </div>
-                        <div class="group-teams-wrapper">
+                        <div class="SA_group-teams-wrapper">
                             ${teamBlocks}
                         </div>
                     </div>`;
@@ -382,15 +382,16 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
 
 function stickyScript() {
   return `<script>
-        const stickyNav = document.getElementById('stickyNav');
-        const backToTopBtn = document.getElementById('backToTop');
-        const flagSection = document.getElementById('flagSection');
+        const mainBody = document.getElementById('SA_main_body');
+        const stickyNav = document.getElementById('SA_stickyNav');
+        const backToTopBtn = document.getElementById('SA_backToTop');
+        const flagSection = document.getElementById('SA_flagSection');
         const footer = document.getElementById('SA_footer');
-        const countryDropdownToggle = document.getElementById('countryDropdownToggle');
-        const countryDropdownMenu = document.getElementById('countryDropdownMenu');
+        const countryDropdownToggle = document.getElementById('SA_countryDropdownToggle');
+        const countryDropdownMenu = document.getElementById('SA_countryDropdownMenu');
 
         function updateHostNavbarOffset() {
-            document.documentElement.classList.toggle('has-site-navbar-container', Boolean(document.querySelector('#site-navbar-container')));
+            if (mainBody) mainBody.classList.toggle('SA_has-site-navbar-container', Boolean(document.querySelector('#site-navbar-container')));
         }
 
         function updateCountrySelectLabel() {
@@ -407,9 +408,9 @@ function stickyScript() {
         window.addEventListener('resize', updateCountrySelectLabel);
 
         function hideStickyControls() {
-            if (stickyNav) stickyNav.classList.remove('visible');
-            if (backToTopBtn) backToTopBtn.classList.remove('visible');
-            if (countryDropdownMenu) countryDropdownMenu.classList.remove('open');
+            if (stickyNav) stickyNav.classList.remove('SA_visible');
+            if (backToTopBtn) backToTopBtn.classList.remove('SA_visible');
+            if (countryDropdownMenu) countryDropdownMenu.classList.remove('SA_open');
             if (countryDropdownToggle) countryDropdownToggle.setAttribute('aria-expanded', 'false');
         }
 
@@ -420,8 +421,8 @@ function stickyScript() {
             const footerInView = footerRect ? footerRect.top <= window.innerHeight : false;
 
             if (flagRect.bottom < 0 && !footerInView) {
-                if (stickyNav) stickyNav.classList.add('visible');
-                if (backToTopBtn) backToTopBtn.classList.add('visible');
+                if (stickyNav) stickyNav.classList.add('SA_visible');
+                if (backToTopBtn) backToTopBtn.classList.add('SA_visible');
             } else {
                 hideStickyControls();
             }
@@ -433,13 +434,13 @@ function stickyScript() {
 
         function closeCountryDropdown() {
             if (!countryDropdownMenu || !countryDropdownToggle) return;
-            countryDropdownMenu.classList.remove('open');
+            countryDropdownMenu.classList.remove('SA_open');
             countryDropdownToggle.setAttribute('aria-expanded', 'false');
         }
 
         if (countryDropdownToggle && countryDropdownMenu) {
             countryDropdownToggle.addEventListener('click', function() {
-                const isOpen = countryDropdownMenu.classList.toggle('open');
+                const isOpen = countryDropdownMenu.classList.toggle('SA_open');
                 countryDropdownToggle.setAttribute('aria-expanded', String(isOpen));
             });
 
@@ -494,20 +495,20 @@ async function prerenderLivePage({
 
   let html = htmlSource;
   html = html.replace(
-    /(<main class="grid-container" id="ambassadorGrid">[\s\S]*?<div class="headline-center">[\s\S]*?<\/div>)(\s*)<\/main>/,
+    /(<main class="SA_grid-container" id="SA_ambassadorGrid">[\s\S]*?<div class="SA_headline-center">[\s\S]*?<\/div>)(\s*)<\/main>/,
     `$1\n${rendered.gridSlots}$2</main>`
   );
   html = html.replace(
-    /<div class="country-dropdown-menu" id="countryDropdownMenu" role="menu"><\/div>/,
-    `<div class="country-dropdown-menu" id="countryDropdownMenu" role="menu">${rendered.dropdownGroups}</div>`
+    /<div class="SA_country-dropdown-menu" id="SA_countryDropdownMenu" role="menu"><\/div>/,
+    `<div class="SA_country-dropdown-menu" id="SA_countryDropdownMenu" role="menu">${rendered.dropdownGroups}</div>`
   );
   html = html.replace(
-    /<div class="nav-groups-container" id="flagGroupsContainer"><\/div>/,
-    `<div class="nav-groups-container" id="flagGroupsContainer">${rendered.navGroups}</div>`
+    /<div class="SA_nav-groups-container" id="SA_flagGroupsContainer"><\/div>/,
+    `<div class="SA_nav-groups-container" id="SA_flagGroupsContainer">${rendered.navGroups}</div>`
   );
   html = html.replace(
-    /<div id="contentSections"><\/div>/,
-    `<div id="contentSections">${rendered.contentSections}</div>`
+    /<div id="SA_contentSections"><\/div>/,
+    `<div id="SA_contentSections">${rendered.contentSections}</div>`
   );
   html = replaceBetween(html, /<script>\s*\/\/ EXPLICIT HARDCODED TOURNAMENT GROUPS A-L/, /<\/script>/, stickyScript());
 

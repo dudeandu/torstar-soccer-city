@@ -1,33 +1,35 @@
 <!-- Migrated World Cup project content. Edit source content in this body.html for the Blox app. -->
+<article id="SA_main_body">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <style>
-        :root {
-            --bg: #000000;
+        #SA_main_body {
+            --bg: none;
             --accent: #0077BB;
             --site-bg: #f8f8f8;
             --body-text: #333333;
             --nav-bg: rgba(10, 10, 10, 0.95);
         }
 
-        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        #SA_main_body { margin: 0; padding: 0; background: var(--bg); color: white; overflow-x: hidden; }
+        #SA_main_body .SA_sticky-nav, #SA_main_body .SA_grid-container, #SA_main_body .SA_intro-section, #SA_main_body .SA_nav-wrapper, #SA_main_body .SA_group-container, #SA_main_body .SA_back-to-top { font-family: 'Inter', sans-serif; }
 
         /* --- 1. HERO GRID --- */
-        .grid-container { display: grid; width: 100vw; height: 100vh; gap: 1px; background: #111; grid-auto-flow: dense; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(7, 1fr); }
-        html.has-site-navbar-container .grid-container { margin-top: 56px; height: calc(100vh - 56px); }
-        .headline-center { display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--bg); z-index: 10; text-align: center; border: 1px solid #1a1a1a; padding: 20px; grid-column: 3 / 7; grid-row: 3 / 5; }
-        .headline-center h1 { font-size: clamp(1.5rem, 5vw, 4rem); margin: 0; font-weight: 900; text-transform: uppercase; line-height: 1; letter-spacing: -1px; }
-        .tagline { color: var(--accent); font-size: 0.8rem; font-weight: bold; letter-spacing: 5px; margin-bottom: 12px; text-transform: uppercase; }
-        .ambassador-slot { position: relative; background: #000; overflow: hidden; opacity: 0; transform: scale(0.78); transform-origin: center; animation: gridSlotWaveIn 8s cubic-bezier(0.16, 1, 0.3, 1) infinite; animation-delay: calc(var(--slot-wave-order, 0) * 80ms); }
-        .ambassador-slot.placeholder { background: #2b2b2b; }
-        .ambassador-slot.placeholder::before { content: ""; position: absolute; inset: 1px; background: linear-gradient(135deg, #333, #1e1e1e); }
-        .ambassador-slot img, .ambassador-slot video { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .ambassador-slot:hover img, .ambassador-slot:hover video { filter: grayscale(0%) brightness(1); transform: scale(1.1); }
-        .info-tab { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 80%); transform: translateY(100%); transition: transform 0.3s ease-out; pointer-events: none; }
-        .ambassador-slot:hover .info-tab { transform: translateY(0); }
-        .info-tab .name { font-weight: 800; font-size: 0.6rem; text-transform: uppercase; color: #fff; }
-        .info-tab .team { font-size: 0.5rem; color: #fff; font-weight: bold; text-transform: uppercase; }
+        #SA_main_body .SA_grid-container { display: grid; width: 100vw; height: 100vh; gap: 1px; background: #111; grid-auto-flow: dense; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(7, 1fr); }
+        #SA_main_body.SA_has-site-navbar-container .SA_grid-container { margin-top: 56px; height: calc(100vh - 56px); }
+        #SA_main_body .SA_headline-center { display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--bg); z-index: 10; text-align: center; border: 1px solid #1a1a1a; padding: 20px; grid-column: 3 / 7; grid-row: 3 / 5; }
+        #SA_main_body .SA_headline-center h1 { font-size: clamp(1.5rem, 5vw, 4rem); margin: 0; font-weight: 900; text-transform: uppercase; line-height: 1; letter-spacing: -1px; }
+        #SA_main_body .SA_tagline { color: var(--accent); font-size: 0.8rem; font-weight: bold; letter-spacing: 5px; margin-bottom: 12px; text-transform: uppercase; }
+        #SA_main_body .SA_ambassador-slot { position: relative; background: #000; overflow: hidden; opacity: 0; transform: scale(0.78); transform-origin: center; animation: SA_gridSlotWaveIn 8s cubic-bezier(0.16, 1, 0.3, 1) infinite; animation-delay: calc(var(--slot-wave-order, 0) * 80ms); }
+        #SA_main_body .SA_ambassador-slot.SA_placeholder { background: #2b2b2b; }
+        #SA_main_body .SA_ambassador-slot.SA_placeholder::before { content: ""; position: absolute; inset: 1px; background: linear-gradient(135deg, #333, #1e1e1e); }
+        #SA_main_body .SA_ambassador-slot img, #SA_main_body .SA_ambassador-slot video { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        #SA_main_body .SA_ambassador-slot:hover img, #SA_main_body .SA_ambassador-slot:hover video { filter: grayscale(0%) brightness(1); transform: scale(1.1); }
+        #SA_main_body .SA_info-tab { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 80%); transform: translateY(100%); transition: transform 0.3s ease-out; pointer-events: none; }
+        #SA_main_body .SA_ambassador-slot:hover .SA_info-tab { transform: translateY(0); }
+        #SA_main_body .SA_info-tab .SA_name { font-weight: 800; font-size: 0.6rem; text-transform: uppercase; color: #fff; }
+        #SA_main_body .SA_info-tab .SA_team { font-size: 0.5rem; color: #fff; font-weight: bold; text-transform: uppercase; }
 
-        @keyframes gridSlotWaveIn {
+        @keyframes SA_gridSlotWaveIn {
             0% { opacity: 0; transform: scale(0.78); }
             8.5% { opacity: 1; transform: scale(1.04); }
             13.125% { opacity: 1; transform: scale(1); }
@@ -35,187 +37,187 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .ambassador-slot { opacity: 1; transform: none; animation: none; }
+            #SA_main_body .SA_ambassador-slot { opacity: 1; transform: none; animation: none; }
         }
 
         @media (max-width: 499px) {
-            .grid-container { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(13, 1fr); }
-            .headline-center { grid-column: 1 / -1; grid-row: 7; border-left: none; border-right: none; padding: 10px; }
-            .headline-center h1 { font-size: 2.5rem; }
-            .tagline { font-size: 0.6rem; letter-spacing: 3px; margin-bottom: 5px; }
-            .headline-center p { display: none; }
+            #SA_main_body .SA_grid-container { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(13, 1fr); }
+            #SA_main_body .SA_headline-center { grid-column: 1 / -1; grid-row: 7; border-left: none; border-right: none; padding: 10px; }
+            #SA_main_body .SA_headline-center h1 { font-size: 2.5rem; }
+            #SA_main_body .SA_tagline { font-size: 0.6rem; letter-spacing: 3px; margin-bottom: 5px; }
+            #SA_main_body .SA_headline-center p { display: none; }
         }
 
         /* --- 2. INTRO TEXT --- */
-        .intro-section { background-color: var(--site-bg); padding: 100px 24px; display: flex; justify-content: center; }
-        .intro-container { max-width: 750px; text-align: left; }
-        .intro-date, .intro-byline { color: #666; font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; }
-        .intro-date { margin: 0 0 28px; }
-        .intro-byline { margin: 34px 0 0; }
-        .intro-container p { color: var(--body-text); font-family: "STIX Two Text", serif; font-size: 21px; font-weight: 500; line-height: 29.4px; margin-bottom: 21px; -moz-osx-font-smoothing: grayscale; }
-        .intro-container strong { color: var(--accent); font-weight: 700; }
+        #SA_main_body .SA_intro-section { background-color: var(--site-bg); padding: 100px 24px; display: flex; justify-content: center; }
+        #SA_main_body .SA_intro-container { max-width: 750px; text-align: left; }
+        #SA_main_body .SA_intro-date, #SA_main_body .SA_intro-byline { color: #666; font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; }
+        #SA_main_body .SA_intro-date { margin: 0 0 28px; }
+        #SA_main_body .SA_intro-byline { margin: 34px 0 0; }
+        #SA_main_body .SA_intro-container p { color: var(--body-text); font-family: "STIX Two Text", serif; font-size: 21px; font-weight: 500; line-height: 29.4px; margin-bottom: 21px; -moz-osx-font-smoothing: grayscale; }
+        #SA_main_body .SA_intro-container strong { color: var(--accent); font-weight: 700; }
 
         /* --- 3. DARK FLAG NAV (TABLE ROWS) --- */
-        .nav-wrapper { background-color: #000; color: #fff; padding: 80px 20px 120px 20px; position: relative; z-index: 20; }
-        .nav-title { text-align: center; margin-bottom: 50px; }
-        .nav-title h2 { font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-size: 2rem; margin: 0; color: #fff; }
+        #SA_main_body .SA_nav-wrapper { background-color: #000; color: #fff; padding: 80px 20px 120px 20px; position: relative; z-index: 20; }
+        #SA_main_body .SA_nav-title { text-align: center; margin-bottom: 50px; }
+        #SA_main_body .SA_nav-title h2 { font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-size: 2rem; margin: 0; color: #fff; }
         
-        .nav-groups-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1300px; margin: 0 auto; }
-        .nav-group-card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 20px; transition: transform 0.3s ease; }
-        .nav-group-card:hover { border-color: #444; }
+        #SA_main_body .SA_nav-groups-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1300px; margin: 0 auto; }
+        #SA_main_body .SA_nav-group-card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 20px; transition: transform 0.3s ease; }
+        #SA_main_body .SA_nav-group-card:hover { border-color: #444; }
         
-        .nav-group-card h3 { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; color: var(--accent); margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        #SA_main_body .SA_nav-group-card h3 { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; color: var(--accent); margin: 0 0 15px 0; text-align: center; letter-spacing: 1px; border-bottom: 1px solid #222; padding-bottom: 10px; }
         
-        .group-table { display: flex; flex-direction: column; gap: 5px; }
-        .flag-item { background: transparent; border: none; padding: 8px 10px; display: flex; flex-direction: row; align-items: center; text-decoration: none; transition: background 0.3s ease; opacity: 0.9; cursor: pointer; border-radius: 4px; }
-        .flag-item:hover { opacity: 1; background: #1a1a1a; }
-        .flag-icon { width: 32px; height: auto; margin-bottom: 0; margin-right: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        .flag-name { font-size: 11px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+        #SA_main_body .SA_group-table { display: flex; flex-direction: column; gap: 5px; }
+        #SA_main_body .SA_flag-item { background: transparent; border: none; padding: 8px 10px; display: flex; flex-direction: row; align-items: center; text-decoration: none; transition: background 0.3s ease; opacity: 0.9; cursor: pointer; border-radius: 4px; }
+        #SA_main_body .SA_flag-item:hover { opacity: 1; background: #1a1a1a; }
+        #SA_main_body .SA_flag-icon { width: 32px; height: auto; margin-bottom: 0; margin-right: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        #SA_main_body .SA_flag-name { font-size: 11px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
 
         /* --- 4. GROUP CONTAINERS (FULL WIDTH) --- */
-        .group-container { background: #fff; color: var(--body-text); scroll-margin-top: 60px; }
+        #SA_main_body .SA_group-container { background: #fff; color: var(--body-text); scroll-margin-top: 60px; }
         
-        .group-hero { position: relative; width: 100vw; height: 100vh; background: #000; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        .group-hero img, .group-hero video { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; pointer-events: none; }
-        .group-hero-placeholder { position: absolute; inset: 0; background: #3a3a3a; }
-        .group-hero-overlay { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 5px solid #fff; padding: 20px 50px; max-width: min(1100px, calc(100vw - 40px)); box-sizing: border-box; }
-        .group-hero h2 { font-size: clamp(4rem, 10vw, 10rem); font-weight: 900; text-transform: uppercase; letter-spacing: -2px; margin: 0; line-height: 1; }
-        .group-country-list { font-size: 0.7rem; opacity: 0.65; margin-top: 15px; font-weight: 700; text-transform: uppercase; line-height: 1.5; }
+        #SA_main_body .SA_group-hero { position: relative; width: 100vw; height: 100vh; background: #000; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        #SA_main_body .SA_group-hero img, #SA_main_body .SA_group-hero video { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; pointer-events: none; }
+        #SA_main_body .SA_group-hero-placeholder { position: absolute; inset: 0; background: #3a3a3a; }
+        #SA_main_body .SA_group-hero-overlay { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 5px solid #fff; padding: 20px 50px; max-width: min(1100px, calc(100vw - 40px)); box-sizing: border-box; }
+        #SA_main_body .SA_group-hero h2 { font-size: clamp(4rem, 10vw, 10rem); font-weight: 900; text-transform: uppercase; letter-spacing: -2px; margin: 0; line-height: 1; }
+        #SA_main_body .SA_group-country-list { font-size: 0.7rem; opacity: 0.65; margin-top: 15px; font-weight: 700; text-transform: uppercase; line-height: 1.5; }
 
-        .group-teams-wrapper { width: 100%; display: flex; flex-direction: column; }
+        #SA_main_body .SA_group-teams-wrapper { width: 100%; display: flex; flex-direction: column; }
 
-        .team-block { 
+        #SA_main_body .SA_team-block { 
             width: 100%; 
             display: flex; flex-direction: column; align-items: center; 
             padding: 100px 20px; 
             box-sizing: border-box;
             scroll-margin-top: 60px; 
         }
-        .team-block + .team-block { border-top: 1px solid rgba(0,0,0,0.14); }
+        #SA_main_body .SA_team-block + .SA_team-block { border-top: 1px solid rgba(0,0,0,0.14); }
 
-        .country-header { margin-bottom: 20px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; width: 100%; max-width: 750px; }
-        .big-flag { width: 80px; height: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 0; margin-right: 25px; }
-        .country-name { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; margin: 0; line-height: 0.9; color: #111; letter-spacing: -2px; text-align: left; }
+        #SA_main_body .SA_country-header { margin-bottom: 20px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; width: 100%; max-width: 750px; }
+        #SA_main_body .SA_big-flag { width: 80px; height: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 0; margin-right: 25px; }
+        #SA_main_body .SA_country-name { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; margin: 0; line-height: 0.9; color: #111; letter-spacing: -2px; text-align: left; }
         
-        .editorial-text { width: 100%; max-width: 750px; text-align: left; position: relative; }
-        .editorial-text::after { content: ""; display: table; clear: both; }
+        #SA_main_body .SA_editorial-text { width: 100%; max-width: 750px; text-align: left; position: relative; }
+        #SA_main_body .SA_editorial-text::after { content: ""; display: table; clear: both; }
 
-        .editorial-text p { font-family: "STIX Two Text", serif; font-size: 19px; line-height: 1.7; margin-top: 0; margin-bottom: 25px; color: #444; }
+        #SA_main_body .SA_editorial-text p { font-family: "STIX Two Text", serif; font-size: 19px; line-height: 1.7; margin-top: 0; margin-bottom: 25px; color: #444; }
         
-        .editorial-text strong { color: #111; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; display: block; margin-top: 30px; margin-bottom: 5px; }
+        #SA_main_body .SA_editorial-text strong { color: #111; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; display: block; margin-top: 30px; margin-bottom: 5px; }
         
         /* Main Image (Broke out to 900px wide) */
-        .editorial-image { width: 100%; max-width: 900px; height: auto; object-fit: contain; margin: 20px 0 10px 0; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: #d8d8d8; }
-        .editorial-image-placeholder { width: 100%; max-width: 900px; height: clamp(260px, 45vw, 500px); margin: 20px 0 10px 0; border-radius: 4px; background: #d8d8d8; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
-        .caption { display: block; box-sizing: border-box; font-size: 0.95rem; color: #232323; font-family: 'Inter', sans-serif; line-height: 1.35; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
-        .caption:empty { display: none; }
-        .caption-text { display: block; }
-        .caption-credit { display: block; margin-top: 3px; color: #666;}
+        #SA_main_body .SA_editorial-image { width: 100%; max-width: 900px; height: auto; object-fit: contain; margin: 20px 0 10px 0; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: #d8d8d8; }
+        #SA_main_body .SA_editorial-image-placeholder { width: 100%; max-width: 900px; height: clamp(260px, 45vw, 500px); margin: 20px 0 10px 0; border-radius: 4px; background: #d8d8d8; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
+        #SA_main_body .SA_caption { display: block; box-sizing: border-box; font-size: 0.95rem; color: #232323; font-family: 'Inter', sans-serif; line-height: 1.35; margin-bottom: 40px; width: 100%; max-width: 900px; text-align: left; }
+        #SA_main_body .SA_caption:empty { display: none; }
+        #SA_main_body .SA_caption-text { display: block; }
+        #SA_main_body .SA_caption-credit { display: block; margin-top: 3px; color: #666;}
 
-        figure.secondary-figure { margin: 20px 0; padding: 0; }
-        figure.secondary-figure.full-width { clear: both; display: grid; justify-items: center; width: min(900px, calc(100vw - 40px)); max-width: none; margin: 40px 0 40px 50%; transform: translateX(-50%); }
-        figure.secondary-figure img.editorial-image-secondary { width: 100%; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
-        figure.secondary-figure.full-width img.editorial-image-secondary { display: block; width: auto; max-width: 100%; max-height: min(760px, 82vh); object-fit: contain; margin-left: auto; margin-right: auto; }
-        figure.secondary-figure .editorial-image-placeholder { height: 260px; margin: 0 0 10px 0; }
-        figure.secondary-figure .caption { margin-bottom: 0; max-width: 100%; }
-        figure.secondary-figure.full-width.portrait-media { grid-template-columns: minmax(260px, auto) minmax(220px, 320px); column-gap: 18px; align-items: end; justify-content: center; }
-        figure.secondary-figure.full-width.portrait-media img.editorial-image-secondary { max-width: min(52vw, 520px); margin: 0; }
-        figure.secondary-figure.full-width.portrait-media .caption { align-self: end; width: 100%; max-width: 320px; }
-        figure.inline-break-figure { margin: 35px 0; padding: 0; clear: both; }
-        figure.inline-break-figure img { width: 100%; height: clamp(240px, 40vw, 430px); object-fit: cover; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
-        figure.inline-break-figure .caption { margin-bottom: 0; max-width: 100%; }
+        #SA_main_body figure.SA_secondary-figure { margin: 20px 0; padding: 0; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width { clear: both; display: grid; justify-items: center; width: min(900px, calc(100vw - 40px)); max-width: none; margin: 40px 0 40px 50%; transform: translateX(-50%); }
+        #SA_main_body figure.SA_secondary-figure img.SA_editorial-image-secondary { width: 100%; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width img.SA_editorial-image-secondary { display: block; width: auto; max-width: 100%; max-height: min(760px, 82vh); object-fit: contain; margin-left: auto; margin-right: auto; }
+        #SA_main_body figure.SA_secondary-figure .SA_editorial-image-placeholder { height: 260px; margin: 0 0 10px 0; }
+        #SA_main_body figure.SA_secondary-figure .SA_caption { margin-bottom: 0; max-width: 100%; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media { grid-template-columns: minmax(260px, auto) minmax(220px, 320px); column-gap: 18px; align-items: end; justify-content: center; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media img.SA_editorial-image-secondary { max-width: min(52vw, 520px); margin: 0; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media .SA_caption { align-self: end; width: 100%; max-width: 320px; }
+        #SA_main_body figure.SA_inline-break-figure { margin: 35px 0; padding: 0; clear: both; }
+        #SA_main_body figure.SA_inline-break-figure img { display: block; width: auto; max-width: 100%; max-height: min(760px, 82vh); object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 0 auto 10px auto; background: #d8d8d8; }
+        #SA_main_body figure.SA_inline-break-figure .SA_caption { margin-bottom: 0; max-width: 100%; }
 
-        .burger-icon { display: none; }
+        #SA_main_body .SA_burger-icon { display: none; }
 
         @media (min-width: 901px) {
-            figure.secondary-figure.float-right { float: right; width: 45%; margin: 10px 0 20px 30px; }
-            figure.secondary-figure.float-left { float: left; width: 45%; margin: 10px 30px 20px 0; }
+            #SA_main_body figure.SA_secondary-figure.SA_float-right { float: right; width: 45%; margin: 10px 0 20px 30px; }
+            #SA_main_body figure.SA_secondary-figure.SA_float-left { float: left; width: 45%; margin: 10px 30px 20px 0; }
         }
 
         @media (max-width: 900px) {
-            .country-name { font-size: 2.2rem; letter-spacing: -1px; }
-            .big-flag { width: 50px; margin-right: 15px; }
-            .team-block { padding: 60px 20px; }
-            figure.secondary-figure.full-width.portrait-media { grid-template-columns: 1fr; justify-items: center; }
-            figure.secondary-figure.full-width.portrait-media img.editorial-image-secondary { max-width: 100%; margin-bottom: 10px; }
-            figure.secondary-figure.full-width.portrait-media .caption { max-width: 100%; }
+            #SA_main_body .SA_country-name { font-size: 2.2rem; letter-spacing: -1px; }
+            #SA_main_body .SA_big-flag { width: 50px; margin-right: 15px; }
+            #SA_main_body .SA_team-block { padding: 60px 20px; }
+            #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media { grid-template-columns: 1fr; justify-items: center; }
+            #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media img.SA_editorial-image-secondary { max-width: 100%; margin-bottom: 10px; }
+            #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media .SA_caption { max-width: 100%; }
             
-            .sticky-nav { padding: 15px 20px; justify-content: flex-end; }
+            #SA_main_body .SA_sticky-nav { padding: 15px 20px; justify-content: flex-end; }
             
-            .sticky-select-wrapper { width: auto; height: auto; border: none; background: transparent; padding: 0; }
-            .burger-icon { display: none; }
-            .country-dropdown-toggle { min-width: 128px; padding: 10px 36px 10px 16px; font-size: 0.72rem; }
-            .country-dropdown-menu { width: 100%; }
+            #SA_main_body .SA_sticky-select-wrapper { width: auto; height: auto; border: none; background: transparent; padding: 0; }
+            #SA_main_body .SA_burger-icon { display: none; }
+            #SA_main_body .SA_country-dropdown-toggle { min-width: 128px; padding: 10px 36px 10px 16px; font-size: 0.72rem; }
+            #SA_main_body .SA_country-dropdown-menu { width: 100%; }
         }
 
         @media (max-width: 425px) {
-            .group-hero-overlay { padding: 15px 20px; border-width: 3px; }
-            .group-hero h2 { font-size: clamp(2.5rem, 12vw, 3.5rem); }
-            .group-country-list { font-size: 0.62rem; margin-top: 10px; }
+            #SA_main_body .SA_group-hero-overlay { padding: 15px 20px; border-width: 3px; }
+            #SA_main_body .SA_group-hero h2 { font-size: clamp(2.5rem, 12vw, 3.5rem); }
+            #SA_main_body .SA_group-country-list { font-size: 0.62rem; margin-top: 10px; }
         }
 
         /* --- UTILITIES --- */
-        .sticky-nav { 
+        #SA_main_body .SA_sticky-nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
             background: transparent; padding: 15px 30px; 
             display: flex; justify-content: flex-end; align-items: center; 
             z-index: 1000; transform: translateY(-100%); transition: transform 0.4s ease; 
             box-sizing: border-box; pointer-events: none; 
         }
-        html.has-site-navbar-container .sticky-nav { top: -56px; }
-        .sticky-nav.visible { transform: translateY(0); }
-        html.has-site-navbar-container .sticky-nav.visible { top: 56px; transform: translateY(0); }
-        .sticky-title { display: none !important; }
+        #SA_main_body.SA_has-site-navbar-container .SA_sticky-nav { top: -56px; }
+        #SA_main_body .SA_sticky-nav.SA_visible { transform: translateY(0); }
+        #SA_main_body.SA_has-site-navbar-container .SA_sticky-nav.SA_visible { top: 56px; transform: translateY(0); }
+        #SA_main_body .SA_sticky-title { display: none !important; }
         
-        .sticky-select-wrapper { position: relative; pointer-events: auto; }
-        .country-dropdown-toggle { background-color: var(--accent); color: #fff; border: none; padding: 10px 45px 10px 20px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; cursor: pointer; outline: none; min-width: 180px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; text-align: left; }
-        .country-dropdown-toggle::after { content: ''; position: absolute; right: 18px; top: 50%; transform: translateY(-60%) rotate(45deg); width: 6px; height: 6px; border-right: 2px solid #fff; border-bottom: 2px solid #fff; pointer-events: none; }
-        .country-dropdown-toggle[aria-expanded="true"]::after { transform: translateY(-25%) rotate(225deg); }
-        .country-dropdown-menu { position: absolute; top: calc(100% + 10px); right: 0; width: 100%; max-height: min(70vh, 540px); overflow-y: auto; background: #2b9bdd; border: 1px solid rgba(255,255,255,0.35); border-radius: 8px; box-shadow: 0 18px 45px rgba(0,0,0,0.35); padding: 10px; display: none; box-sizing: border-box; }
-        .country-dropdown-menu.open { display: block; }
-        .country-dropdown-group + .country-dropdown-group { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.28); }
-        .country-dropdown-group-title { width: 100%; border: none; background: rgba(255,255,255,0.18); color: #fff; padding: 8px 10px; border-radius: 4px; text-align: left; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin: 0 0 4px; }
-        .country-dropdown-item { width: 100%; border: none; background: transparent; color: #fff; padding: 7px 10px; border-radius: 4px; text-align: left; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; }
-        .country-dropdown-group-title:hover, .country-dropdown-group-title:focus, .country-dropdown-item:hover, .country-dropdown-item:focus { background: rgba(255,255,255,0.26); outline: none; }
+        #SA_main_body .SA_sticky-select-wrapper { position: relative; pointer-events: auto; }
+        #SA_main_body .SA_country-dropdown-toggle { background-color: var(--accent); color: #fff; border: none; padding: 10px 45px 10px 20px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; cursor: pointer; outline: none; min-width: 180px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; text-align: left; }
+        #SA_main_body .SA_country-dropdown-toggle::after { content: ''; position: absolute; right: 18px; top: 50%; transform: translateY(-60%) rotate(45deg); width: 6px; height: 6px; border-right: 2px solid #fff; border-bottom: 2px solid #fff; pointer-events: none; }
+        #SA_main_body .SA_country-dropdown-toggle[aria-expanded="true"]::after { transform: translateY(-25%) rotate(225deg); }
+        #SA_main_body .SA_country-dropdown-menu { position: absolute; top: calc(100% + 10px); right: 0; width: 100%; max-height: min(70vh, 540px); overflow-y: auto; background: #2b9bdd; border: 1px solid rgba(255,255,255,0.35); border-radius: 8px; box-shadow: 0 18px 45px rgba(0,0,0,0.35); padding: 10px; display: none; box-sizing: border-box; }
+        #SA_main_body .SA_country-dropdown-menu.SA_open { display: block; }
+        #SA_main_body .SA_country-dropdown-group + .SA_country-dropdown-group { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.28); }
+        #SA_main_body .SA_country-dropdown-group-title { width: 100%; border: none; background: rgba(255,255,255,0.18); color: #fff; padding: 8px 10px; border-radius: 4px; text-align: left; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin: 0 0 4px; }
+        #SA_main_body .SA_country-dropdown-item { width: 100%; border: none; background: transparent; color: #fff; padding: 7px 10px; border-radius: 4px; text-align: left; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; }
+        #SA_main_body .SA_country-dropdown-group-title:hover, #SA_main_body .SA_country-dropdown-group-title:focus, #SA_main_body .SA_country-dropdown-item:hover, #SA_main_body .SA_country-dropdown-item:focus { background: rgba(255,255,255,0.26); outline: none; }
 
-        #SA_footer { background: #ededed; position: relative; text-align: center; font-size: 0.75rem; line-height: 0.75rem; margin-top: 0; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; align-items: center; }
-        #SA_footer p { font-family: Helvetica Neue, Helvetica, Arial, sans-serif !important; }
-        #SA_footer a { text-decoration: none; color: #333; }
-        .SA_credit-container { box-sizing: border-box; padding: 2rem 1rem; width: 100%; max-width: 1200px; margin: 0 auto; }
-        .SA_credit-container__inner-wrapper { margin: 0 auto; }
-        .SA_credit-container__inner-wrapper__individual { margin: 0 1rem 1rem 0; white-space: nowrap; display: inline; }
-        .SA_credit-container__inner-wrapper__individual__title { font-size: 0.8125rem !important; line-height: 1em !important; padding-right: 0.125rem; color: rgba(0, 0, 0, 0.76); display: inline; margin: 0; }
-        .SA_credit-container__inner-wrapper__individual__name { font-size: 0.8125rem !important; line-height: 1.25rem !important; color: #000; font-weight: bold !important; letter-spacing: 0.025rem; display: inline; margin: 0; }
-        .SA_credit-container__inner-wrapper__individual__name span { white-space: nowrap; display: inline-block; }
+        #SA_main_body #SA_footer { background: #ededed; position: relative; text-align: center; font-size: 0.75rem; line-height: 0.75rem; margin-top: 0; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; align-items: center; }
+        #SA_main_body #SA_footer p { font-family: Helvetica Neue, Helvetica, Arial, sans-serif !important; }
+        #SA_main_body #SA_footer a { text-decoration: none; color: #333; }
+        #SA_main_body .SA_credit-container { box-sizing: border-box; padding: 2rem 1rem; width: 100%; max-width: 1200px; margin: 0 auto; }
+        #SA_main_body .SA_credit-container__inner-wrapper { margin: 0 auto; }
+        #SA_main_body .SA_credit-container__inner-wrapper__individual { margin: 0 1rem 1rem 0; white-space: nowrap; display: inline; }
+        #SA_main_body .SA_credit-container__inner-wrapper__individual__title { font-size: 0.8125rem !important; line-height: 1em !important; padding-right: 0.125rem; color: rgba(0, 0, 0, 0.76); display: inline; margin: 0; }
+        #SA_main_body .SA_credit-container__inner-wrapper__individual__name { font-size: 0.8125rem !important; line-height: 1.25rem !important; color: #000; font-weight: bold !important; letter-spacing: 0.025rem; display: inline; margin: 0; }
+        #SA_main_body .SA_credit-container__inner-wrapper__individual__name span { white-space: nowrap; display: inline-block; }
 
         @media (min-width: 701px) {
-            .SA_credit-container__inner-wrapper__individual__title,
-            .SA_credit-container__inner-wrapper__individual__name { font-size: 0.875rem !important; }
+            #SA_main_body .SA_credit-container__inner-wrapper__individual__title,
+            #SA_main_body .SA_credit-container__inner-wrapper__individual__name { font-size: 0.875rem !important; }
         }
         
-        .back-to-top { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.4); z-index: 900; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto; opacity: 0; }
-        .back-to-top.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+        #SA_main_body .SA_back-to-top { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.4); z-index: 900; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto; opacity: 0; }
+        #SA_main_body .SA_back-to-top.SA_visible { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
-<nav class="sticky-nav" id="stickyNav">
-        <div class="sticky-title">SOCCER CITY</div>
-        <div class="sticky-select-wrapper">
-            <div class="burger-icon"><svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div>
-            <button class="country-dropdown-toggle" id="countryDropdownToggle" type="button" aria-expanded="false" aria-controls="countryDropdownMenu">JUMP TO A COUNTRY</button>
-            <div class="country-dropdown-menu" id="countryDropdownMenu" role="menu"></div>
+<nav class="SA_sticky-nav" id="SA_stickyNav">
+        <div class="SA_sticky-title">SOCCER CITY</div>
+        <div class="SA_sticky-select-wrapper">
+            <div class="SA_burger-icon"><svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div>
+            <button class="SA_country-dropdown-toggle" id="SA_countryDropdownToggle" type="button" aria-expanded="false" aria-controls="SA_countryDropdownMenu">JUMP TO A COUNTRY</button>
+            <div class="SA_country-dropdown-menu" id="SA_countryDropdownMenu" role="menu"></div>
         </div>
     </nav>
 
-    <main class="grid-container" id="ambassadorGrid">
-        <div class="headline-center">
-            <span class="tagline">Your guide to GTA fans</span>
+    <main class="SA_grid-container" id="SA_ambassadorGrid">
+        <div class="SA_headline-center">
+            <span class="SA_tagline">Your guide to GTA fans</span>
             <h1>SOCCER CITY</h1>
             <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 15px;">48 COUNTRIES. 1 DREAM.</p>
         </div>
     </main>
 
-    <section class="intro-section">
-        <div class="intro-container">
-            <div class="intro-date">Tuesday, June 9, 2026</div>
+    <section class="SA_intro-section">
+        <div class="SA_intro-container">
+            <div class="SA_intro-date">Tuesday, June 9, 2026</div>
             <p>Soccer is not just about your country, it's about your childhood, your family, your friends. Soccer is a team sport, soccer is personal.</p>
 
             <p>This is what makes it the world's game: The fact that it's played by children in schoolyards, shipyards, and by children who run home from the pitch when bombs start to fly.</p>
@@ -241,18 +243,18 @@
             <p>Join them, join us.</p>
 
             <p>Welcome to Toronto.</p>
-            <div class="intro-byline">Francine Kopun, Senior Writer</div>
+            <div class="SA_intro-byline">Francine Kopun, Senior Writer</div>
         </div>
     </section>
 
-    <div class="nav-wrapper" id="flagSection">
-        <div class="nav-title">
+    <div class="SA_nav-wrapper" id="SA_flagSection">
+        <div class="SA_nav-title">
             <h2>Where do you want to go?</h2>
         </div>
-        <div class="nav-groups-container" id="flagGroupsContainer"></div>
+        <div class="SA_nav-groups-container" id="SA_flagGroupsContainer"></div>
     </div>
 
-    <div id="contentSections"></div>
+    <div id="SA_contentSections"></div>
 
     <footer id="SA_footer">
         <div>
@@ -291,8 +293,7 @@
         </div>
     </footer>
 
-    <button class="back-to-top" id="backToTop" onclick="location.hash = 'flagSection'">↑ Back to Top</button>
-
+    <button class="SA_back-to-top" id="SA_backToTop" onclick="location.hash = 'SA_flagSection'">↑ Back to Top</button>
     <script>
         // EXPLICIT HARDCODED TOURNAMENT GROUPS A-L
         const tournamentGroups = {
@@ -407,7 +408,7 @@
         const groupHeroVideoOverrides = {
             A: "./images/South-Africa/78066352-d450-475e-b99d-8577b306e003.jpg",
             B: "./images/Switzerland/video/slomo.mp4",
-            D: "./images/Turkey/video/slomo.mp4",
+            D: "./images/Australia/video/slomo.mp4",
             E: "./images/Germany/video/slomo.mp4",
             L: "./images/England/video/slomo.mp4",
             J: "./images/Jordan/video/slomo.mp4",
@@ -521,9 +522,9 @@
 
         function renderStoryBreak({ image, imageAlt = "Match day in Toronto", caption = "A pause in the story before the next wave of match-day memories." } = {}) {
             return `
-                <figure class="inline-break-figure">
+                <figure class="SA_inline-break-figure">
                     <img src="${escapeHTML(resolveAssetPath(image))}" alt="${escapeHTML(imageAlt)}" loading="lazy">
-                    <figcaption class="caption">${escapeHTML(caption)}</figcaption>
+                    <figcaption class="SA_caption">${escapeHTML(caption)}</figcaption>
                 </figure>
             `;
         }
@@ -537,15 +538,15 @@
             const height = Number(dimensions.height);
 
             if (!width || !height) return "";
-            return height > width * 1.15 ? "portrait-media" : "landscape-media";
+            return height > width * 1.15 ? "SA_portrait-media" : "SA_landscape-media";
         }
 
         function renderEditorialMedia(imagePath, altText, className, dimensions = {}) {
             if (!imagePath) {
-                return `<div class="editorial-image-placeholder" aria-label="${escapeHTML(altText)}"></div>`;
+                return `<div class="SA_editorial-image-placeholder" aria-label="${escapeHTML(altText)}"></div>`;
             }
 
-            return `<img class="${className}" src="${escapeHTML(resolveAssetPath(imagePath))}" alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'editorial-image-placeholder' }))">`;
+            return `<img class="${className}" src="${escapeHTML(resolveAssetPath(imagePath))}" alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'SA_editorial-image-placeholder' }))">`;
         }
 
         function getGridThumbnailPath(imagePath) {
@@ -641,10 +642,10 @@
                 const tsvData = await response.text();
                 const teamData = parseTSV(tsvData);
                 
-                const grid = document.getElementById('ambassadorGrid');
-                const flagGroupsContainer = document.getElementById('flagGroupsContainer');
-                const contentSections = document.getElementById('contentSections');
-                const dropdownMenu = document.getElementById('countryDropdownMenu');
+                const grid = document.getElementById('SA_ambassadorGrid');
+                const flagGroupsContainer = document.getElementById('SA_flagGroupsContainer');
+                const contentSections = document.getElementById('SA_contentSections');
+                const dropdownMenu = document.getElementById('SA_countryDropdownMenu');
 
                 let allTeamsFlattened = [];
                 Object.values(tournamentGroups).forEach(group => allTeamsFlattened.push(...group));
@@ -654,9 +655,9 @@
                     const folderName = teamObj.folderName || teamName.replace(/\s+/g, '');
                     const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index);
                     const slot = document.createElement('div');
-                    slot.className = mediaHtml ? 'ambassador-slot' : 'ambassador-slot placeholder';
+                    slot.className = mediaHtml ? 'SA_ambassador-slot' : 'SA_ambassador-slot SA_placeholder';
                     slot.style.setProperty('--slot-wave-order', String(index % 8 + Math.floor(index / 8)));
-                    slot.innerHTML = `${mediaHtml}<div class="info-tab"><div class="team">${teamName}</div></div>`;
+                    slot.innerHTML = `${mediaHtml}<div class="SA_info-tab"><div class="SA_team">${teamName}</div></div>`;
                     grid.appendChild(slot);
                 });
 
@@ -666,33 +667,33 @@
                     const teamsInGroup = tournamentGroups[groupLetter];
                     
                     const navGroupBlock = document.createElement('div');
-                    navGroupBlock.className = 'nav-group-card';
+                    navGroupBlock.className = 'SA_nav-group-card';
                     navGroupBlock.innerHTML = `<h3>Group ${groupLetter}</h3>`;
                     
                     const flagGrid = document.createElement('div');
-                    flagGrid.className = 'group-table';
+                    flagGrid.className = 'SA_group-table';
                     
                     const dropdownGroup = document.createElement('div');
-                    dropdownGroup.className = 'country-dropdown-group';
-                    dropdownGroup.innerHTML = `<button class="country-dropdown-group-title" type="button" data-target="group-${groupLetter}" role="menuitem">Group ${groupLetter}</button>`;
+                    dropdownGroup.className = 'SA_country-dropdown-group';
+                    dropdownGroup.innerHTML = `<button class="SA_country-dropdown-group-title" type="button" data-target="SA_group-${groupLetter}" role="menuitem">Group ${groupLetter}</button>`;
                     
                     const groupContainer = document.createElement('div');
-                    groupContainer.className = 'group-container';
-                    groupContainer.id = `group-${groupLetter}`;
+                    groupContainer.className = 'SA_group-container';
+                    groupContainer.id = `SA_group-${groupLetter}`;
                     
                     const groupHeroGif = gifLinks[globalGifIndex % gifLinks.length];
                     globalGifIndex++;
                     const groupHeroMedia = getGroupHeroMedia(teamsInGroup, teamData, groupLetter, groupHeroGif);
 
                     let htmlContent = `
-                        <div class="group-hero">
+                        <div class="SA_group-hero">
                             ${groupHeroMedia}
-                            <div class="group-hero-overlay">
+                            <div class="SA_group-hero-overlay">
                                 <h2>Group ${groupLetter}</h2>
-                                <div class="group-country-list">${teamsInGroup.map(teamName => escapeHTML(teamName)).join(" • ")}</div>
+                                <div class="SA_group-country-list">${teamsInGroup.map(teamName => escapeHTML(teamName)).join(" • ")}</div>
                             </div>
                         </div>
-                        <div class="group-teams-wrapper">
+                        <div class="SA_group-teams-wrapper">
                     `;
 
                     teamsInGroup.forEach((teamName, teamIndex) => {
@@ -700,7 +701,7 @@
                         const teamObj = findTeamData(teamData, cleanTeamName);
                         const folderName = teamObj.folderName || cleanTeamName.replace(/\s+/g, '');
                         const code = countryCodes[cleanTeamName] || "un";
-                        const anchorId = `section-${cleanTeamName.toLowerCase().replace(/\s+/g, '-')}`;
+                        const anchorId = `SA_section-${cleanTeamName.toLowerCase().replace(/\s+/g, '-')}`;
                         
                         const teamBgColor = teamColors[cleanTeamName] || "rgba(240, 240, 240, 0.5)"; 
 
@@ -721,31 +722,31 @@
                         const image1Dimensions = { width: teamObj.image1Width, height: teamObj.image1Height };
                         const image2Dimensions = { width: teamObj.image2Width, height: teamObj.image2Height };
                         const mainImageHtml = img1Path ? `
-                                ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "editorial-image", image1Dimensions)}
-                                <span class="caption"></span>
+                                ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "SA_editorial-image", image1Dimensions)}
+                                <span class="SA_caption"></span>
                         ` : "";
                         const secondaryFigureClass = [
-                            img1Path ? (teamIndex % 2 === 0 ? 'float-right' : 'float-left') : 'full-width',
+                            img1Path ? (teamIndex % 2 === 0 ? 'SA_float-right' : 'SA_float-left') : 'SA_full-width',
                             getMediaOrientationClass(image2Dimensions)
                         ].filter(Boolean).join(' ');
                         const secondaryCaption = "";
                         const secondaryFigureHtml = img2Path ? `
-                                    <figure class="secondary-figure ${secondaryFigureClass}">
-                                        ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "editorial-image-secondary", image2Dimensions)}
-                                        <figcaption class="caption">${secondaryCaption}</figcaption>
+                                    <figure class="SA_secondary-figure ${secondaryFigureClass}">
+                                        ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "SA_editorial-image-secondary", image2Dimensions)}
+                                        <figcaption class="SA_caption">${secondaryCaption}</figcaption>
                                     </figure>
                         ` : "";
                         const secondaryAfterCountry = !img1Path ? secondaryFigureHtml : "";
                         const secondaryAfterWhy = img1Path ? secondaryFigureHtml : "";
 
                         const flagItem = document.createElement('a');
-                        flagItem.className = 'flag-item';
+                        flagItem.className = 'SA_flag-item';
                         flagItem.href = `#${anchorId}`;
-                        flagItem.innerHTML = `<img class="flag-icon" src="https://flagcdn.com/w80/${code}.png" alt="${cleanTeamName}"><span class="flag-name">${cleanTeamName}</span>`;
+                        flagItem.innerHTML = `<img class="SA_flag-icon" src="https://flagcdn.com/w80/${code}.png" alt="${cleanTeamName}"><span class="SA_flag-name">${cleanTeamName}</span>`;
                         flagGrid.appendChild(flagItem);
 
                         const dropdownItem = document.createElement('button');
-                        dropdownItem.className = 'country-dropdown-item';
+                        dropdownItem.className = 'SA_country-dropdown-item';
                         dropdownItem.type = 'button';
                         dropdownItem.dataset.target = anchorId;
                         dropdownItem.setAttribute('role', 'menuitem');
@@ -753,15 +754,15 @@
                         dropdownGroup.appendChild(dropdownItem);
 
                         htmlContent += `
-                            <div class="team-block" id="${anchorId}" style="background-color: ${teamBgColor};">
-                                <div class="country-header">
-                                    <img class="big-flag" src="https://flagcdn.com/w160/${code}.png" alt="${cleanTeamName}">
-                                    <h2 class="country-name">${cleanTeamName}</h2>
+                            <div class="SA_team-block" id="${anchorId}" style="background-color: ${teamBgColor};">
+                                <div class="SA_country-header">
+                                    <img class="SA_big-flag" src="https://flagcdn.com/w160/${code}.png" alt="${cleanTeamName}">
+                                    <h2 class="SA_country-name">${cleanTeamName}</h2>
                                 </div>
 
                                 ${mainImageHtml}
 
-                                <div class="editorial-text">
+                                <div class="SA_editorial-text">
                                     ${theFan}
                                     ${theCountry}
                                     ${secondaryAfterCountry}
@@ -790,15 +791,16 @@
 
         buildPage();
 
-        const stickyNav = document.getElementById('stickyNav');
-        const backToTopBtn = document.getElementById('backToTop');
-        const flagSection = document.getElementById('flagSection');
+        const mainBody = document.getElementById('SA_main_body');
+        const stickyNav = document.getElementById('SA_stickyNav');
+        const backToTopBtn = document.getElementById('SA_backToTop');
+        const flagSection = document.getElementById('SA_flagSection');
         const footer = document.getElementById('SA_footer');
-        const countryDropdownToggle = document.getElementById('countryDropdownToggle');
-        const countryDropdownMenu = document.getElementById('countryDropdownMenu');
+        const countryDropdownToggle = document.getElementById('SA_countryDropdownToggle');
+        const countryDropdownMenu = document.getElementById('SA_countryDropdownMenu');
 
         function updateHostNavbarOffset() {
-            document.documentElement.classList.toggle('has-site-navbar-container', Boolean(document.querySelector('#site-navbar-container')));
+            if (mainBody) mainBody.classList.toggle('SA_has-site-navbar-container', Boolean(document.querySelector('#site-navbar-container')));
         }
 
         function updateCountrySelectLabel() {
@@ -815,9 +817,9 @@
         window.addEventListener('resize', updateCountrySelectLabel);
 
         function hideStickyControls() {
-            if (stickyNav) stickyNav.classList.remove('visible');
-            if (backToTopBtn) backToTopBtn.classList.remove('visible');
-            if (countryDropdownMenu) countryDropdownMenu.classList.remove('open');
+            if (stickyNav) stickyNav.classList.remove('SA_visible');
+            if (backToTopBtn) backToTopBtn.classList.remove('SA_visible');
+            if (countryDropdownMenu) countryDropdownMenu.classList.remove('SA_open');
             if (countryDropdownToggle) countryDropdownToggle.setAttribute('aria-expanded', 'false');
         }
 
@@ -828,8 +830,8 @@
             const footerInView = footerRect ? footerRect.top <= window.innerHeight : false;
 
             if (flagRect.bottom < 0 && !footerInView) {
-                if (stickyNav) stickyNav.classList.add('visible');
-                if (backToTopBtn) backToTopBtn.classList.add('visible');
+                if (stickyNav) stickyNav.classList.add('SA_visible');
+                if (backToTopBtn) backToTopBtn.classList.add('SA_visible');
             } else {
                 hideStickyControls();
             }
@@ -841,13 +843,13 @@
 
         function closeCountryDropdown() {
             if (!countryDropdownMenu || !countryDropdownToggle) return;
-            countryDropdownMenu.classList.remove('open');
+            countryDropdownMenu.classList.remove('SA_open');
             countryDropdownToggle.setAttribute('aria-expanded', 'false');
         }
 
         if (countryDropdownToggle && countryDropdownMenu) {
             countryDropdownToggle.addEventListener('click', function() {
-                const isOpen = countryDropdownMenu.classList.toggle('open');
+                const isOpen = countryDropdownMenu.classList.toggle('SA_open');
                 countryDropdownToggle.setAttribute('aria-expanded', String(isOpen));
             });
 
@@ -869,3 +871,4 @@
             if (event.key === 'Escape') closeCountryDropdown();
         });
     </script>
+</article>
