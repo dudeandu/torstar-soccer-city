@@ -2,6 +2,11 @@
 <article id="SA_main_body">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <style>
+
+    body, html {
+        margin: 0;
+        padding: 0;
+    }
         #SA_main_body {
             --bg: none;
             --accent: #0077BB;
@@ -115,31 +120,38 @@
         #SA_main_body .SA_caption-credit { display: block; margin-top: 3px; color: #666;}
 
         #SA_main_body figure.SA_secondary-figure { margin: 20px 0; padding: 0; }
-        #SA_main_body figure.SA_secondary-figure.SA_full-width { clear: both; display: grid; justify-items: center; width: min(900px, calc(100vw - 40px)); max-width: none; margin: 40px 0 40px 50%; transform: translateX(-50%); }
-        #SA_main_body figure.SA_secondary-figure img.SA_editorial-image-secondary { width: 100%; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
-        #SA_main_body figure.SA_secondary-figure.SA_full-width img.SA_editorial-image-secondary { display: block; width: auto; max-width: 100%; max-height: min(760px, 82vh); object-fit: contain; margin-left: auto; margin-right: auto; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width { clear: both; display: block; width: min(900px, calc(100vw - 40px)); max-width: none; margin: 40px 0 40px 50%; transform: translateX(-50%); }
+        #SA_main_body figure.SA_secondary-figure img.SA_editorial-image-secondary { display: block; width: 100%; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 10px; background: #d8d8d8; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width img.SA_editorial-image-secondary { width: 100%; max-width: 100%; max-height: none; object-fit: contain; margin-left: auto; margin-right: auto; }
         #SA_main_body figure.SA_secondary-figure .SA_editorial-image-placeholder { height: 260px; margin: 0 0 10px 0; }
         #SA_main_body figure.SA_secondary-figure .SA_caption { margin-bottom: 0; max-width: 100%; }
-        #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media { grid-template-columns: minmax(260px, auto) minmax(220px, 320px); column-gap: 18px; align-items: end; justify-content: center; }
-        #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media img.SA_editorial-image-secondary { max-width: min(52vw, 520px); margin: 0; }
-        #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media .SA_caption { align-self: end; width: 100%; max-width: 320px; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media img.SA_editorial-image-secondary { width: min(100%, 680px); max-width: 100%; margin: 0 auto 10px auto; }
+        #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media .SA_caption { width: min(100%, 680px); margin-left: auto; margin-right: auto; }
         #SA_main_body figure.SA_inline-break-figure { margin: 35px 0; padding: 0; clear: both; }
-        #SA_main_body figure.SA_inline-break-figure img { display: block; width: auto; max-width: 100%; max-height: min(760px, 82vh); object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 0 auto 10px auto; background: #d8d8d8; }
+        #SA_main_body figure.SA_inline-break-figure img { display: block; width: 100%; max-width: 100%; height: auto; max-height: none; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 0 auto 10px auto; background: #d8d8d8; }
         #SA_main_body figure.SA_inline-break-figure .SA_caption { margin-bottom: 0; max-width: 100%; }
 
         #SA_main_body .SA_burger-icon { display: none; }
 
         @media (min-width: 901px) {
-            #SA_main_body figure.SA_secondary-figure.SA_float-right { float: right; width: 45%; margin: 10px 0 20px 30px; }
-            #SA_main_body figure.SA_secondary-figure.SA_float-left { float: left; width: 45%; margin: 10px 30px 20px 0; }
+            #SA_main_body figure.SA_secondary-figure.SA_float-right,
+            #SA_main_body figure.SA_secondary-figure.SA_float-left { width: min(58%, 560px); min-width: 420px; }
+            #SA_main_body figure.SA_secondary-figure.SA_float-right { float: right; margin: 10px -80px 24px 32px; }
+            #SA_main_body figure.SA_secondary-figure.SA_float-left { float: left; margin: 10px 32px 24px -80px; }
+        }
+
+        @media (min-width: 901px) and (max-width: 1120px) {
+            #SA_main_body figure.SA_secondary-figure.SA_float-right,
+            #SA_main_body figure.SA_secondary-figure.SA_float-left { width: 52%; min-width: 360px; }
+            #SA_main_body figure.SA_secondary-figure.SA_float-right { margin-right: 0; }
+            #SA_main_body figure.SA_secondary-figure.SA_float-left { margin-left: 0; }
         }
 
         @media (max-width: 900px) {
             #SA_main_body .SA_country-name { font-size: 2.2rem; letter-spacing: -1px; }
             #SA_main_body .SA_big-flag { width: 50px; margin-right: 15px; }
             #SA_main_body .SA_team-block { padding: 60px 20px; }
-            #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media { grid-template-columns: 1fr; justify-items: center; }
-            #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media img.SA_editorial-image-secondary { max-width: 100%; margin-bottom: 10px; }
+            #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media img.SA_editorial-image-secondary { width: 100%; margin-bottom: 10px; }
             #SA_main_body figure.SA_secondary-figure.SA_full-width.SA_portrait-media .SA_caption { max-width: 100%; }
             
             #SA_main_body .SA_sticky-nav { padding: 15px 20px; justify-content: flex-end; }
@@ -197,6 +209,9 @@
         
         #SA_main_body .SA_back-to-top { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.4); z-index: 900; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto; opacity: 0; }
         #SA_main_body .SA_back-to-top.SA_visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+
+        #tncms-region-page_sticky_anchor {display: none;}
     </style>
 <nav class="SA_sticky-nav" id="SA_stickyNav">
         <div class="SA_sticky-title">SOCCER CITY</div>
@@ -209,7 +224,7 @@
 
     <main class="SA_grid-container" id="SA_ambassadorGrid">
         <div class="SA_headline-center">
-            <span class="SA_tagline">Your guide to GTA fans</span>
+            <span class="SA_tagline">Your guide to local fans</span>
             <h1>SOCCER CITY</h1>
             <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 15px;">48 COUNTRIES. 1 DREAM.</p>
         </div>
@@ -217,7 +232,11 @@
 
     <section class="SA_intro-section">
         <div class="SA_intro-container">
-            <div class="SA_intro-date">Tuesday, June 9, 2026</div>
+            <div class="SA_intro-date">Tuesday, June 9, 2026
+
+                <a href="#SA_comments-anchor" style="margin: 16px 0 32px 24px;"cmp-ltrk="rc:article-body" cmp-ltrk-idx="0" mrfobservableid="c5e32807-ea1e-43de-a9ba-b66aca30c3a9"><img style="height: 20px; width:auto;" src="https://projects-images.thestar.com/restaurants100under100/images/icons/comments-icon-3.svg"></a>
+
+            </div>
             <p>Soccer is not just about your country, it's about your childhood, your family, your friends. Soccer is a team sport, soccer is personal.</p>
 
             <p>This is what makes it the world's game: The fact that it's played by children in schoolyards, shipyards, and by children who run home from the pitch when bombs start to fly.</p>
@@ -254,22 +273,13 @@
         <div class="SA_nav-groups-container" id="SA_flagGroupsContainer"></div>
     </div>
 
+
+    <!-- paywall-start-token -->
     <div id="SA_contentSections"></div>
 
     <footer id="SA_footer">
         <div>
             <div class="SA_credit-container">
-                <div class="SA_credit-container__inner-wrapper">
-                    <div class="SA_credit-container__inner-wrapper__individual">
-                        <p class="SA_credit-container__inner-wrapper__individual__title">Video</p>
-                        <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names">
-                            <span>Sophie Bouquillon, </span>
-                            <span>Nicholas Lachance, </span>
-                            <span>Richard Lautens, </span>
-                            <span>Steve Russell, </span>
-                            <span>Rene Johnston</span>
-                        </p>
-                    </div>
                     <div class="SA_credit-container__inner-wrapper__individual">
                         <p class="SA_credit-container__inner-wrapper__individual__title">Reporters</p>
                         <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names">
@@ -284,6 +294,17 @@
                         <p class="SA_credit-container__inner-wrapper__individual__title">Design and Web Development</p>
                         <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names"><span>Andres Plana</span></p>
                     </div>
+                <div class="SA_credit-container__inner-wrapper">
+                    <div class="SA_credit-container__inner-wrapper__individual">
+                        <p class="SA_credit-container__inner-wrapper__individual__title">Video</p>
+                        <p style="white-space: normal;" class="SA_credit-container__inner-wrapper__individual__name SA_multinames__names">
+                            <span>Sophie Bouquillon, </span>
+                            <span>Nicholas Lachance, </span>
+                            <span>Richard Lautens, </span>
+                            <span>Steve Russell, </span>
+                            <span>R.J. Johnston</span>
+                        </p>
+                    </div>
                     <div class="SA_credit-container__inner-wrapper__individual">
                         <p class="SA_credit-container__inner-wrapper__individual__title">Digital Producer</p>
                         <p class="SA_credit-container__inner-wrapper__individual__name">Tania Pereira</p>
@@ -292,8 +313,10 @@
             </div>
         </div>
     </footer>
+    <!-- paywall-end-token -->
+    <span id="SA_comments-anchor"></span>
 
-    <button class="SA_back-to-top" id="SA_backToTop" onclick="location.hash = 'SA_flagSection'">↑ Back to Top</button>
+    <button class="SA_back-to-top" id="SA_backToTop" type="button">↑ Back to Top</button>
     <script>
         // EXPLICIT HARDCODED TOURNAMENT GROUPS A-L
         const tournamentGroups = {
@@ -406,7 +429,7 @@
         };
 
         const groupHeroVideoOverrides = {
-            A: "./images/South-Africa/78066352-d450-475e-b99d-8577b306e003.jpg",
+            A: "./images/South-Korea/video/slomo.mp4",
             B: "./images/Switzerland/video/slomo.mp4",
             D: "./images/Australia/video/slomo.mp4",
             E: "./images/Germany/video/slomo.mp4",
@@ -482,6 +505,53 @@
             });
         }
 
+        function parseCSV(csvText) {
+            const rows = [];
+            let row = [];
+            let value = "";
+            let inQuotes = false;
+
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                const nextChar = csvText[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        value += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === "," && !inQuotes) {
+                    row.push(value);
+                    value = "";
+                } else if ((char === "\n" || char === "\r") && !inQuotes) {
+                    if (char === "\r" && nextChar === "\n") i++;
+                    row.push(value);
+                    if (row.some(cell => cell.trim() !== "")) rows.push(row);
+                    row = [];
+                    value = "";
+                } else {
+                    value += char;
+                }
+            }
+
+            if (value || row.length) {
+                row.push(value);
+                if (row.some(cell => cell.trim() !== "")) rows.push(row);
+            }
+
+            if (!rows.length) return [];
+            const headers = rows.shift().map(header => header.trim());
+            return rows.map(values => {
+                const rowObj = {};
+                headers.forEach((header, index) => {
+                    rowObj[header] = values[index] ? values[index].trim() : "";
+                });
+                return rowObj;
+            });
+        }
+
         function escapeHTML(value) {
             return String(value)
                 .replace(/&/g, "&amp;")
@@ -489,6 +559,28 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        function normalizeImagePath(value) {
+            return String(value || "")
+                .trim()
+                .replace(/\\/g, "/")
+                .replace(/^\.\//, "")
+                .replace(/^images\//, "");
+        }
+
+        function buildImageAltLookup(rows) {
+            const lookup = new Map();
+            rows.forEach(row => {
+                const imagePath = normalizeImagePath(row.path);
+                const altText = String(row.alt || "").trim();
+                if (imagePath && altText) lookup.set(imagePath, altText);
+            });
+            return lookup;
+        }
+
+        function getImageAlt(imagePath, fallbackAlt, imageAltLookup) {
+            return imageAltLookup.get(normalizeImagePath(imagePath)) || fallbackAlt;
         }
 
         function renderParagraphs(value, breakOptions = {}) {
@@ -558,11 +650,12 @@
             });
         }
 
-        function renderGridMedia(teamObj, teamName, folderName, teamIndex) {
+        function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageAltLookup) {
             const fallbackImages = getTeamImages(teamObj, folderName, teamIndex);
             const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages.find(Boolean);
             if (imagePath) {
-                return `<img src="${escapeHTML(resolveAssetPath(getGridThumbnailPath(imagePath)))}" alt="${escapeHTML(teamName)} fan media" loading="eager" fetchpriority="high" decoding="async">`;
+                const altText = getImageAlt(imagePath, `${teamName} fan media`, imageAltLookup);
+                return `<img src="${escapeHTML(resolveAssetPath(getGridThumbnailPath(imagePath)))}" alt="${escapeHTML(altText)}" loading="eager" fetchpriority="high" decoding="async">`;
             }
 
             return "";
@@ -641,6 +734,9 @@
                 const response = await fetch(resolveAssetPath('./images/data/data.tsv'));
                 const tsvData = await response.text();
                 const teamData = parseTSV(tsvData);
+                const altResponse = await fetch(resolveAssetPath('./images/data/image-alt.csv')).catch(() => null);
+                const altCsvData = altResponse && altResponse.ok ? await altResponse.text() : "path,alt\n";
+                const imageAltLookup = buildImageAltLookup(parseCSV(altCsvData));
                 
                 const grid = document.getElementById('SA_ambassadorGrid');
                 const flagGroupsContainer = document.getElementById('SA_flagGroupsContainer');
@@ -653,7 +749,7 @@
                 allTeamsFlattened.forEach((teamName, index) => {
                     const teamObj = findTeamData(teamData, teamName);
                     const folderName = teamObj.folderName || teamName.replace(/\s+/g, '');
-                    const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index);
+                    const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index, imageAltLookup);
                     const slot = document.createElement('div');
                     slot.className = mediaHtml ? 'SA_ambassador-slot' : 'SA_ambassador-slot SA_placeholder';
                     slot.style.setProperty('--slot-wave-order', String(index % 8 + Math.floor(index / 8)));
@@ -712,7 +808,7 @@
                         const theCountry = renderSection("Cheering for", teamObj.theCountry);
                         const whyCheer = renderSection("Why they cheer", teamObj.whyCheer, {
                             image: inlineBreakImage,
-                            imageAlt: `${cleanTeamName} fans in Toronto`,
+                            imageAlt: getImageAlt(inlineBreakImage, `${cleanTeamName} fans in Toronto`, imageAltLookup),
                             caption: "",
                             threshold: 7,
                             after: 4
@@ -722,7 +818,7 @@
                         const image1Dimensions = { width: teamObj.image1Width, height: teamObj.image1Height };
                         const image2Dimensions = { width: teamObj.image2Width, height: teamObj.image2Height };
                         const mainImageHtml = img1Path ? `
-                                ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "SA_editorial-image", image1Dimensions)}
+                                ${renderEditorialMedia(img1Path, getImageAlt(img1Path, `${cleanTeamName} Hub 1`, imageAltLookup), "SA_editorial-image", image1Dimensions)}
                                 <span class="SA_caption"></span>
                         ` : "";
                         const secondaryFigureClass = [
@@ -732,7 +828,7 @@
                         const secondaryCaption = "";
                         const secondaryFigureHtml = img2Path ? `
                                     <figure class="SA_secondary-figure ${secondaryFigureClass}">
-                                        ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "SA_editorial-image-secondary", image2Dimensions)}
+                                        ${renderEditorialMedia(img2Path, getImageAlt(img2Path, `${cleanTeamName} Hub 2`, imageAltLookup), "SA_editorial-image-secondary", image2Dimensions)}
                                         <figcaption class="SA_caption">${secondaryCaption}</figcaption>
                                     </figure>
                         ` : "";
@@ -841,11 +937,38 @@
         window.addEventListener('resize', updateStickyControls);
         updateStickyControls();
 
+        function clearLocationHash() {
+            if (!window.location.hash || !history.replaceState) return;
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+        }
+
+        function scrollToTarget(targetId) {
+            const target = document.getElementById(targetId);
+            if (!target) return;
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.setTimeout(clearLocationHash, 350);
+        }
+
         function closeCountryDropdown() {
             if (!countryDropdownMenu || !countryDropdownToggle) return;
             countryDropdownMenu.classList.remove('SA_open');
             countryDropdownToggle.setAttribute('aria-expanded', 'false');
         }
+
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', function() {
+                scrollToTarget('SA_flagSection');
+            });
+        }
+
+        document.addEventListener('click', function(event) {
+            const anchor = event.target.closest('a[href^="#SA_"]');
+            if (!anchor) return;
+            const targetId = anchor.getAttribute('href').slice(1);
+            if (!targetId) return;
+            event.preventDefault();
+            scrollToTarget(targetId);
+        });
 
         if (countryDropdownToggle && countryDropdownMenu) {
             countryDropdownToggle.addEventListener('click', function() {
@@ -856,7 +979,7 @@
             countryDropdownMenu.addEventListener('click', function(event) {
                 const item = event.target.closest('[data-target]');
                 if (item) {
-                    location.hash = item.dataset.target;
+                    scrollToTarget(item.dataset.target);
                     closeCountryDropdown();
                 }
             });

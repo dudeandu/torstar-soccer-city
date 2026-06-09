@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "node -e \"const p=process.cwd();if(/\\\\s/.test(p)){console.error('Path has spaces: '+p+'\\nMove the project to a path without spaces before installing.');process.exit(1);}\"",
+    "generate-alt": "node app/scripts/generate-image-alt-csv.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

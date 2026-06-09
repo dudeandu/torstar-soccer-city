@@ -47,6 +47,47 @@ function parseTSV(tsvText) {
   return rows.map(values => Object.fromEntries(headers.map((header, index) => [header, values[index] || ""])));
 }
 
+function parseCSV(csvText) {
+  const rows = [];
+  let row = [];
+  let value = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < csvText.length; i++) {
+    const char = csvText[i];
+    const nextChar = csvText[i + 1];
+
+    if (char === '"') {
+      if (inQuotes && nextChar === '"') {
+        value += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === "," && !inQuotes) {
+      row.push(value);
+      value = "";
+    } else if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (char === "\r" && nextChar === "\n") i++;
+      row.push(value);
+      if (row.some(cell => cell.trim() !== "")) rows.push(row);
+      row = [];
+      value = "";
+    } else {
+      value += char;
+    }
+  }
+
+  if (value || row.length) {
+    row.push(value);
+    if (row.some(cell => cell.trim() !== "")) rows.push(row);
+  }
+
+  if (!rows.length) return [];
+  const headers = rows.shift().map(header => header.trim());
+  return rows.map(values => Object.fromEntries(headers.map((header, index) => [header, values[index] || ""])));
+}
+
 function escapeHTML(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -92,6 +133,33 @@ function normalizeImagePath(imagePath) {
     .trim()
     .replace(/^\.\//, "")
     .replace(/^\/+/, "");
+}
+
+function normalizeAltImagePath(imagePath) {
+  return String(imagePath || "")
+    .trim()
+    .replace(/\\/g, "/")
+    .replace(/^\.\//, "")
+    .replace(/^images\//, "");
+}
+
+function buildImageAltLookup(rows) {
+  const lookup = new Map();
+  rows.forEach(row => {
+    const imagePath = normalizeAltImagePath(row.path);
+    const altText = String(row.alt || "").trim();
+    if (imagePath && altText) lookup.set(imagePath, altText);
+  });
+  return lookup;
+}
+
+function loadImageAltText(altPath) {
+  if (!fs.existsSync(altPath)) return new Map();
+  return buildImageAltLookup(parseCSV(fs.readFileSync(altPath, "utf8")));
+}
+
+function getImageAlt(imagePath, fallbackAlt, imageAltLookup) {
+  return imageAltLookup.get(normalizeAltImagePath(imagePath)) || fallbackAlt;
 }
 
 function buildCaptionsByPath(captionEntries = {}) {
@@ -181,7 +249,7 @@ function renderEditorialMedia(imagePath, altText, className, dimensions = {}) {
   }
 
   const sizes = className === "SA_editorial-image-secondary" ?
-    "(min-width: 901px) 45vw, calc(100vw - 40px)" :
+    "(min-width: 1121px) 560px, (min-width: 901px) 52vw, calc(100vw - 40px)" :
     "(max-width: 940px) calc(100vw - 40px), 900px";
 
   return `<img class="${className}" src="${escapeHTML(imagePath)}"${srcsetAttrs(imagePath, sizes)} alt="${escapeHTML(altText)}"${dimensionAttrs(dimensions.width, dimensions.height)} loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'), { className: 'SA_editorial-image-placeholder' }))">`;
@@ -232,11 +300,12 @@ function getGridThumbnailPath(imagePath) {
   });
 }
 
-function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageManifest) {
+function renderGridMedia(teamObj, teamName, folderName, teamIndex, imageManifest, imageAltLookup) {
   const fallbackImages = getTeamImages(teamObj, imageManifest, folderName, teamIndex);
   const imagePath = teamObj.image1 || (teamObj.images || "").split("|").find(Boolean) || fallbackImages.find(Boolean);
   if (imagePath) {
-    return `<img src="${escapeHTML(getGridThumbnailPath(imagePath))}" alt="${escapeHTML(teamName)} fan media" loading="eager" fetchpriority="high" decoding="async">`;
+    const altText = getImageAlt(imagePath, `${teamName} fan media`, imageAltLookup);
+    return `<img src="${escapeHTML(getGridThumbnailPath(imagePath))}" alt="${escapeHTML(altText)}" loading="eager" fetchpriority="high" decoding="async">`;
   }
 
   return "";
@@ -271,13 +340,13 @@ function getGroupHeroMedia(teamsInGroup, teamData, groupLetter, fallbackGif, dat
   return `<img src="${escapeHTML(fallbackGif)}" alt="Group ${escapeHTML(groupLetter)}" loading="lazy">`;
 }
 
-function buildRenderedSections(constants, teamData, captionsByPath = new Map()) {
+function buildRenderedSections(constants, teamData, captionsByPath = new Map(), imageAltLookup = new Map()) {
   const { tournamentGroups, countryCodes, teamColors, gifLinks, imageManifest, dataAliases, groupHeroVideoOverrides } = constants;
   const allTeamsFlattened = Object.values(tournamentGroups).flat();
   const gridSlots = allTeamsFlattened.map((teamName, index) => {
     const teamObj = findTeamData(teamData, teamName, dataAliases);
     const folderName = teamObj.folderName || teamName.replace(/\s+/g, "");
-    const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index, imageManifest);
+    const mediaHtml = renderGridMedia(teamObj, teamName, folderName, index, imageManifest, imageAltLookup);
     const className = mediaHtml ? "SA_ambassador-slot" : "SA_ambassador-slot SA_placeholder";
     const waveOrder = index % 8 + Math.floor(index / 8);
     return `<div class="${className}" style="--slot-wave-order:${waveOrder}">${mediaHtml}<div class="SA_info-tab"><div class="SA_team">${escapeHTML(teamName)}</div></div></div>`;
@@ -312,7 +381,7 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
       const image1Dimensions = { width: teamObj.image1Width, height: teamObj.image1Height };
       const image2Dimensions = { width: teamObj.image2Width, height: teamObj.image2Height };
       const mainImageHtml = img1Path ? `
-                                ${renderEditorialMedia(img1Path, `${cleanTeamName} Hub 1`, "SA_editorial-image", image1Dimensions)}
+                                ${renderEditorialMedia(img1Path, getImageAlt(img1Path, `${cleanTeamName} Hub 1`, imageAltLookup), "SA_editorial-image", image1Dimensions)}
                                 ${renderCaption(img1Path, captionsByPath, "span")}
                         ` : "";
       const secondaryFigureClass = [
@@ -321,7 +390,7 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
       ].filter(Boolean).join(" ");
       const secondaryFigureHtml = img2Path ? `
                                     <figure class="SA_secondary-figure ${secondaryFigureClass}">
-                                        ${renderEditorialMedia(img2Path, `${cleanTeamName} Hub 2`, "SA_editorial-image-secondary", image2Dimensions)}
+                                        ${renderEditorialMedia(img2Path, getImageAlt(img2Path, `${cleanTeamName} Hub 2`, imageAltLookup), "SA_editorial-image-secondary", image2Dimensions)}
                                         ${renderCaption(img2Path, captionsByPath)}
                                     </figure>
                         ` : "";
@@ -345,7 +414,7 @@ function buildRenderedSections(constants, teamData, captionsByPath = new Map()) 
                                     ${secondaryAfterCountry}
                                     ${renderSection("Why they cheer", teamObj.whyCheer, {
                                       image: inlineBreakImage,
-                                      imageAlt: `${cleanTeamName} fans in Toronto`,
+                                      imageAlt: getImageAlt(inlineBreakImage, `${cleanTeamName} fans in Toronto`, imageAltLookup),
                                       caption: "",
                                       captionsByPath,
                                       threshold: 7,
@@ -432,11 +501,38 @@ function stickyScript() {
         window.addEventListener('resize', updateStickyControls);
         updateStickyControls();
 
+        function clearLocationHash() {
+            if (!window.location.hash || !history.replaceState) return;
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+        }
+
+        function scrollToTarget(targetId) {
+            const target = document.getElementById(targetId);
+            if (!target) return;
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.setTimeout(clearLocationHash, 350);
+        }
+
         function closeCountryDropdown() {
             if (!countryDropdownMenu || !countryDropdownToggle) return;
             countryDropdownMenu.classList.remove('SA_open');
             countryDropdownToggle.setAttribute('aria-expanded', 'false');
         }
+
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', function() {
+                scrollToTarget('SA_flagSection');
+            });
+        }
+
+        document.addEventListener('click', function(event) {
+            const anchor = event.target.closest('a[href^="#SA_"]');
+            if (!anchor) return;
+            const targetId = anchor.getAttribute('href').slice(1);
+            if (!targetId) return;
+            event.preventDefault();
+            scrollToTarget(targetId);
+        });
 
         if (countryDropdownToggle && countryDropdownMenu) {
             countryDropdownToggle.addEventListener('click', function() {
@@ -447,7 +543,7 @@ function stickyScript() {
             countryDropdownMenu.addEventListener('click', function(event) {
                 const item = event.target.closest('[data-target]');
                 if (item) {
-                    location.hash = item.dataset.target;
+                    scrollToTarget(item.dataset.target);
                     closeCountryDropdown();
                 }
             });
@@ -477,6 +573,7 @@ async function prerenderLivePage({
   bodyPath = path.join(__dirname, "..", "body.html"),
   htmlPath = path.join(__dirname, "..", "..", "dist", "index.html"),
   dataPath = path.join(__dirname, "..", "data", "data.tsv"),
+  altPath = path.join(__dirname, "..", "data", "image-alt.csv"),
 } = {}) {
   const bodySource = fs.readFileSync(bodyPath, "utf8");
   const htmlSource = fs.readFileSync(htmlPath, "utf8");
@@ -491,7 +588,8 @@ async function prerenderLivePage({
     groupHeroVideoOverrides: extractConst(bodySource, "groupHeroVideoOverrides"),
   };
   const captionsByPath = await loadFirebaseCaptions();
-  const rendered = buildRenderedSections(constants, teamData, captionsByPath);
+  const imageAltLookup = loadImageAltText(altPath);
+  const rendered = buildRenderedSections(constants, teamData, captionsByPath, imageAltLookup);
 
   let html = htmlSource;
   html = html.replace(

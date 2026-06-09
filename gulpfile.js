@@ -64,6 +64,7 @@ const htmlmin = require('gulp-htmlmin');
 const replace = require('gulp-replace');
 const mergeStream = require('merge-stream');
 const prerenderLivePage = require('./app/scripts/prerender-live-page');
+const generateImageAltCsvScript = require('./app/scripts/generate-image-alt-csv');
 
 const responsiveWidths = [2480, 1920, 1280, 1024, 860, 540, 320];
 
@@ -237,10 +238,14 @@ function moveVideos() {
 // Publishes TSV data where the article fetches it from.
 function moveData() {
     return gulp
-        .src("app/data/data.tsv", {
+        .src(["app/data/data.tsv", "app/data/image-alt.csv"], {
             allowEmpty: true
         })
         .pipe(gulp.dest("dist/images/data"));
+}
+
+async function generateImageAltCsv() {
+    await generateImageAltCsvScript();
 }
 
 function parseTSVText(tsvText) {
@@ -815,8 +820,8 @@ function setLive(done) {
 // define complex tasks
 const js = gulp.series(scripts, copyModulesScripts, addSrcset);
 const jsLive = gulp.series(scriptsLive, copyModulesScripts, addSrcset);
-const images = gulp.parallel(moveImages, resizeImages, moveVideos, moveData);
-const dataLive = gulp.parallel(moveData, buildAllTeamsText);
+const images = gulp.parallel(moveImages, resizeImages, moveVideos, gulp.series(generateImageAltCsv, moveData));
+const dataLive = gulp.parallel(gulp.series(generateImageAltCsv, moveData), buildAllTeamsText);
 const imagesLive = gulp.parallel(moveImages, resizeLiveStoryImages, resizeGridImages, moveVideos, dataLive);
 const rebuild = gulp.series(fullClean, gulp.parallel(css, images, js), prerenderLive, localURI, copyCaptionForm);
 const build = gulp.series(clean, gulp.parallel(css, images, js), prerenderLive, localURI, copyCaptionForm);
@@ -844,6 +849,7 @@ exports.purge = purge;
 exports.minifyHTML = minifyHTML;
 // Compress images
 exports.images = images;
+exports.generateImageAltCsv = generateImageAltCsv;
 // Compile Sass
 exports.css = css;
 // Transpile, concatenate and minify scripts
